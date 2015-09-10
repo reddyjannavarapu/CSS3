@@ -1,0 +1,349 @@
+﻿@{
+    ViewBag.Title = "Search WO";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/css/assets/css/jquery-ui.min.css" rel="stylesheet" />
+
+<script src="~/Areas/WO/Content/Scripts/SearchWO.js"></script>
+<style>
+    #NoteContentForPopup {
+        height: auto !important;
+    }
+
+    .txtAreaDescription {
+        width: 580px !important;
+        max-width: 580px !important;
+    }
+
+    .ui-datepicker {
+        width: 19em;
+    }
+</style>
+<form class="form-horizontal form-actions" role="form">
+    <div class="row">
+
+        <div class="form-group">
+
+            <div class="col-md-4">
+                <label class="col-sm-4 control-label no-padding-right" for="txtClientName">Client / Customer </label>
+                <div class="col-sm-6" id="divClientOne" tabindex="1">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_ClientChosen.cshtml", new ViewDataDictionary { { "ddlId", "ddlClient" }, { "clientType", "" }, { "selectedId", -1 }, { "DisplayName", "Choose a Client / Customer" }, { "DefaultLoad", 0 }, { "WOID", 0 }, { "ClientSource", "1,4" } })
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="col-sm-4 control-label no-padding-right" for="lblFromDate">From Date</label>
+                <div class="col-sm-6">
+                    <input type="text" id="txtFromDate" class="col-xs-10 col-sm-12 special" maxlength="10" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" tabindex="5" />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="col-sm-2 control-label no-padding-right" for="ddlStatus">Status</label>
+                <div class="col-sm-6">
+                    <select id="ddlStatusCode" tabindex="3" class="col-xs-12">
+                        <option value="-1">ALL</option>
+                        <option value="OPN">Open</option>
+                        <option value="DOC">Document Generated</option>
+                        <option value="CAN">Cancelled</option>
+                        <option value="COM">Completed</option>
+                        <option value="CLD">Closed</option>
+                        <option value="WIP">Draft</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="form-group">
+
+            <div class="col-md-4">
+                <label class="col-sm-4 control-label no-padding-right" for="ddlDIType">Type </label>
+                <div class="col-sm-8">
+                    <select id="ddlDIType" tabindex="2" class="col-xs-12">
+                        <option value="-1">ALL</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="col-sm-4 control-label no-padding-right" for="lblToDate">To Date</label>
+                <div class="col-sm-6">
+                    <input id="txtToDate" type="text" class="col-xs-10 col-sm-12 special" tabindex="6" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10" />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="col-sm-2 control-label no-padding-right" for="drpTypeData">Sort By </label>
+                <div class="col-sm-6">
+                    <select id="ddlOrderBy" tabindex="7" class="col-xs-12">
+                        <option value="CreatedDateDESC">CreatedDate DESC</option>
+                        <option value="CreatedDateASC">CreatedDate ASC</option>
+                        <option value="WOCodeASC">WO # ASC</option>
+                        <option value="WOCodeDESC">WO # DESC</option>
+                        <option value="ClientNameASC">ClientName ASC</option>
+                        <option value="ClientNameDESC">ClientName DESC</option>
+                        <option value="BillingPartyNameASC">BillingPartyName ASC</option>
+                        <option value="BillingPartyNameDESC">BillingPartyName DESC</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="form-group">
+
+            <div class="col-md-4">
+                <label class="col-sm-4 control-label no-padding-right" for="txtWorkOrderID">WO #</label>
+                <div class="col-sm-8">
+                    <input id="txtWorkOrderID" type="text" autofocus class="col-sm-12 special" tabindex="4" maxlength="15" />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="col-sm-4 control-label no-padding-right" for="txtWorkOrderID">Assigned To</label>
+                <div class="col-sm-8">
+                    <select id="ddlAssignedTo" class="col-sm-9">
+                        <option value="-1">ALL</option>
+                        <option value="-2">UnAssigned</option>
+                        <option value="-3">Assigned</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="col-sm-2 control-label no-padding-right no-padding-left" for="ddlStatus">Page Size </label>
+                <div class="col-sm-6">
+                    <select id="ddlPageSize" tabindex="8" class="col-sm-3">
+                        <option value="5">5</option>
+                        <option value="10" selected="selected">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <label class="col-sm-4 control-label no-padding-right" for="chkAdhoc">Adhoc</label>
+                    <div class="col-sm-4 margin-5t">
+                        <label>
+                            <input name="form-field-checkbox" tabindex="12" class="ace" id="chkAdhoc" type="checkbox">
+                            <span class="lbl"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="clearfix">
+            <div class="col-md-offset-5 col-md-5">
+                <button id="btnSearchWO" class="btnSearchWO btn btn-info" type="button" tabindex="9">
+                    <i class="ace-icon fa fa-search bigger-110"></i>
+                    SEARCH
+                </button>
+                &nbsp; &nbsp; &nbsp;
+            <button id="btnClear" class="btn" type="button" tabindex="10">
+                <i class="ace-icon fa fa-undo bigger-110"></i>
+                RESET
+            </button>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<div class="clearfix">
+
+    <div class="tableGrid dataTables_wrapper form-inline">
+        <div id="divWorkorderList">
+            <table id="tblSearchWO" class="table table-striped table-bordered table-hover" style="display: none">
+                <thead>
+                    <tr>
+                        <th>WO #</th>
+                        <th>WO Type	
+                        </th>
+                        <th>Client / Customer</th>
+                        <th>Billing Party</th>
+                        @* <th>Description	
+                        </th>*@
+                        <th>Status</th>
+                        <th>Adhoc</th>
+                        <th>Posted To CSS1</th>
+                        <th>Created Date</th>
+                        <th class="col-xs-1">Actions 
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="trWorkorderData">
+                </tbody>
+            </table>
+            <div id="divSearchNoData" class="row widget-main no-padding-left no-padding-right" style="margin-left: 10px; display: none;">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td colspan="6">
+                                <div id="noData">
+                                    No data found.
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row" id="divPaging" style="display: none">
+                <div class="col-xs-6 margin-10t"><span id="listName"></span>&nbsp;<span id="listCount" class="badge"></span></div>
+                <div id="numericcontainer" class="dataTables_paginate paging_bootstrap">
+                    <div>
+                        <ul id="pagination-digg" class="pagination">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script id="WorkorderTemplate" type="text/html">
+            <tr>
+                <td>{{= WorkOrderID}}</td>
+                <td>{{= WorkOrderTypeText}}
+                </td>
+                <td>{{= ClientId}}</td>
+                <td>{{= BillingPartyName}}</td>
+                @*  <td>
+                    <span style="display: none" class="spanDescription" desc="{{= DescriptionToolTip}}">{{= Description}}</span>
+                    <span class="spanDescriptionToolTip" title="" desc="{{= DescriptionToolTip}}">{{= Description}}</span>
+                </td> *@
+                <td>{{= StatusCode}}
+                </td>
+                <td class="text-center">{{if IsAdhoc }}
+            <input type="checkbox" checked="checked" class="ace" disabled="disabled" />
+                    <span class="lbl"></span>
+                    {{else}}
+            <input type="checkbox" class="ace" disabled="disabled" />
+                    <span class="lbl"></span>
+                    {{/if}}</td>
+                <td class="text-center">{{if IsPostedToCss1 }}
+            <input type="checkbox" checked="checked" class="ace" disabled="disabled" />
+                    <span class="lbl"></span>
+                    {{else}}
+            <input type="checkbox" class="ace" disabled="disabled" />
+                    <span class="lbl"></span>
+                    {{/if}}</td>
+                <td>{{= CreatedDate}}</td>
+                <td>
+
+                    <div class="action-buttons">
+                        <a id="{{= ID}}" workordertypetext="{{= WorkOrderTypeText}}" workordertypevalue="{{= WorkOrderType}}" description="{{= Description}}" workorderid="{{= WorkOrderID}}" clientid="{{= ClientId}}" statuscode="{{= StatusCode}}" class="blue aView " href="javascript:void(0)" style="display: none;">
+                            <i class=" ace-icon fa fa-search-plus bigger-130"></i>
+                        </a>
+                        {{if EditStatus }}
+                        <a id="{{= ID}}" workordertypetext="{{= WorkOrderTypeText}}" workordertypevalue="{{= WorkOrderType}}" description="{{= Description}}" workorderid="{{= WorkOrderID}}" clientid="{{= ClientId}}" statuscode="{{= StatusCode}}" class="aEdit green" href="javascript:void(0)">
+                            <i class="  ace-icon fa fa-pencil bigger-130"></i>
+                        </a>
+                        {{/if}}
+
+                        {{if Status }}
+                        <a id="{{= ID}}" workordertypetext="{{= WorkOrderTypeText}}" workordertypevalue="{{= WorkOrderType}}" description="{{= Description}}" workorderid="{{= WorkOrderID}}" clientid="{{= ClientId}}" statuscode="{{= StatusCode}}" class="aDelete red" style="display: none" href="javascript:void(0)">
+                            <i class=" ace-icon fa fa-trash-o bigger-130"></i>
+                        </a>
+                        {{/if}}
+                        @Html.Partial("~/Areas/WO/Views/Note/_Note.cshtml")
+
+                    </div>
+
+                </td>
+            </tr>
+        </script>
+
+        <script id="DITypeScript" type="text/html">
+            <option value="{{= Code}}">{{= Name}}</option>
+        </script>
+        <script id="scriptStatusCode" type="text/html">
+            <option value="{{= StatusCode}}">{{= StatusName}}</option>
+        </script>
+        <script type="text/html" id="ScriptAssignedTo">
+            <option value="{{= UserID}}">{{= UserName}}</option>
+        </script>
+
+        <div class="clear"></div>
+
+        <div id="dialog-confirm" class="hide">
+            <div class="alert alert-info bigger-110">
+                This item will be permanently deleted and cannot be recovered.
+            </div>
+
+            <div class="space-6"></div>
+
+            <p class="bigger-110 bolder center grey">
+                <i class="ace-icon fa fa-hand-o-right blue bigger-120"></i>
+                Are you sure?
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<div id="modal-form" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Work Order Information</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <table>
+                    <tr>
+                        <td>WorkOrder Code   
+                        </td>
+                        <td>
+                            <label id="labelWorkOrderID"></label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Type </td>
+                        <td>
+                            <label id="labelType"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Client / Customer
+                        </td>
+                        <td>
+                            <label id="labelClientID"></label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Description
+                        </td>
+                        <td>
+                            <label id="labelDescription"></label>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Status
+                        </td>
+                        <td>
+                            <label id="labelStatusCode"></label>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

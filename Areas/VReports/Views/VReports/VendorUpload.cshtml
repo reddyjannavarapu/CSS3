@@ -1,0 +1,774 @@
+﻿@{
+    ViewBag.Title = "VendorUpload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Areas/VReports/Content/Scripts/VendorDetails.js"></script>
+<script src="~/Scripts/Validations.js"></script>
+<script src="~/Scripts/jquery.ui.widget.js"></script>
+<style>
+    .mainDiv {
+        float: left;
+        width: 100%;
+    }
+
+    .divFU {
+        float: left;
+        padding: 10px 10px;
+        margin: 15px;
+    }
+
+    .divFilter {
+        display: none;
+        margin: 15px;
+        padding: 10px;
+        vertical-align: top;
+        /*width: 600px;*/
+    }
+
+    .divType {
+        float: left;
+        margin: 6px;
+    }
+
+    .ddlStyle {
+        width: 120px;
+    }
+
+    .subDivFu {
+        width: 260px;
+        float: left;
+        padding-top: 10px;
+    }
+
+    .btnRemove {
+        height: auto;
+        width: auto;
+        float: left;
+        background: #eee;
+        border-color: #eee;
+    }
+
+    .divUpload {
+        float: left;
+        width: auto;
+        padding-top: 3px;
+    }
+
+    .btnUpload {
+        background-color: #d3dce0 !important;
+        cursor: pointer !important;
+        font-size: 1.2em !important;
+        font-weight: 200 !important;
+        padding: 4px !important;
+        margin-right: 8px !important;
+        width: auto !important;
+    }
+
+
+    .clssRepetedTr {
+        border-top: 2px solid #F9F9F9 !important;
+        /*border-right:2px solid #FFF !important;*/
+        background-color: #F9F9F9 !important;
+    }
+
+    .ClassRepetedTD {
+        background-color: #F9F9F9 !important;
+        /*border-right:2px solid #FFF !important;*/
+    }
+</style>
+
+<script type='text/javascript'>
+
+    @{
+        var FileName = TempData["FileName"] ?? string.Empty;
+        var message = TempData["Message"] ?? string.Empty;
+     }
+
+    var message = '@message';
+    var FileName = '@FileName';
+
+    if (message == 'FileUploaded') {
+        UploadCall(FileName);
+    }
+    else if (message == 'FileNotValid') {
+        ShowNotify('Please upload valid file.', 'error', 3000);
+    }
+    else if (message == 'error') {
+        ShowNotify('upload failed.', 'error', 3000);
+    }
+</script>
+
+<div class="col-sm-2 pull-right" id="divVreportFormat" style="display: inline-block;">
+    <div style="float: right">
+        <input type="button" id="btnVreportFormat" class="btn btn-purple" value="Vendor Report Format">
+    </div>
+</div>
+
+<div id="dvbtnVreportFromat" class="modal row" tabindex="-1" style="margin-bottom: 10px;">
+    <div class="modal-dialog" style="left: 15%;">
+        <div class="modal-content" style="width: 165%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Vendor Report Format</h4>
+            </div>
+            <div class="modal-body" style="margin-bottom: 20px;">
+                <div class="ace-scroll">
+                    <div id="Output_1" class="scroll-content">
+                        <table class="table table-striped table-bordered table-hover" id="tblSearchWO">
+                            <thead>
+                                <tr>
+                                    <th>All Files</th>
+                                    <th>Date</th>
+                                    <th>SIC</th>
+                                    <th>Description</th>
+                                    <th>Vendor ref no.</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="trWorkorderData">
+                                <tr>
+                                    <td>ACRA</td>
+                                    <td>Date</td>
+                                    <td>SIC</td>
+                                    <td>Transaction Type</td>
+                                    <td>Receipt No.</td>
+                                    <td>Debit</td>
+                                </tr>
+                                <tr>
+                                    <td>Courier</td>
+                                    <td>Date</td>
+                                    <td>SIC</td>
+                                    <td>Destination</td>
+                                    <td>Tracking No.</td>
+                                    <td>Amount</td>
+                                </tr>
+                                <tr>
+                                    <td>IRAS</td>
+                                    <td>Effective Date</td>
+                                    <td>SIC</td>
+                                    <td>Transaction Description</td>
+                                    <td>Doc Ref. No.</td>
+                                    <td>Liability</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dvErrorVReportFromat" class="modal row" tabindex="-1" style="margin-bottom: 10px;">
+    <div class="modal-dialog" style="left: 15%;">
+        <div class="modal-content" style="width: 165%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Vendor Report Format</h4>
+            </div>
+            <div class="modal-body" style="margin-bottom: 20px;">
+                <div class="ace-scroll">
+                    <div id="dvErrorVReport" class="scroll-content">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("FileUpload", "VReports", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="tableGrid dataTables_wrapper form-inline" id="mainDiv" style="display: inline-block; min-height: 345px;">
+        <div class="divFU well">
+            <div class="divType">
+                <input type="hidden" id="Title" name="Title" style="width: 240px;" />
+                <select class="ddlStyle" id="ddlType" name="type">
+                    <option value="">Select type</option>
+                </select>
+            </div>
+            <div class="subDivFu">
+                <input id="fileupload" type="file" name="file">
+            </div>
+            <div id="divUpload" class="divUpload">
+                <input type="submit" id="btnUpload" class="btn btn-primary" value="UPLOAD">
+            </div>
+        </div>
+    </div>
+
+    <div id="dvSearchfilter" class="well col-xs-12 no-margin" style="display: none;">
+
+        <div class="col-md-4 no-padding">
+            <label for="ddlGroupCode" class="col-sm-3 control-label no-padding-right">Group Code</label>
+            <div class="col-sm-9" tabindex="6">
+                @Html.Partial("~/Areas/WO/Views/PartialContent/_GroupInfo.cshtml", new ViewDataDictionary { { "ddlId", "InCWO" }, { "GroupType", "InCWO" }, { "selectedId", 0 }, { "DisplayName", "ALL" } })
+            </div>
+        </div>
+
+        <div class="col-md-4 no-padding">
+            <label class="col-sm-4 control-label no-padding-right" for="txtClientName">Client / Customer </label>
+            <div class="col-sm-6" id="divClientOne" tabindex="1">
+                @Html.Partial("~/Areas/WO/Views/PartialContent/_ClientChosen.cshtml", new ViewDataDictionary { { "ddlId", "ddlClient" }, { "clientType", "" }, { "selectedId", -1 }, { "DisplayName", "ALL" }, { "DefaultLoad", 0 }, { "WOID", 0 }, { "ClientSource", "1,4" } })
+            </div>
+        </div>
+
+        <div class="col-md-2 no-padding">
+            <label class="col-sm-3 control-label no-padding-right" for="txtReferencwNo">Ref #</label>
+            <div class="col-sm-9">
+                <input id="txtReferencwNo" type="text" class="col-sm-12 special" tabindex="4" maxlength="100" />
+            </div>
+        </div>
+
+        <button id="btnSearchVendorDetails" class="btn btn-info" type="button">
+            <i class="ace-icon fa fa-search bigger-110"></i>
+            SEARCH
+        </button>
+        <button id="btnClear" class="btn" type="button" tabindex="10">
+            <i class="ace-icon fa fa-undo bigger-110"></i>
+            RESET
+        </button>
+
+    </div>
+    
+    <div id="divFilter" class="divFilter well col-xs-12 no-margin-left no-margin-right">
+
+        <div class="pull-left col-xs-3">
+            Filter :
+            <select id="ddlVendorList" name="type" style="align-self: center"></select>
+        </div>
+        <div class="pull-left col-xs-9  margin-5t">
+            <div class="pull-left">
+                File Name :
+            </div>
+            <div class="pull-left margin-5l">
+                <b><span id="spnFileName"></span></b>
+            </div>
+        </div>
+    </div>
+    
+    <div class="clear"></div>
+
+}
+
+<div class="tableGrid dataTables_wrapper form-inline">
+    <div class="row" id="DivMatched" style="display: none">
+        <div class="blue">
+            <h4><b style="margin-left: 15px;">Matched DI Records</b> </h4>
+        </div>
+    </div>
+
+    <div id="divVendors1">
+        <table id="tblVendorDetails1" class="table table-striped table-bordered table-hover" border="1" style="display: none">
+            <thead>
+                <tr>
+                    <th colspan="4" class="green" style="text-align: center;">Vendor Report</th>
+                    <th colspan="10" class="red" style="text-align: center;">Disbursement Items</th>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <th>SIC</th>
+                    <th>Ref #</th>
+                    <th>Amount</th>
+                    <th>Group</th>
+                    <th>Client Name</th>
+                    <th>Ref #</th>
+                    <th>Amount</th>
+                    <th>Invoice #</th>
+                    <th>WO #</th>
+                    <th>Item Code</th>
+                    <th>Item #</th>
+                    <th>Verified</th>
+                    @*<th>BILLED</th>
+                        <th>WO Type</th>*@
+                </tr>
+            </thead>
+            <tbody id="tblVendorBody1"></tbody>
+        </table>
+    </div>
+    <script type="text/html" id="scriptVendorDetails1">
+        <tr>
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= Date}}</td>
+            {{/if}}
+
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= UsedBy}}</td>
+            {{/if}}
+
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= VenderReferenceID}}</td>
+            {{/if}}
+
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= VendorAmount}}</td>
+            {{/if}}
+            <td>{{= GroupName}}</td>
+            <td>{{= ClientName}}</td>
+            <td>{{= DIRef}}</td>
+            <td>{{= DIAmount}}</td>
+            <td>{{= InvoiceNumber}}</td>
+            <td>{{= WOCode}}</td>
+            <td>{{= ItemCode}}</td>
+            <td>{{= ItemNumber}}</td>
+            <td>{{if IsVerified }}
+                <input type="checkbox" checked="checked" class="ace" disabled="disabled" />
+                <span class="lbl"></span>
+                {{else}}
+                <input type="checkbox" class="ace" disabled="disabled" />
+                <span class="lbl"></span>
+                {{/if}}
+            </td>
+            @*<td>
+                    {{if IsBilled }}
+
+                    <input type="checkbox" checked="checked" class="ace" disabled="disabled" />
+                    <span class="lbl"></span>
+
+                    {{else}}
+                    <input type="checkbox" class="ace" disabled="disabled" />
+                    <span class="lbl"></span>
+                    {{/if}}
+                </td><td>{{= Type}}</td>*@
+
+        </tr>
+    </script>
+</div>
+<div class="clear"></div>
+<div class="tableGrid dataTables_wrapper form-inline">
+    <div class="row" id="DivUnMatched" style="display: none">
+        <div class="blue">
+            <h4><b style="margin-left: 15px;">UnMatched DI Records</b> </h4>
+        </div>
+    </div>
+    <div id="divVendors2">
+        <table id="tblVendorDetails2" class="table table-striped table-bordered table-hover" border="1" style="display: none">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>SIC</th>
+                    <th>Description</th>
+                    <th>Vendor Ref</th>
+                    <th>Vendor Amount</th>
+                    <th>Create New DI</th>
+                </tr>
+            </thead>
+            <tbody id="tblVendorBody2"></tbody>
+        </table>
+    </div>
+    <script type="text/html" id="scriptVendorDetails2">
+        <tr>
+            <td>{{= Date}}</td>
+            <td>{{= UsedBy}}</td>
+            <td>{{= Description}}</td>
+            <td>{{= VenderReferenceID}}</td>
+            <td>{{= VendorAmount}}</td>
+            <td><a vrid="{{= VRID}}" vrdid="{{= VRDID}}" href="/WO/WODI/CreateDI?VRFID={{= VenderReferenceID}}&Amount={{= VendorAmount}}" class="aDownload">Edit</a></td>
+        </tr>
+    </script>
+</div>
+<div class="clear"></div>
+<div class="tableGrid dataTables_wrapper form-inline">
+    <div class="row" id="DivOverBilled" style="display: none">
+        <div class="blue">
+            <h4><b style="margin-left: 15px;">Over Billed</b> </h4>
+        </div>
+    </div>
+    <div id="divVendors3">
+        <table id="tblVendorDetails3" class="table table-striped table-bordered table-hover" border="1" style="display: none">
+            <thead>
+                <tr>
+                    <th colspan="5" class="green" style="text-align: center;">Vendor Report</th>
+                    <th colspan="10" class="red" style="text-align: center;">Disbursement Items</th>
+                </tr>
+                <tr>
+                    <th></th>
+
+                    <th>Date</th>
+                    <th>SIC</th>
+                    <th>Ref #</th>
+                    <th>Amount</th>
+                    <th>Group</th>
+                    <th>Client Name</th>
+                    <th>Ref #</th>
+                    <th>Amount</th>
+                    <th>Invoice #</th>
+                    <th>WO #</th>
+                    <th>Item Code</th>
+                    <th>Item #</th>
+                    <th>Is Verified</th>
+                </tr>
+            </thead>
+            <tbody id="tblVendorBody3"></tbody>
+        </table>
+    </div>
+    <script type="text/html" id="scriptVendorDetails3">
+        <tr>
+            {{if VendorAmount == 0 && VenderReferenceID=='' }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">
+                <input type="checkbox" id="chkOverBilled" vrid="{{= VRID}}" vrdid="{{= VRDID}}" venderreferenceid="{{= VenderReferenceID}}" class="ace" />
+                <span class="lbl"></span>
+            </td>
+            {{/if}}
+
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= Date}}</td>
+            {{/if}}
+
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= UsedBy}}</td>
+            {{/if}}
+
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= VenderReferenceID}}</td>
+            {{/if}}
+
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= VendorAmount}}</td>
+            {{/if}}
+            <td>{{= GroupName}}</td>
+            <td>{{= ClientName}}</td>
+            <td>{{= DIRef}}</td>
+            <td>{{= DIAmount}}</td>
+            <td>{{= InvoiceNumber}}</td>
+            <td>{{= WOCode}}</td>
+            <td>{{= ItemCode}}</td>
+            <td>{{= ItemNumber}}</td>
+            <td>{{if IsVerified}}
+                <input type="checkbox" checked="checked" class="ace" disabled="disabled" />
+                <span class="lbl"></span>
+                {{else}}
+                <input type="checkbox" class="ace" disabled="disabled" />
+                <span class="lbl"></span>
+                {{/if}}
+            </td>
+        </tr>
+    </script>
+</div>
+<div class="clear"></div>
+
+<div align="right" style="margin: 15px">
+    <input type="button" id="btnOverBilledVerify" style="display: none !important" class="btn btn-primary" value="VERIFY" />
+    <input type="button" id="btnOverBilledVerifyAndADHOC" style="display: none !important" class="btn btn-info" value="VERIFY & SEND TO ACCPAC FOR ADHOC" />
+</div>
+<div class="clear"></div>
+<div class="tableGrid dataTables_wrapper form-inline">
+    <div class="row" id="DivSingleDiscrepancy" style="display: none">
+        <div class="blue">
+            <h4><b style="margin-left: 15px;">Billed Discrepancy</b> </h4>
+        </div>
+    </div>
+
+    <div id="divVendors4">
+        <table id="tblVendorDetails4" class="table table-striped table-bordered table-hover" border="1" style="display: none">
+            <thead>
+                <tr>
+                    <th colspan="5" class="green" style="text-align: center;">Vendor Report</th>
+                    <th colspan="10" class="red" style="text-align: center;">Disbursement Items</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Date</th>
+                    <th>SIC</th>
+                    <th>Ref #</th>
+                    <th>Amount</th>
+                    <th>Group</th>
+                    <th>Client Name</th>
+                    <th>Ref #</th>
+                    <th>Amount</th>
+                    <th>Invoice #</th>
+                    <th>WO #</th>
+                    <th>Item Code</th>
+                    <th>Item #</th>
+                    <th>Discrepancy</th>
+                </tr>
+            </thead>
+            <tbody id="tblVendorBody4"></tbody>
+        </table>
+    </div>
+    <script type="text/html" id="scriptVendorDetails4">
+        <tr>
+            <td>
+                <input type="checkbox" id="chkBilledDisc" class="chkBilledDisc" di="{{= DI}}" vrid="{{= VRID}}" vrdid="{{= VRDID}}" class="ace" />
+                <span class="lbl"></span>
+
+            </td>
+            <td>{{= Date}}</td>
+            <td>{{= UsedBy}}</td>
+
+            <td>{{= VenderReferenceID}}</td>
+            <td>{{= VendorAmount}}</td>
+            <td>{{= GroupName}}</td>
+            <td>{{= ClientName}}</td>
+            <td>{{= DIRef}}</td>
+            <td>{{= DIAmount}}</td>
+            <td>{{= InvoiceNumber}}</td>
+            <td>{{= WOCode}}</td>
+            <td>{{= ItemCode}}</td>
+            <td>{{= ItemNumber}}</td>
+            <td>
+                <input type="text" id="txtBilledDisc" onkeypress="return AllowDecimalNumbersOnly(this,event,17,4)" class="txtBilledDisc special" value="{{= Discrepancy}}" />
+            </td>
+
+            @*<td>{{if IsBilled }}
+
+                    <input type="checkbox" checked="checked" class="ace" disabled="disabled" />
+                    <span class="lbl"></span>
+                    {{else}}
+                    <input type="checkbox" class="ace" disabled="disabled" />
+                    <span class="lbl"></span>
+                    {{/if}}
+                </td>
+                <td>{{= Type}}</td>*@
+
+
+
+
+        </tr>
+    </script>
+    <div class="clear"></div>
+    <div align="right" style="margin: 15px">
+        <input type="button" id="btnBilledDisVerify" style="display: none !important" class="btn btn-primary" value="VERIFY" />
+        <input type="button" id="btnBilledDisVerifyAndADHOC" style="display: none !important" class="btn btn-info" value="VERIFY & SEND TO ACCPAC FOR ADHOC" />
+    </div>
+</div>
+<div class="clear"></div>
+<div class="tableGrid dataTables_wrapper form-inline">
+    <div class="row" id="DivSingleUnbilledDiscrepancy" style="display: none">
+        <div class="blue">
+            <h4><b style="margin-left: 15px;">Unbilled Discrepancy</b> </h4>
+        </div>
+    </div>
+    <div id="divVendors5">
+        <table id="tblVendorDetails5" class="table table-striped table-bordered table-hover" border="1" style="display: none">
+            <thead>
+                <tr>
+                    <th colspan="5" class="green" style="text-align: center;">Vendor Report</th>
+                    <th colspan="10" class="red" style="text-align: center;">Disbursement Items</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Date</th>
+                    <th>SIC</th>
+                    <th>Ref #</th>
+                    <th>Amount</th>
+                    <th>Group</th>
+                    <th>Client Name</th>
+                    <th>Ref #</th>
+                    <th>Amount</th>
+                    <th>Invoice #</th>
+                    <th>WO #</th>
+                    <th>Item Code</th>
+                    <th>Item #</th>
+                    <th>Discrepancy</th>
+                </tr>
+            </thead>
+            <tbody id="tblVendorBody5"></tbody>
+        </table>
+    </div>
+    <script type="text/html" id="scriptVendorDetails5">
+        <tr>
+            <td>
+                <input type="checkbox" id="chkUnBilledDisc" di="{{= DI}}" vrid="{{= VRID}}" vrdid="{{= VRDID}}" class="ace chkBilledDisc" />
+                <span class="lbl"></span>
+            </td>
+            <td>{{= Date}}</td>
+            <td>{{= UsedBy}}</td>
+            <td>{{= VenderReferenceID}}</td>
+            <td>{{= VendorAmount}}</td>
+            <td>{{= GroupName}}</td>
+            <td>{{= ClientName}}</td>
+            <td>{{= DIRef}}</td>
+            <td>{{= DIAmount}}</td>
+            <td>{{= InvoiceNumber}}</td>
+            <td>{{= WOCode}}</td>
+            <td>{{= ItemCode}}</td>
+            <td>{{= ItemNumber}}</td>
+            <td>
+                <input type="text" id="txtUnBilledDisc" onkeypress="return AllowDecimalNumbersOnly(this,event,17,4)" class="txtUnBilledDisc special" value="{{= Discrepancy}}" />
+            </td>
+
+            @*<td>{{if IsBilled }}
+                    <input type="checkbox" checked="checked" disabled="disabled" class="ace" />
+                    <span class="lbl"></span>
+                    {{else}}
+                    <input type="checkbox" disabled="disabled" class="ace" />
+                    <span class="lbl"></span>
+                    {{/if}}
+                </td>
+                <td>{{= Type}}</td>*@
+        </tr>
+    </script>
+    <div class="clear"></div>
+    <div align="right" style="margin: 15px">
+        <input type="button" id="btnUnBilledDisVerify" value="VERIFY" style="display: none !important" class="btn btn-primary" />
+        <input type="button" id="btnUnBilledDisVerifyAndADHOC" style="display: none !important" class="btn btn-info" value="VERIFY & SEND TO ACCPAC FOR ADHOC" />
+    </div>
+</div>
+<div class="clear"></div>
+<div class="tableGrid dataTables_wrapper form-inline">
+    <div class="row" id="DivMultipleDiscrepancy" style="display: none">
+        <div class="blue">
+            <h4><b style="margin-left: 15px;">Multiple Discrepancy</b> </h4>
+        </div>
+    </div>
+    <div id="divVendors6">
+        <table id="tblVendorDetails6" border="1" class="table table-striped table-bordered table-hover" style="display: none">
+            <thead>
+                <tr>
+                    <th colspan="5" class="green" style="text-align: center;">Vendor Report</th>
+                    <th colspan="10" class="red" style="text-align: center;">Disbursement Items</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Date</th>
+                    <th>SIC</th>
+                    <th>Ref #</th>
+                    <th>Amount</th>
+                    <th>Group</th>
+                    <th>Client Name</th>
+                    <th>Ref #</th>
+                    <th>Amount</th>
+                    <th>Invoice #</th>
+                    <th>WO #</th>
+                    <th>Item Code</th>
+                    <th>Item #</th>
+                    <th>Discrepancy</th>
+
+                </tr>
+            </thead>
+            <tbody id="tblVendorBody6"></tbody>
+        </table>
+    </div>
+    <script type="text/html" id="scriptVendorDetails6">
+        <tr>
+            {{if VendorAmount == 0 && VenderReferenceID=='' }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">
+                <input type="checkbox" id="chkMultiDisc" class="ace" vrid="{{= VRID}}" status="{{= Status}}" mvenderid="{{= MVenderId}}" venderreferenceid="{{= VenderReferenceID}}" />
+                <span class="lbl"></span>
+            </td>
+            {{/if}}
+
+
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr">{{= Date}}</td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= Date}}</td>
+            {{/if}}
+
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr">{{= UsedBy}}</td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= UsedBy}}</td>
+            {{/if}}
+
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= VenderReferenceID}}</td>
+            {{/if}}
+
+            {{if Date == '' && UsedBy == ''  && VenderReferenceID == '' && VendorAmount == 0 }}
+            <td class="clssRepetedTr"></td>
+            {{else}}
+            <td class="ClassRepetedTD">{{= VendorAmount}}</td>
+            {{/if}}
+            <td>{{= GroupName}}</td>
+
+            <td>{{= ClientName}}</td>
+            <td>{{= DIRef}}</td>
+            <td>{{= DIAmount}}</td>
+            <td>{{= InvoiceNumber}}</td>
+            <td>{{= WOCode}}</td>
+            <td>{{= ItemCode}}</td>
+            <td>{{= ItemNumber}}</td>
+
+            <td>{{if IsDiscVisible }}
+                <input type="text" id="txtDis{{= DI}}" onkeypress="return AllowDecimalNumbersOnly(this,event,17,4)" class="txtMultiBilledDisc special" value="{{= Discrepancy}}" />
+                {{else}}
+                {{= Discrepancy}}
+                {{/if}}
+            </td>
+
+            @*<td>
+                    {{if IsBilled }}
+                    <input type="checkbox" checked="checked" disabled="disabled" class="ace" />
+                    <span class="lbl"></span>
+                    {{else}}
+                    <input type="checkbox" disabled="disabled" class="ace" />
+                    <span class="lbl"></span>
+                    {{/if}}
+                </td>
+                <td>{{= Type}}</td>*@
+        </tr>
+    </script>
+    <div class="clear"></div>
+    <div align="right" style="margin: 15px">
+        <input type="button" id="btnMultipleDisVerify" style="display: none !important" class="btn btn-primary" value="VERIFY" />
+        <input type="button" id="btnMultipleDisVerifyAndADHOC" style="display: none !important" class="btn btn-info" value="VERIFY & SEND TO ACCPAC FOR ADHOC" />
+    </div>
+    <div class="clear"></div>
+
+</div>
+
+<div class="clear"></div>
+
+
+<div class="tableGrid dataTables_wrapper form-inline">
+    <div class="row" id="ErrorList" style="display: none">
+        <div class="blue">
+            <h4><b style="margin-left: 15px;">Error List</b> </h4>
+        </div>
+    </div>
+    <div id="divVendors7">
+        <table id="tblVendorDetails7" class="table table-striped table-bordered table-hover" border="1" style="display: none">
+            <thead>
+                <tr>
+                    <th>Transation Date</th>
+                    <th>Vendor Ref</th>
+                    <th>Description</th>
+                    <th>Vendor Amount</th>
+                </tr>
+            </thead>
+            <tbody id="tblVendorBody7"></tbody>
+        </table>
+    </div>
+</div>
+<script type="text/html" id="scriptVendorDetails7">
+    <tr>
+        <td>{{= UploadedOn}}</td>
+        <td>{{= Code}}</td>
+        <td>{{= VenderReferenceID}}</td>
+        <td>{{= ItemNumber}}</td>
+    </tr>
+</script>
+
+
+
+
+
+<div style="clear"></div>
+<script id="TypeDropdownTemplate" type="text/html">
+    <option value="{{= Code}}">{{= Name}}</option>
+</script>

@@ -1,0 +1,162 @@
+﻿<script src="~/Areas/WO/Content/Scripts/_WODuplicateDetails.js"></script>
+@*<script src="~/Scripts/Validations.js"></script>*@
+
+
+<div class="row">
+    <div class="pull-right">
+        @Html.Partial("~/Areas/WO/Views/Css1Info/_Css1Info.cshtml", new ViewDataDictionary { { "PopupHeader", "CSS1 Duplicate Info" } })
+    </div>
+
+
+    <div class="col-xs-12 margin-10b">
+        <div class="col-xs-1 no-padding  margin-10t">Class of Share</div>
+
+
+        <select tabindex="3" id="ddlShareClassForDuplicate" class="col-xs-2 margin-10r ">
+            <option value="-1">Select</option>
+        </select>
+
+        <button tabindex="23" id="btnSaveWoDuplicateDetails" class="btn btn-info btnWOClose" type="button">
+            <i class="ace-icon fa fa-check bigger-110"></i>
+            SAVE
+
+        </button>
+
+        <button tabindex="24" id="btnCancelWoDuplicateDetails" type="button" class="btn btnWOClose">
+            <i class="ace-icon fa fa-undo bigger-110"></i>
+            RESET
+
+        </button>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class=" col-xs-12">
+        <div class="widget-box widgetGrid">
+            <div class="widget-header widgetGridHeader" style="cursor: pointer;">
+                <label class="margin-10t">Shareholder</label>
+                <img src="~/Content/images/AddIcon.png" id="AddDuplicateShareHolder" style="cursor: pointer;" class="btnWOClose" />
+                <a style="float: right; padding: 10px;">
+                    <i class="ace-icon fa fa-chevron-up"></i>
+                </a>
+            </div>
+            <div class=" widget-body ">
+                <table class="table table-striped table-bordered table-hover col-xs-12">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Certificate Number </th>
+                            <th>No of Shares</th>
+                            <th>Date of Issue</th>
+                            <th style="display:none;">No of new certificates to be issued</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblDuplicateDetails"></tbody>
+                </table>
+
+                <div id="divNoData" style="display: none" class="col-xs-12 no-padding">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <div id="noData">
+                                        No data found.
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divAddDuplicateShareholder" class="modal row" tabindex="-1">
+    <div class="modal-dialog" style="left: 15%;">
+        <div class="modal-content" style="width: 165%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Add Shareholders</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-5 WoBC WoBR" style="margin-left: 30px; padding-top: 12px; padding-bottom: 20px;">
+                        <div class="col-xs-12" style="padding-top: 12px;">
+                            <span>Please Select Shareholder </span><span class="redstar">*</span>
+                        </div>
+                        <div class="col-xs-12" tabindex="1">
+                            @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "ShareHolder" }, { "selectedId", "" }, { "SearchType", "MeetingMinutes" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 0 }, { "AutoSearch", 1 }, { "NatureAppoint", "-1" }, { "DisplayName", "Select Shareholder" } })
+                        </div>
+
+                        <div class="col-xs-12" style="padding-top: 12px;">
+                            <span>Cert No.</span>
+                        </div>
+                        <div class="col-xs-12">
+                            <input type="text" id="txtCertNo" placeholder="Cert No." class="form-control col-xs-11" maxlength="30" tabindex="2" />
+                        </div>
+                        <div class="col-xs-12" style="padding-top: 12px;">
+                            <span>No of Shares</span>
+                        </div>
+                        <div class="col-xs-12">
+                            <input type="text" id="txtNoOfShares" placeholder="No of Shares" class="form-control col-xs-11 DisableCutCopyPaste" maxlength="30" tabindex="3" />
+                        </div>
+
+                        <div class="col-xs-12" style="padding-top: 12px;">
+                            <span>Date Of Issue</span>
+                        </div>
+                        <div class="col-xs-12">
+                            <input type="text" id="txtDateOfIssue" placeholder="Date Of Issue" class="form-control col-xs-11 DisableCutCopyPaste special" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10" tabindex="4" />
+                        </div>
+
+                        <div class="col-xs-12" style="padding-top: 12px;display:none;">
+                            <span>No.Of New Cert. To Be Issued</span>
+                        </div>
+                        <div class="col-xs-12" style="display:none;">
+                            <input type="text" id="txtNoOfNewCertToBeIssued" maxlength="6" placeholder="No.Of New Cert. To Be Issued" class="form-control col-xs-11 DisableCutCopyPaste" tabindex="5" />
+                        </div>
+
+                        <div style="margin-top: 25px; margin-right: 105px;" class="pull-right">
+                            <button type="button" class="btn btn-info btnWOClose" id="btnSaveDuplicateShareHolder" tabindex="6">
+                                <i class="ace-icon fa fa-check bigger-110"></i>
+                                SAVE
+                            </button>
+                            <button class="btn btnWOClose" type="button" id="btnClear" tabindex="7">
+                                <i class="ace-icon fa fa-undo bigger-110"></i>
+                                RESET
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="DropDownShareClassTemplateForDuplicate" type="text/html">
+    <option value="{{= ShareClassID}}">{{= ClassName}}</option>
+</script>
+
+<script id="DropDownCompanyTemplateForDuplicate" type="text/html">
+    <option value="{{= CountryID}}">{{= CountryName}}</option>
+</script>
+
+<script id="scriptDuplicateDetails" type="text/html">
+    <tr>
+        <td>{{= Name}}</td>
+        <td>{{= CertNo}}</td>
+        <td>{{= NoofShares}}</td>
+        <td>{{= DateOfIssue}}</td>
+        <td style="display:none;">{{= NoOfNewCertToBeIssued}}</td>
+        <td>
+            <div class="action-buttons">
+                <a id="{{= ID}}" class="aDelete red" href="javascript:void(0)">
+                    <i class=" ace-icon fa fa-trash-o bigger-130"></i>
+                </a>
+            </div>
+        </td>
+    </tr>
+</script>

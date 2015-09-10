@@ -1,0 +1,53 @@
+﻿<style>
+    .chosen-single.chosen-default {
+        border-radius: 0px !important;
+        min-height: 29px;
+        max-width: 300px !important;
+        width: 250px !important;
+    }
+
+    .chosen-search:after {
+        content: "" !important;
+    }
+
+    .chosen-single.chosen-single-with-deselect {
+        border-radius: 0px !important;
+        min-height: 29px;
+        max-width: 300px !important;
+        width: 250px !important;
+    }
+
+    .search-choice-close {
+        background: none !important;
+        margin-top: 3px;
+    }
+
+    .chosen-drop {
+        max-width: 300px;
+        width: 250px !important;
+    }
+</style>
+
+<script src="~/Areas/WO/Content/Scripts/_UsersList.js"></script>
+
+<select id='ddlUser_@ViewBag.ddlId' clientType='@ViewBag.clientType' selectedId='@ViewBag.selectedId' class="chosen-select ddlUser" data-placeholder='@ViewBag.DisplayName'>
+    <option value="-1"></option>
+</select>
+@if (@ViewBag.I != 0)
+{
+    <input type="button" value="I" class="btnIndividual btn btn-yellow" >
+}
+@if (@ViewBag.C != 0)
+{
+    <input type="button" value="C" class="btnCompany btn btn-pink" >
+}
+<script id="scriptUser" type="text/html">
+    <option value="{{= UserID}}">{{= UserName}}</option>
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        BindUsersList('@ViewBag.ddlId');
+    });
+</script>
+
+

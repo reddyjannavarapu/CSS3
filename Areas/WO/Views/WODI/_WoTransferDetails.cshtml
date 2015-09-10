@@ -1,0 +1,232 @@
+﻿@*<script src="~/Scripts/Validations.js"></script>*@
+
+<div class="pull-right col-xs-12 margin-10b no-padding-right">
+    <div class="col-xs-1 pull-right no-padding-right">
+        @Html.Partial("~/Areas/WO/Views/Css1Info/_Css1Info.cshtml", new ViewDataDictionary { { "PopupHeader", "CSS1 Transfer Info" } })
+    </div>
+    <div class="col-xs-1 pull-right no-padding-right">
+        @Html.Partial("~/Areas/WO/Views/Css1Review/_Css1Review.cshtml", new ViewDataDictionary { { "ReviewPopupHeader", "CSS1 Transfer Review" } })
+    </div>
+</div>
+
+<div style="margin-top: 30px;">
+    <div class="row">
+
+        <div class="col-xs-4 col-xs-offset-1 ">
+
+            <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 25px;">
+
+                <div class="col-xs-offset-1">
+
+                    @*  <div class="col-xs-12" style="padding-top: 12px;">
+                    <span>Currency</span>
+                </div>
+                <div class="col-xs-12">
+                    <select class="col-xs-8" id="ddlIssuedAndPaidupCapitalCurrency">
+                        <option value="-1">Select</option>
+                    </select>
+                </div>*@
+
+                    <div class="col-xs-12" style="padding-top: 12px;">
+                        <span>Class Of Share</span>
+                    </div>
+                    <div class="col-xs-12">
+                        <select class="col-xs-8" id="ddlIssuedAndPaidupCapitalClassOfShare">
+                        </select>
+                    </div>
+
+                    <div class="col-xs-12 no-padding-left" style="padding-top: 12px;">
+                        <span class="col-xs-5">Pre-emption rights?</span>
+                        <div>
+                            <label>
+                                <input type="checkbox" name="form-field-checkbox" class="ace" id="chkPreemptionRights">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xs-4 margin-10l ">
+
+            <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 25px;">
+
+                <div class="col-xs-offset-1">
+
+
+                    <div class="col-xs-12">
+                        <h4 class="text-left">Signing Director</h4>
+                    </div>
+                    <div class="col-xs-12" style="padding-top: 12px;">
+                        <span>Letter to IRAS</span>
+                    </div>
+                    <div class="col-xs-12">
+                        @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "LettertoIRAS" }, { "selectedId", "" }, { "SearchType", "Officers" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 1 }, { "AutoSearch", 1 }, { "NatureAppoint", "9" }, { "DisplayName", "Select Letter to IRAS " } })
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xs-9 align-right margin-10t no-padding-right">
+        <button class="btn btn-info btnWOClose" type="button" id="btnSaveWoTransferDetails">
+            <i class="ace-icon fa fa-check bigger-110"></i>
+            SAVE
+
+        </button>
+        <button type="button" class="btn btnWOClose" id="btnCancelWoTransferDetails">
+            <i class="ace-icon fa fa-undo bigger-110"></i>
+            RESET       
+       
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 margin-30t">
+            <div class="widget-box widgetGrid">
+                <div class="widget-header widgetGridHeader" style="cursor: pointer;">
+                    <label id="lbl_PrincipalDetails" class="margin-10t">Transfer Details</label>
+                    @*<input type="button" value="+" class="btn btn-yellow">*@
+                    <img src="~/Content/images/AddIcon.png" id="AddTransfer" style="cursor: pointer;" class="btnWOClose" />
+                    <a style="float: right; padding: 10px;">
+                        <i class="ace-icon fa fa-chevron-up"></i>
+                    </a>
+                </div>
+                <div class=" widget-body ">
+                    <table class="table table-striped table-bordered table-hover col-xs-12">
+                        <thead>
+                            <tr>
+                                <th>Transferor</th>
+                                <th>Transferee</th>
+                                <th>No of Shares Transferred</th>
+                                <th>Currency</th>
+                                <th>Consideration</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblTransferDetails">
+                        </tbody>
+                    </table>
+                    <div id="divNoData" style="display: none" class="col-xs-12 no-padding">
+                        <table class="table table-striped table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <td colspan="6">
+                                        <div id="noData">
+                                            No data found.
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="divAddTransferDetails" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 800px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="dataFoundA" class="blue bigger">Add Transfer Details</h4>
+            </div>
+
+            <div class="modal-body" style="overflow-y: auto; max-height: 500px">
+                <div class="col-xs-6 WoBC WoBR" style="margin-left: 30px; padding-top: 12px; padding-bottom: 20px;">
+                    <div class="col-xs-12" style="padding-top: 12px;">
+                        <span>Transferor</span><span class="redstar">*</span>
+                    </div>
+                    <div class="col-xs-12" tabindex="1">
+                        @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "Transferor" }, { "selectedId", "" }, { "SearchType", "MeetingMinutes" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 0 }, { "AutoSearch", 1 }, { "NatureAppoint", "-1" }, { "DisplayName", "Select Transferor" } })
+                    </div>
+                    <div class="col-xs-12" style="padding-top: 12px;">
+                        <span>Transferee</span><span class="redstar">*</span>
+                    </div>
+                    <div class="col-xs-12 no-padding-left">
+                        <div class="col-xs-7 " tabindex="2">
+                            @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "Transferee" }, { "selectedId", "" }, { "SearchType", "" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 0 }, { "AutoSearch", 1 }, { "DisplayName", "Select Transferee" } })
+                        </div>
+                        <div class="col-xs-5 align-right no-padding-right">
+                            <img src="~/Content/images/i_icon.png" style="cursor: pointer; width: 30px;" class="btnIndividual" id="btnIndividual_Transferee" />
+                            <img src="~/Content/images/c_icon.png" style="cursor: pointer; width: 32px;" class="btnCompany" id="btnCompany_Transferee" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="padding-top: 12px;">
+                        <span>Currency</span><span class="redstar">*</span>
+                    </div>
+                    <div class="col-xs-12">
+                        <select id="ddlCurrency" tabindex="4" class="col-xs-9">
+                            <option>Select</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12" style="padding-top: 12px;">
+                        <span>No of Shares Transferred</span><span class="redstar">*</span>
+                    </div>
+                    <div class="col-xs-12">
+                        <input type="text" id="txtNoOfSharesTransfered" onkeypress="return EnterOnlyNumbers(event)" placeholder="No of Shares Transferred" class="form-control col-xs-9" maxlength="30" tabindex="3" />
+                    </div>
+
+                    <div class="col-xs-12" style="padding-top: 12px;">
+                        <span>Consideration</span><span class="redstar">*</span>
+                    </div>
+                    <div class="col-xs-12">
+                        <input type="text" id="txtConsideration" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" placeholder="Consideration" class="form-control col-xs-9 special" tabindex="5" />
+
+                    </div>
+
+                    <div class="pull-right" style="margin-top: 25px; margin-right: 105px;">
+                        <button type="button" class="btn btn-info btnWOClose" id="btnSaveTransferTransaction" tabindex="16">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            SAVE            
+                        </button>
+                        <button class="btn btnWOClose" type="button" id="btnClear" tabindex="17">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            RESET           
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divIndividualOrCompany_Transferee" class="divIndividualOrCompany">
+</div>
+
+<div id="dvScripts">
+    <script id="CurrencyDropDownTemplateinWOTransferDetails" type="text/html">
+        <option value="{{= CurrencyID}}">{{= CurrencyName}}</option>
+    </script>
+
+    <script id="ShareClassDropDownTemplateinWOTransferDetails" type="text/html">
+        <option value="{{= ShareClassID}}">{{= ClassName}}</option>
+    </script>
+    <script id="scriptTransferTransactionDetails" type="text/html">
+        <tr>
+            <td>{{= Transferor}}</td>
+            <td>{{= Transferee}}</td>
+            <td>{{= SharesTransfered}}</td>
+            <td>{{= CurrencyName}}</td>
+            <td>{{= Consideration}}</td>
+            <td>
+                <div class="action-buttons">
+                    <a id="{{= ID}}" class="aDelete red btnWOClose" href="javascript:void(0)">
+                        <i class=" ace-icon fa fa-trash-o bigger-130"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </script>
+</div>
+<script src="~/Areas/WO/Content/Scripts/_WOTransferDetails.js"></script>

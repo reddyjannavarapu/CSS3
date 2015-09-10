@@ -1,0 +1,272 @@
+﻿@{
+    ViewBag.Title = "Corporation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="divMatersCorporation">
+    @Html.Partial("~/Areas/WO/Views/PartialContent/_CreateCompany.cshtml")
+</div>
+
+<script src="~/Areas/Masters/Content/Scripts/MasterCorporation.js"></script>
+
+<div class="margin-5t"></div>
+<div class="tableGrid dataTables_wrapper form-inline">
+    <div id="divSearch" class=" row widget-main margin-10l">
+        <div class="pull-left">
+            Name 
+                  <input type="text" id="txtNameOfThecompany" maxlength="50" tabindex="16" class="special" />
+            Sort By 
+                <select id="ddlOrderBy" tabindex="17">
+                    <option value="NameofCompany ASC" selected="selected">NameofCompany ASC</option>
+                    <option value="NameofCompany DESC">NameofCompany DESC</option>
+                </select>
+        </div>
+        <div class="pull-left">
+            Page Size
+            <select id="ddlPageSize" tabindex="18">
+                <option value="5">5</option>
+                <option value="10" selected="selected">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+
+        <div>
+            <button id="btnSearchCorporation" class="btn btn-info" type="button" style="margin-left: 33px;" tabindex="19">
+                <i class="ace-icon fa fa-search bigger-110"></i>
+                SEARCH
+            </button>
+        </div>
+
+    </div>
+</div>
+<div class="tableGrid dataTables_wrapper form-inline">
+    <div id="divCorporationList">
+        <table id="tblCorporationData" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Name
+                    </th>
+                    <th>Country of Incorporation
+                    </th>
+                    <th>Date of Incorporation
+                    </th>
+                    <th>Registration No
+                    </th>
+                    <th>ACCPAC Code</th>
+                    <th>Address Line 1
+                    </th>
+                    <th>Country
+                    </th>
+                    <th>Postal Code
+                    </th>
+                    <th>Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="trData">
+            </tbody>
+        </table>
+
+        <div id="divCorporationData" class="row" style="display: none;">
+            <table class="table table-striped table-bordered table-hover">
+                <tbody>
+                    <tr>
+                        <td colspan="5">
+                            <div id="noCorporationData">
+                                No data found.
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row" id="divPagination" style="display: none">
+            <div class="col-xs-6 margin-10t"><span id="listName"></span>&nbsp;<span id="listCount" class="badge"></span></div>
+            <div id="numericcontainer" class="dataTables_paginate paging_bootstrap">
+                <div>
+                    <ul id="pagination-digg" class="pagination">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script id="CorporationTemplate" type="text/html">
+        <tr>
+            <td>{{= NameOfCompany}}
+            </td>
+            <td>{{= CountryNameOfIncorp}}
+            </td>
+            <td>{{= DateOfIncorporationList}}
+            </td>
+            <td>{{= RegistrationNo}}
+            </td>
+
+
+            <td>{{= AccPacCode}}</td>
+            <td>{{= AddressLine1}}
+            </td>
+            <td>{{= CountryName}}
+            </td>
+            <td>{{= PostalCode}}
+            </td>
+            <td>
+                <div class="action-buttons">
+                    <a class="blue aView " href="javascript:void(0)" nameofcompany="{{= NameOfCompany}}"
+                        countrynameofincorp="{{= CountryNameOfIncorp}}" dateofincorporation="{{= DateOfIncorporation}}" accpaccode="{{= AccPacCode}}"
+                        registrationno="{{= RegistrationNo}}" addressline1="{{= AddressLine1}}" addressline2="{{= AddressLine2}}"
+                        addressline3="{{= AddressLine3}}" countryname="{{= CountryName}}" postalcode="{{= PostalCode}}" email="{{= Email}}"
+                        phone="{{= ContactNo}}" fax="{{= Fax}}">
+                        <i class=" ace-icon fa fa-search-plus bigger-130"></i>
+                    </a>
+                    <a class="aEdit green" href="javascript:void(0)" corpid="{{= ID}}" nameofcompany="{{= NameOfCompany}}" accpaccode="{{= AccPacCode}}"
+                        countryofincorporation="{{= CountryOfIncorporation}}" dateofincorporation="{{= DateOfIncorporation}}"
+                        registrationno="{{= RegistrationNo}}" addressline1="{{= AddressLine1}}" addressline2="{{= AddressLine2}}"
+                        addressline3="{{= AddressLine3}}" country="{{= Country}}" postalcode="{{= PostalCode}}" email="{{= Email}}"
+                        phone="{{= ContactNo}}" fax="{{= Fax}}">
+                        <i class="  ace-icon fa fa-pencil bigger-130"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <div class="clear"></div>
+</div>
+
+<div id="modal-form" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Corporation Information</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <table style="width: 70%">
+                    <tr>
+                        <td>Name Of the Company
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnName" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Country of Incorporation
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnCountryOfIncorp" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date of Incorporation
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnDateOfIncorp" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Registration No.
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnRegistrationNo" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ACCPAC Code 
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnAccPacCode" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Address Line1
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnAddressLine1" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Address Line2
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnAddressLine2" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Address Line3
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnAddressLine3" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Country
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnCountry" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Postal Code
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnPostalCode" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Email
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnEmail" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Contact No
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnContactNo" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fax
+                        </td>
+                        <td>:
+                        </td>
+                        <td>
+                            <label id="spnFax" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

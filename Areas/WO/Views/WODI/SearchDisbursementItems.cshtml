@@ -1,0 +1,191 @@
+﻿@{
+    ViewBag.Title = "Search DI";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Areas/WO/Content/Scripts/SearchDisbursementItems.js"></script>
+
+<input type="hidden" value="" id="hdnWorkOrderID" />
+<input type="hidden" value="" id="hdnDisbursementItemID" />
+
+<form class="form-horizontal " role="form">
+
+    <div class="form-actions">
+
+        <div class="row margin-10t">
+            <div>
+
+                <div class="col-md-5">
+                    <label class="col-sm-3 control-label no-padding-right" for="txtClientName">Client / Customer</label>
+                    <div class="col-sm-6" id="divClientOne" tabindex="1">
+                        @Html.Partial("~/Areas/WO/Views/PartialContent/_ClientChosen.cshtml", new ViewDataDictionary { { "ddlId", "ddlClient" }, { "clientType", "" }, { "selectedId", -1 }, { "DisplayName", "Choose a Client / Customer" }, { "DefaultLoad", 0 }, { "WOID", 0 }, { "ClientSource", "1,4" } })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="col-sm-3 control-label no-padding-right" for="txtVenderRef">From Date</label>
+                    <div class="col-sm-9">
+                        <input id="txtFromDate" type="text" class="col-xs-10 col-sm-9 special" maxlength="10" tabindex="7" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" />
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="col-sm-3 control-label no-padding-top no-padding-right" for="chkVerified">Verified</label>
+                    <div class="col-sm-9">
+                        <label>
+                            <input id="chkVerified" type="checkbox" class="ace" name="form-field-checkbox" tabindex="3">
+                            <span class="lbl"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row margin-10t">
+            <div>
+
+                <div class="col-md-5">
+                    <label class="col-sm-3 control-label no-padding-right" for="drpTypeData">Item Number</label>
+                    <div class="col-sm-9" tabindex="4">
+                        @Html.Partial("~/Areas/WO/Views/PartialContent/_DIItemChosen.cshtml", new ViewDataDictionary { { "Id", "ddlDIItem" }, { "DisplayName", "Choose a DI Item" }, { "DefaultLoad", 0 } })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="col-sm-3 control-label no-padding-right" for="txtVenderRef">To Date</label>
+                    <div class="col-sm-9">
+                        <input id="txtToDate" type="text" class="col-xs-10 col-sm-9 special" maxlength="10" tabindex="8" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" />
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="col-sm-3 control-label no-padding-top no-padding-right" for="chkBilled">Billed</label>
+                    <div class="col-sm-9">
+                        <label>
+                            <input id="chkBilled" type="checkbox" class="ace" name="form-field-checkbox" tabindex="6">
+                            <span class="lbl"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row margin-10t">
+            <div>
+
+                <div class="col-md-5">
+                    <label class="col-sm-3 control-label no-padding-right" for="txtWO">WO #</label>
+                    <div class="col-sm-9">
+                        <input id="txtWO" type="text" class="col-xs-10 col-sm-6 special" tabindex="2" maxlength="15" />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="col-sm-3 control-label no-padding-right" for="drpTypeData">Sort By </label>
+                    <div class="col-sm-9">
+                        <select id="drpOrderBy" tabindex="10" class="col-sm-9">
+                            <option value="CreatedDateDESC">CreatedDate DESC</option>
+                            <option value="CreatedDateASC">CreatedDate ASC</option>
+                            <option value="WOCodeASC">WO # ASC</option>
+                            <option value="WOCodeDESC">WO # DESC</option>
+                            <option value="ClientNameASC">ClientName ASC</option>
+                            <option value="ClientNameDESC">ClientName DESC</option>
+                            <option value="ItemCodeASC">Itemcode ASC</option>
+                            <option value="ItemCodeDESC">ItemCode DESC</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="col-sm-3 control-label no-padding-top no-padding-right" for="chkArchived">In-House</label>
+                    <div class="col-sm-9">
+                        <label>
+                            <input id="chkArchived" type="checkbox" class="ace" name="form-field-checkbox" tabindex="9">
+                            <span class="lbl"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row margin-10t">
+            <div>
+
+                <div class="col-md-5">
+                    <label class="col-sm-3 control-label no-padding-right" for="txtVenderRef">Vender Ref # </label>
+                    <div class="col-sm-9">
+                        <input id="txtVenderRef" type="text" class="col-xs-10 col-sm-6 special" tabindex="5" maxlength="100" />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="col-sm-3 control-label no-padding-right" for="ddlStatus">Page Size </label>
+                    <div class="col-sm-9">
+                        <select id="ddlPageSize" tabindex="11">
+                            <option value="5">5</option>
+                            <option value="10" selected="selected">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="col-sm-3 control-label no-padding-top no-padding-right" for="chkAdhoc">Adhoc</label>
+                    <div class="col-sm-9">
+                        <label>
+                            <input id="chkAdhoc" type="checkbox" class="ace" name="form-field-checkbox" tabindex="12">
+                            <span class="lbl"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row margin-10t">
+            <div class="col-md-3 pull-right">
+                    <label class="col-sm-3 control-label no-padding-top no-padding-right" for="chkACCPACStatus">Failed DI</label>
+                    <div class="col-sm-9">
+                        <label>
+                            <input id="chkACCPACStatus" type="checkbox" class="ace" name="form-field-checkbox" tabindex="12">
+                            <span class="lbl"></span>
+                        </label>
+                    </div>
+                </div>
+        </div>
+
+        <div class="clearfix" style="line-height: 60px">
+            <div class="col-md-offset-5 col-md-7">
+                <button id="btnSearch" class="btn btn-info" type="button" tabindex="13">
+                    <i class="ace-icon fa fa-search bigger-110"></i>
+                    SEARCH
+                </button>
+                &nbsp; &nbsp; &nbsp;
+            <button id="btnReset" class="btn" type="button" tabindex="14">
+                <i class="ace-icon fa fa-undo bigger-110"></i>
+                RESET
+            </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="gap-10"></div>
+
+    <div class="clearfix">
+        @Html.Partial("_DisbursementItems")
+        <div class="gap-30">
+        </div>
+    </div>
+
+    <div class="clearfix">
+        @Html.Partial("_DisbursementList")
+    </div>
+
+</form>

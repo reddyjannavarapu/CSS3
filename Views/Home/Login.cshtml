@@ -1,0 +1,149 @@
+﻿@model CSS2.Models.UserLogin
+
+@{   
+
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>Login FMG CSS WOI</title>
+
+    <meta name="description" content="User login page" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="~/Content/css/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/css/assets/css/font-awesome.min.css" />
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="~/Content/css/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="~/Content/css/assets/css/ace.min.css" />   
+    <link rel="stylesheet" href="~/Content/css/assets/css/ace-rtl.min.css" />  
+    <link rel="stylesheet" href="~/Content/css/assets/css/ace.onpage-help.css" />
+    <link href="~/Content/css/Site.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+
+@using (Html.BeginForm("Login", "Home", FormMethod.Post))
+{
+
+    <body class="login-layout light-login">
+        <div class="main-container">
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <div class="gap-100"></div>
+                        <div class="login-container">
+                            <div class="position-relative col-xs-offset-1">
+
+                                <h1>
+                                    @*<i class="ace-icon fa fa-leaf green"></i>*@
+                                    <span style="color:#8F0201;">FMG </span>
+                                    <span class="grey left" id="id-text2">CSS WOI</span>
+                                    <span style="font-size:15px;">
+                                        @Convert.ToString(Session["uatNo"])
+
+                                    </span>
+                                </h1>
+                                @*<h4 class="blue" id="id-company-text">&copy; RSM</h4>*@
+                            </div>
+
+                            <div class="space-6"></div>
+
+                            <div class="position-relative">
+                                <div id="login-box" class="login-box visible widget-box no-border">
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                            @* <h4 class="header blue lighter bigger">
+                                                    <i class="ace-icon fa fa-coffee green"></i>
+                                                    Please Enter Your Information
+                                                </h4>*@
+
+                                            @*<div class="space-6"></div>*@
+                                            <div style="margin: 0 0 10px 62px;"><span style="color: red;">@ViewBag.invalidUser </span></div>
+                                           
+                                                <fieldset>
+                                                    <label class="block clearfix">
+                                                        <span class="block input-icon input-icon-right">
+                                                            @*<input type="text" class="form-control" placeholder="Username" />*@
+
+
+                                                            @*@Html.LabelFor(model => model.LoginID)*@
+                                                            @Html.TextBoxFor(model => model.LoginID, new { @placeholder = "Username", @class = "form-control" })
+                                                            <i class="ace-icon fa fa-user"></i>
+                                                            @Html.ValidationMessageFor(model => model.LoginID)
+                                                        </span>
+                                                    </label>
+
+                                                    <label class="block clearfix">
+                                                        <span class="block input-icon input-icon-right">
+                                                            @*<input type="password" class="form-control" placeholder="Password" />*@
+
+                                                            @Html.PasswordFor(model => model.Password, new { @placeholder = "Password", @class = "form-control" })
+                                                            <i class="ace-icon fa fa-lock"></i>
+                                                            @Html.ValidationMessageFor(model => model.Password)
+                                                        </span>
+                                                    </label>
+
+                                                    <div class="space"></div>
+
+                                                    <div class="clearfix">
+                                                        @*<label class="inline">
+                                                                <input type="checkbox" class="ace" />
+                                                                <span class="lbl"> Remember Me</span>
+                                                            </label>*@
+
+                                                        <button type="submit" class="width-35 margin-20r pull-right btn btn-sm btn-primary">
+                                                            <i class="ace-icon fa fa-key"></i>
+                                                            <span class="bigger-110">Login</span>
+                                                        </button>
+                                                    </div>
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.ValidationSummary(true)
+                                                    <div class="space-4"></div>
+                                                </fieldset>
+                                           
+                                        </div>
+                                    </div>
+                                    <!-- /.widget-body -->
+                                </div>
+                                <!-- /.login-box -->
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.main-content -->
+        </div>
+        <!-- /.main-container -->
+        <div class="footer">
+            <div class="footer-inner">
+                <!-- #section:basics/footer -->
+                <div class="footer-content" style="border-top: 3px double #f7f7f7;">
+                    <span >
+                        <span class="bolder" style="color:#8F0201;">FMG</span>
+                        CSS WOI &copy; 2015
+                    </span>
+                                 
+                </div>
+
+                <!-- /section:basics/footer -->
+            </div>
+        </div>
+        <!-- basic scripts -->           
+        
+    </body>
+}

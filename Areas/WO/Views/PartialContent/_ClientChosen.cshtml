@@ -1,0 +1,184 @@
+﻿<style>
+    .chosen-single.chosen-default {
+        border-radius: 0px !important;
+        min-height: 29px;
+        max-width: 300px !important;
+        width: 250px !important;
+    }
+
+    .chosen-search:after {
+        content: "" !important;
+    }
+
+    .chosen-single.chosen-single-with-deselect {
+        border-radius: 0px !important;
+        min-height: 29px;
+        max-width: 300px !important;
+        width: 250px !important;
+    }
+
+    .search-choice-close {
+        background: none !important;
+        margin-top: 3px;
+    }
+
+    .chosen-drop {
+        max-width: 300px;
+        width: 250px !important;
+    }
+</style>
+<script src="~/Areas/WO/Content/Scripts/_ClientChosen.js"></script>
+
+<select id='ddlChosenClient_@ViewBag.ddlId' clientType='@ViewBag.clientType' selectedId='@ViewBag.selectedId' class="chosen-select1 ddlChosenClient" data-placeholder='@ViewBag.DisplayName' WOID ="@ViewBag.WOID" groupcode="">
+    <option value="-1"></option>
+</select>
+
+<script id='scriptChosenClient' class="scriptChosenClient" type="text/html">
+    <option sourceid="{{= SourceID}}" clientcode="{{= ClientCode}}" value="{{= UniqueID}}">{{= SourceID}} - {{= ClientName}}</option>
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $GlobalClient = {};
+        $GlobalClient.GlobalKeyCode = 1;
+
+        $GlobalBillingPartyData = {};
+        $GlobalBillingPartyData.BillingPartyID = '';
+        $GlobalBillingPartyData.BillingPartySourceID = '';
+
+
+        if ('@ViewBag.DefaultLoad' == '1') {
+            BindClientDropDown('@ViewBag.ddlId', '', '@ViewBag.WOID');
+        }
+
+        //********Auto Search is Mandatory For Client Choosen in all Cases
+        //if (('@ViewBag.AutoSearch' == '1')) //**************
+        {
+            var containerId = 'ddlChosenClient_' + '@ViewBag.ddlId';
+            $("#" + containerId).chosen({ allow_single_deselect: true });
+            ////resize the chosen on window resize
+            //$(window).on('resize.chosen', function () {
+            //    var w = $("#" + containerId).parent().width();
+            //    $("#" + containerId).next().css({ 'width': w });
+            //}).trigger('resize.chosen');
+
+            var maintainFocusVal = $("#" + containerId + '_chosen').find(".txtAuto").val();
+            $("#" + containerId + '_chosen').find(".txtAuto").keyup(GetClientDetailsBySearchForDefaultLoadFalse);
+            $("#" + containerId + '_chosen').find(".txtAuto").attr("Selector", containerId);
+            $("#" + containerId).trigger("chosen:updated");
+            $("#" + containerId + '_chosen').find(".txtAuto").val(maintainFocusVal);
+
+            //if ($GlobalData.BillingParty != undefined) {                
+            //    if($GlobalData.BillingParty !='')
+            //     $("#" + containerId + "_chosen").find(".defaults").text($GlobalData.BillingParty);
+            //}
+
+
+        }
+    });
+
+    function GetClientDetailsBySearchForDefaultLoadFalse(e) {
+        var ClientSearch = $.trim($(this).val()).length;
+        var ClientName = $(this).val();
+        var ClientName = ClientName.escapeSpecialChars();
+        $(this).val(ClientName);
+
+        var validChar = CheckCharacterForNumberandCharacter(e.keyCode);
+        if ((ClientSearch >= 3) && (validChar == true || e.keyCode == 46)) {
+            if (e.keyCode === 13) {
+                var ddlID = $(this).attr("selector");
+                var woid = $('#' + ddlID).attr("woid");
+
+                $("#" + ddlID + " > option:not(:eq(0))").remove();
+                $('#' + ddlID + '_chosen').find('.txtAuto').unbind('keyup', GetClientDetailsBySearchForDefaultLoadFalse);
+
+                var IsAdhoc = $("#chkIsAdhoc").prop("checked");
+                var WOType = $("#ddlWOTypes").val();
+                var ClientType = '';
+
+                var cType = $('#' + ddlID).attr("clientType");
+
+                if (IsAdhoc == true && cType != 'BillingParty')
+                    ClientType = 'CSS2C'; // if Adhoc select only CSS2C
+                else if (IsAdhoc == false && cType != 'BillingParty')
+                    ClientType = 'CSS1C';
+                if (WOType == 'TAKE' || WOType == 'INCO')
+                    ClientType = 'CSS2C';
+
+                if (ClientType == '')
+                    ClientType = '@ViewBag.clientType';
+
+                var groupcode = $('#' + ddlID).attr("groupcode");
+                if (groupcode == undefined) {
+                    groupcode = '';
+                }
+
+                if (cType == 'BillingParty')
+                    BillingPartyCallServices("/PartialContent/GetChosenClientInfo", "scriptChosenClient", ddlID, "{'clientType':'" + cType + "','ClientName':'" + ClientName + "','WOID':'" + woid + "','ClientSource':'@ViewBag.ClientSource','groupcode':'" + groupcode + "'}", false, BillingPartyCallBack1);
+                else
+                    ClientCallServices("/PartialContent/GetChosenClientInfo", "scriptChosenClient", ddlID, "{'clientType':'" + ClientType + "','ClientName':'" + ClientName + "','WOID':'" + woid + "','ClientSource':'@ViewBag.ClientSource','groupcode':'" + groupcode + "'}", false, DataCallBack1);
+
+
+                return false;
+            }
+        }
+        else if ((ClientSearch == 2 || ClientSearch == 1) && (validChar == true || e.keyCode == 46)) {
+
+            var ddlID = $(this).attr("selector");
+            var clientType = $('#' + ddlID).attr("clientType");
+            $("#" + ddlID + " > option:not(:eq(0))").remove();
+
+            var containerId = ddlID;
+            $("#" + containerId).trigger("chosen:updated");
+            $("#" + containerId + '_chosen').find(".txtAuto").val(ClientName);
+        }
+
+    }
+
+    function DataCallBack1(containerId) {
+        if ($GlobalData.ClientName !== '') {
+            var UniqueClient = $("#" + containerId + " option[clientcode=" + $GlobalData.ClientCode + "]option[sourceid=" + $GlobalData.SourceID + "]").attr("value");
+            $("#" + containerId).val(UniqueClient);
+            //$("#" + containerId).val(S197CertificatevalueFrompersonidAndsourcecode).trigger('chosen:updated');
+        }
+        $("#" + containerId).chosen({ allow_single_deselect: true });
+        ////resize the chosen on window resize
+        //$(window).on('resize.chosen', function () {
+        //    var w = $("#" + containerId).parent().width();
+        //    $("#" + containerId).next().css({ 'width': w });
+
+        //}).trigger('resize.chosen');
+
+        var maintainFocusVal = $("#" + containerId + '_chosen').find(".txtAuto").val();
+        $("#" + containerId + '_chosen').find(".txtAuto").keyup(GetClientDetailsBySearchForDefaultLoadFalse);
+        $("#" + containerId + '_chosen').find(".txtAuto").attr("Selector", containerId);
+        $("#" + containerId).trigger("chosen:updated");
+        $("#" + containerId + '_chosen').find(".txtAuto").val(maintainFocusVal);
+    }
+
+    function BillingPartyCallBack1(containerId) {
+        try {
+            if ($GlobalBillingPartyData.BillingPartyID != '' && $GlobalBillingPartyData.BillingPartySourceID != '') {
+                var UniqueClient = $("#" + containerId + " option[clientcode=" + $GlobalBillingPartyData.BillingPartyID + "]option[sourceid=" + $GlobalBillingPartyData.BillingPartySourceID + "]").attr("value");
+                $("#" + containerId).val(UniqueClient);
+            }
+
+            $("#" + containerId).chosen({ allow_single_deselect: true });
+            //resize the chosen on window resize
+            //$(window).on('resize.chosen', function () {
+            //    var w = $("#" + containerId).parent().width();
+            //    $("#" + containerId).next().css({ 'width': w });
+
+            //}).trigger('resize.chosen');
+
+            var maintainFocusVal = $("#" + containerId + '_chosen').find(".txtAuto").val();
+            $("#" + containerId + '_chosen').find(".txtAuto").keyup(GetClientDetailsBySearchForDefaultLoadFalse);
+            $("#" + containerId + '_chosen').find(".txtAuto").attr("Selector", containerId);
+            $("#" + containerId).trigger("chosen:updated");
+            $("#" + containerId + '_chosen').find(".txtAuto").val(maintainFocusVal);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+</script>

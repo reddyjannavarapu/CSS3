@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "ASPOSE";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ASPOSE</h2>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        SetPageAttributes('liAspose', 'Aspose Word', '', 'liAsposeWord');
+    });
+</script>
+
+<style>
+    .mainDiv {
+        float: left;
+        width: 100%;
+    }
+
+    .divFU {
+        float: left;
+        padding: 10px 10px;
+        margin: 15px;
+    }
+
+    .divFilter {
+      
+        display: none;
+        margin: 15px;
+        padding: 10px;
+        vertical-align: top;
+        width: 300px;
+       
+    }
+
+    .divType {
+        float: left;
+        margin: 12px;
+    }
+
+    .ddlStyle {
+        width: 120px;
+    }
+
+    .subDivFu {
+        width: 260px;
+        float: left;
+        padding-top: 10px;
+    }
+
+    .btnRemove {
+        height: auto;
+        width: auto;
+        float: left;
+        background: #eee;
+        border-color: #eee;
+    }
+
+    .divUpload {
+        float: left;
+        width: auto;
+        padding-top: 3px;
+    }
+
+    .btnUpload {
+        background-color: #d3dce0 !important;
+        cursor: pointer !important;
+        font-size: 1.2em !important;
+        font-weight: 200 !important;
+        padding: 4px !important;
+        margin-right: 8px !important;
+        width: auto !important;
+    }
+   
+    .clssRepetedTr {
+        border-top-color: #DDD9C3 !important;
+    }
+</style>
+
+@using (Html.BeginForm("Index", "ASPOSE", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="divFU well">
+        <div class="divType">
+            Template
+        </div>
+        <div class="subDivFu">
+            <input type="file" name="DocPath" />
+        </div>
+        <div id="divUpload" class="divUpload">
+            <input name="btnSubmit" type="submit" value="START PROCESS" class="btn btn-primary" />
+        </div>
+    </div>
+    
+         
+}    
+
+

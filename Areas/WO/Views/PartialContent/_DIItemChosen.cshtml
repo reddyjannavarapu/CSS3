@@ -1,0 +1,123 @@
+﻿<style>
+    .chosen-single.chosen-default {
+        border-radius: 0px !important;
+        min-height: 29px;
+        max-width: 300px !important;
+        width: 250px !important;
+    }
+
+    .chosen-search:after {
+        content: "" !important;
+    }
+
+    .chosen-single.chosen-single-with-deselect {
+        border-radius: 0px !important;
+        min-height: 29px;
+        max-width: 300px !important;
+        width: 250px !important;
+    }
+
+    .search-choice-close {
+        background: none !important;
+        margin-top: 3px;
+    }
+
+    .chosen-drop {
+        max-width: 300px;
+        width: 250px !important;
+    }
+</style>
+
+<select class="chosen-select form-control" style="max-height:10px" data-placeholder="@ViewBag.DisplayName" id="ddlDIItemChosen_@ViewBag.Id">
+    <option value=""></option>
+</select>
+
+<script id="TypeDropDownTemplate" type="text/html">
+    <option name="{{= Name}}" value="{{= ID}}">{{= ItemNumber}}</option>
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        CallDIType("/WODI/GetMDIType", 'TypeDropDownTemplate', 'ddlDIItemChosen_@ViewBag.Id', "{}", false, BindDIItemChosenDropdownCallBack);
+        
+    });
+
+    function BindDIItemChosenDropdownCallBack(containerId) {
+        try {
+            $("#" + containerId).chosen({ allow_single_deselect: true });
+            //$(window).on('resize.chosen', function () {
+            //    var w = $("#" + containerId).parent().width();
+            //    $("#" + containerId).next().css({ 'width': w });
+
+            //}).trigger('resize.chosen');
+            ApplyToolTip(containerId);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    function ApplyToolTip(containerId) {
+        var ID = "#" + containerId + "";
+        $(ID).on('chosen:showing_dropdown', function () {
+            $(ID + "_chosen .chosen-results li").each(function (e) {
+                var count = e + 1;
+                var IDS = containerId;
+                var ToolTipName = $('select[id=' + IDS + '] option:eq(' + count + ')').attr('name');
+                this.title = ToolTipName;
+
+            });
+        });
+    }
+
+
+
+    function CallDIType(path, templateId, containerId, parameters, clearContent, callBack) {
+        ShowLoadNotify();
+        try {
+            $.ajax({
+                type: "POST",
+                url: path,
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                cache: true,
+                success: function (msg) {
+
+                    try {
+                        if (msg == '0') {
+                            ShowNotify('Invalid Session login again.', 'error', 3000);
+                            return false;
+                        }
+
+                        if (templateId != '' && containerId != '') {
+                            if (!clearContent) {
+                                $.tmpl($('#' + templateId).html(), msg.OrdersList).appendTo("#" + containerId);
+                            }
+                            else {
+                                $("#" + containerId).html($.tmpl($('#' + templateId).html(), msg.OrdersList));
+                            }
+                        }
+
+                        if (callBack != undefined && callBack != '')
+                            callBack(containerId);
+
+                    } catch (e) {
+                        console.log(e);
+                    }
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //throw new Error(xhr.statusText);
+                }
+            });
+        } catch (e) {
+            console.log(e);
+        }
+        HideLoadNotify();
+    }
+
+
+</script>

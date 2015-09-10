@@ -1,0 +1,38 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title>Documents</title>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#btnGenerateDoc').click();
+        });
+
+</script>
+</head>
+<body>
+    
+@using (Html.BeginForm("Documents", "ASPOSE", FormMethod.Post))
+{ 
+
+    <div class="divFU well" style="display:none">      
+        <input type="text" name="DocFiles" value="@ViewBag.Files" />
+        <div id="divUpload" class="divUpload">
+            <input name="btnSubmit" id="btnGenerateDoc" type="submit" value="START PROCESS" class="btn btn-primary" />
+        </div>
+    </div>
+    
+    
+}
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+﻿@*<script src="~/Areas/WO/Content/Scripts/_DirectorsChosen.js"></script>*@
+@System.Web.Optimization.Scripts.Render("~/bundles/_DirectorsChosenJQuery")
+
+<select class="chosen-select ddlDirectorsChosen form-control" style="max-height:10px" data-placeholder="@ViewBag.DisplayName" id="ddlDirectorChosen_@ViewBag.Id" selectedId='@ViewBag.selectedId' searchType='@ViewBag.SearchType' woid='@ViewBag.WOID' searchrole='@ViewBag.SearchRole' autoSearch='@ViewBag.AutoSearch' NatureAppoint='@ViewBag.NatureAppoint' ClassOfShare="">
+    <option value=""></option>
+</select>
+
+<script id="DirectorDetailsTemplate" type="text/html">
+    <option value="{{= RowId}}" sourcecode="{{= SourceCode}}" personid="{{= ID}}">{{= SourceCode}} - {{= Name}}</option>
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ('@ViewBag.DefaultLoad' == '1') {
+            BindDirectorsChosenDropdowns('ddlDirectorChosen_@ViewBag.Id', '@ViewBag.SearchType', '@ViewBag.SearchRole', '@ViewBag.WOID', "", '@ViewBag.NatureAppoint');
+        }
+
+
+        if ('@ViewBag.AutoSearch' == '1') {
+            var containerId = 'ddlDirectorChosen_@ViewBag.Id';
+            $("#" + containerId).chosen({ allow_single_deselect: true });
+
+            $('#' + containerId + '_chosen').find('.txtAuto').attr('ChosenID', containerId);
+            //var searchType = $('#' + containerId).attr('searchType');
+            //$('#' + containerId + '_chosen').find('.txtAuto').attr('searchType', searchType);
+            $('#' + containerId + '_chosen').find('.txtAuto').keyup(DirectorChosenChangeForDefaultLoadFalse);
+        }
+
+        function DirectorChosenChangeForDefaultLoadFalse(e) {
+
+            var SearchKeyWord = $(this).val();
+            var SearchKeyWordLength = SearchKeyWord.length;
+            if (SearchKeyWord == undefined) {
+                SearchKeyWord = '';
+            }
+
+            var SearchKeyWord = SearchKeyWord.escapeSpecialChars();
+            var validChar = CheckCharacterForNumberandCharacter(e.keyCode);
+
+            if ((SearchKeyWordLength >= 3) && (validChar == true || e.keyCode == 46)) {
+                if (e.keyCode === 13) {
+                    var ChosenID = $(this).attr('ChosenID');
+                    var searchType = $('#' + ChosenID).attr('searchType');
+                    //var WOID = $('#' + ChosenID).attr('woid');
+                    var WOID = '@ViewBag.WOID';
+                    var SearchRole = '@ViewBag.searchrole';
+                    var NatureAppoint = '@ViewBag.NatureAppoint';
+                    var ClassOfShare = $('#' + ChosenID).attr('ClassOfShare');
+                    if (ClassOfShare == undefined || ClassOfShare == '0' || ClassOfShare == '') {
+                        ClassOfShare = '-1';
+                    }
+                    
+                    $("#" + ChosenID + " > option:not(:eq(0))").remove();
+                    $('#' + ChosenID + '_chosen').find('.txtAuto').unbind('keyup', DirectorChosenChangeForDefaultLoadFalse);
+
+                    if (WOID == '') {
+                        WOID = 0;
+                    }
+                    CallWOAGMDetailsForDirectors("/PartialContent/GetDirectorDetails", 'DirectorDetailsTemplate', ChosenID, "{'SearchType':'" + searchType + "','SearchKeyWord':'" + SearchKeyWord + "','SearchRole':'" + SearchRole + "','WOID':" + WOID + ",'NatureAppoint':'" + NatureAppoint + "','ClassOfShare':" + ClassOfShare + "}", false, BindDirectorsChosenDropdownsCallBack1);
+                    $("#" + ChosenID).trigger("chosen:updated");
+                    $(this).val(SearchKeyWord);
+                }
+            }
+           @* else if ((SearchKeyWordLength == 2 || SearchKeyWordLength == 1) && (e.keyCode == 8 || e.keyCode == 46) && '@ViewBag.DefaultLoad' == '0') {
+                
+                var ChosenID = $(this).attr('ChosenID');
+                var searchType = $(this).attr('searchType');
+                $("#" + ChosenID + " > option:not(:eq(0))").remove();
+                
+                var containerId = ChosenID;
+                $("#" + containerId).trigger("chosen:updated");
+                $("#" + containerId + '_chosen').find(".txtAuto").val(SearchKeyWord);
+            }*@
+
+        }
+
+        function BindDirectorsChosenDropdownsCallBack1(containerId) {
+            $("#" + containerId).chosen({ allow_single_deselect: true });
+
+            $('#' + containerId + '_chosen').find('.txtAuto').attr('ChosenID', containerId);
+            $('#' + containerId + '_chosen').find('.txtAuto').attr('searchType', 'CSS1I');
+            $('#' + containerId + '_chosen').find('.txtAuto').keyup(DirectorChosenChangeForDefaultLoadFalse);
+
+        }
+    });
+</script>

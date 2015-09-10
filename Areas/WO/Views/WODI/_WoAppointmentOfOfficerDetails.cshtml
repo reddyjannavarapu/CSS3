@@ -1,0 +1,237 @@
+﻿@*<script src="~/Scripts/Validations.js"></script>*@
+
+
+<div class="pull-right col-xs-12 no-padding-right">
+    <div class="col-xs-1 pull-right no-padding-right">
+        @Html.Partial("~/Areas/WO/Views/Css1Info/_Css1Info.cshtml", new ViewDataDictionary { { "PopupHeader", "CSS1 Appointment Of Officer Info" } })
+    </div>
+    <div class="col-xs-1 pull-right no-padding-right">
+        @Html.Partial("~/Areas/WO/Views/Css1Review/_Css1Review.cshtml", new ViewDataDictionary { { "ReviewPopupHeader", "CSS1 Appointment Of Officer Review" } })
+    </div>
+</div>
+
+
+
+<form class="form-horizontal form-actions col-xs-12 margin-10t" role="form">
+    <div class="row" style="margin-right: 0px;">
+
+        <div class="form-group">
+            <div class="col-md-6">
+                <label class="col-sm-3 control-label no-padding-right" for="txtClientName">Appointment Officer<span class="redstar">*</span> </label>
+                <div class="col-sm-5" id="divClientOne" tabindex="1">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "AppointmentOfficerDetails" }, { "selectedId", "" }, { "SearchType", "3,5" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 0 }, { "AutoSearch", 1 }, { "DisplayName", "Please Select Appointment Officer" } })
+                </div>
+                <div class="col-sm-2">
+                    <img src="~/Content/images/i_icon.png" style="cursor: pointer; width: 30px;" class="btnIndividual" id="btnIndividual_ApptOfOfficers" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="col-sm-4 control-label no-padding-right" for="divPosition">Position<span class="redstar">*</span></label>
+                <div class="col-sm-6">
+                    <select id="ddlPosition" class="col-sm-8" tabindex="4">
+                        <option value="">Select</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="divIndividualOrCompany_ApptOfOfficers" class="divIndividualOrCompany">
+        </div>
+
+    </div>
+
+    <div class="row" style="margin-right: 0px;">
+        <div class="form-group">
+            <div class="col-md-6">
+                <label class="col-sm-3 control-label no-padding-right" for="Email">Email</label>
+                <div class="col-sm-6">
+                    <input class="col-xs-8 special" id="txtDirectorEmail_ApptOfcrDetails" type="text" maxlength="100" placeholder="Email" tabindex="1">
+                </div>
+            </div>
+
+            <div id="divMainDirector" class="col-md-6 divMainDirector" style="display: none;">
+                <label class="col-sm-4 control-label no-padding-right" for="divMainDirector">Main Director<span class="redstar">*</span></label>
+                <div class="col-sm-6" id="divMainchoosenDirector">
+
+                    @*@Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "ddlMainDirector" }, { "selectedId", "" }, { "SearchType", "3" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 0 }, { "AutoSearch", 1 }, { "DisplayName", "Please Select Appointment Officer" } })*@
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "ddlMainDirector" }, { "selectedId", "" }, { "SearchType", "Officers" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 1 }, { "AutoSearch", 1 }, { "NatureAppoint", "9" }, { "DisplayName", "Please Select Main/Alternate Director" } })
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row" style="margin-right: 0px;">
+        <div class="form-group">
+            <div class="col-md-6">
+                <label class="col-sm-3 control-label no-padding-right" for="ContactNo">Contact No</label>
+                <div class="col-sm-6">
+                    <input class="col-xs-8" id="txtDirectorContactNo_ApptOfcrDetails" type="text" maxlength="10" placeholder="Contact No" tabindex="2">
+                </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+
+    </div>
+    <div class="row" style="margin-right: 0px;">
+        <div class="form-group">
+            <div class="col-md-6">
+                <label class="col-sm-3 control-label no-padding-right" for="Fax">Fax</label>
+                <div class="col-sm-6">
+                    <input class="col-xs-8" id="txtDirectorFax_ApptOfcrDetails" type="text" maxlength="10" placeholder="Fax" tabindex="3">
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="col-md-offset-11">
+                    <button id="btnSaveApptOfficers" class="btnSaveApptOfficers btn btn-info btnWOClose" type="button" tabindex="5">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        SAVE
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</form>
+<div class="row">
+
+    <div class=" col-xs-12">
+        <div class="widget-box widgetGrid">
+            <div class="widget-header widgetGridHeader" style="cursor: pointer;">
+
+                <label id="lbl_AppointmentOfficerDetails" class="margin-10t">Appointment Officer Details </label>
+                <a style="float: right; padding: 10px;">
+                    <i class="ace-icon fa fa-chevron-up"></i>
+                </a>
+            </div>
+            <div class=" widget-body ">
+
+
+                <table class="table table-striped table-bordered table-hover col-xs-12">
+
+                    <thead>
+                        <tr>
+                            <th>Appointment Officer</th>
+                            <th>Position</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Fax</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblAppointmentOfficers"></tbody>
+                </table>
+                <div id="divNoData" style="display: none" class="row widget-main">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <div id="noData">
+                                        No data found.
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<script type="text/hml" id="ddlTemplate">
+    <option id="{{= Id}}" value="{{= Text}}"> {{= Text}} </option>
+</script>
+
+<div id="dvScripts">
+    <script id="scriptAppointmentDetails" type="text/html">
+        <tr>
+            <td>{{= Name}}</td>
+            {{if NatureAppoint=="1" }}
+            <td>
+                <div class="action-buttons">
+                    {{= Position}}
+                    <a id="{{= ID}}" class="AddTransfer red" href="javascript:void(0)">
+                        <i class="glyphicon glyphicon-plus-sign bigger-120"></i>
+                    </a>
+                </div>
+                {{else}}
+            <td>{{= Position}}</td>
+            {{/if}}
+
+            <td>{{= Email}}</td>
+            <td>{{= ContactNo}}</td>
+            <td>{{= Fax}}</td>
+            <td>
+                <div class="action-buttons">
+                    <a id="{{= ID}}" class="aDelete red btnWOClose" href="javascript:void(0)">
+                        <i class=" ace-icon fa fa-trash-o bigger-130"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </script>
+</div>
+
+
+<div id="divAddTransferDetails" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 800px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="dataFoundA" class="blue bigger">Depending Directors Details</h4>
+            </div>
+            <div class="modal-body" style="overflow-y: auto; max-height: 500px">
+                <table class="table table-striped table-bordered table-hover col-xs-12">
+
+                    <thead>
+                        <tr>
+                            <th>Officer</th>
+                            <th>Position</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Fax</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblAppointmentPositionOfficers"></tbody>
+                </table>
+                <div id="divNoData1" style="display: none" class="row widget-main">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <div id="noData1">
+                                        No data found.
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script id="scriptAppointmentPositionDetails" type="text/html">
+    <tr>
+        <td>{{= Name}}</td>
+        <td>{{= Position}}</td>
+        <td>{{= Email}}</td>
+        <td>{{= ContactNo}}</td>
+        <td>{{= Fax}}</td>
+    </tr>
+</script>
+
+<script src="~/Areas/WO/Content/Scripts/_WOAppointmentOfficerDetails.js"></script>
+

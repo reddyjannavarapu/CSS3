@@ -1,0 +1,473 @@
+﻿@{
+    ViewBag.Title = "Login History";
+    Layout = null;
+}
+
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>Active Users List CSS2</title>
+
+    <meta name="description" content="User login page" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+
+    <link rel="stylesheet" href="~/Content/css/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/css/assets/css/font-awesome.min.css" />
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="~/Content/css/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="~/Content/css/assets/css/ace.min.css" />
+
+
+    <link rel="stylesheet" href="~/Content/css/assets/css/ace-rtl.min.css" />
+
+
+    <link rel="stylesheet" href="~/Content/css/assets/css/ace.onpage-help.css" />
+
+    <link href="~/Content/css/Site.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <div id="divNotificationParent" style="width: 100%; margin: 0 auto; position: fixed; z-index: 15008; display: none;">
+        <div id="divNotification" style="margin: 10px auto; position: relative;">
+        </div>
+    </div>
+</head>
+
+@using (Html.BeginForm("ActiveUsersList", "Home", FormMethod.Post))
+{
+  
+    <body class="no-skin">
+        <div id="main-container" class="main-container">
+            <div class="main-content_">
+                <div class="page-content">
+                    <div id="ace-settings-container" class="ace-settings-container_">
+
+                        <div class="page-header">
+                            <h1>
+                                <span id="spnPageHeadder">Active Users</span>
+                                <small>
+                                    <i class="ace-icon fa fa-angle-double-right"></i>
+                                    <span id="spnPageDescription">Login History</span>
+                                </small>
+                            </h1>
+
+                        </div>
+
+                        <div class="widget-box transparent row" id="TabEvents" style="display: none">
+                            <div class="widget-header col-xs-12 no-padding">
+                                <div class="col-xs-12">
+                                    <div class="tabbable pull-left sidebar h-sidebar navbar-collapse no-margin no-padding " style="border: 1px solid #E5E5E5 !important;">
+                                        <ul class="nav nav-list tab-color-blue background-blue" id="TabsMenu">
+                                            <li class="active">
+                                                <a data-toggle="tab" id="tabActiveUsers" href="javascript:void(0)">Active Users</a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" id="tabErrorLog" data-toggle="tab">Errors</a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" id="tabCABErrorInfo" data-toggle="tab">CAB Error Info</a>
+                                            </li>
+                                           
+                                           
+                                            <li>
+                                                <a href="javascript:void(0)" id="tabCss1IntegrationErrorInfo" data-toggle="tab">CSS1 Integration Error Info</a>
+                                            </li>
+
+                                             <li>
+                                                <a href="javascript:void(0)" id="tabScheduleHistory" data-toggle="tab">Schedule History</a>
+                                            </li>
+
+                                             <li>
+                                                <a href="javascript:void(0)" id="tabDownloadLogFiles" data-toggle="tab">Download Log Files</a>
+                                            </li>
+
+                                             <li>
+                                                <a href="javascript:void(0)" id="tabDownloadTableData" data-toggle="tab">Download Table Data</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="dvActiveUsers">
+                            <div style="margin-top: 25px;">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div style="margin: 6px 0 0; margin-right: 12px" class="pull-left">
+                                                Select No Of Days  :
+                                            </div>
+                                            <div style="margin-right: 15px" id="divPageSize" class="pull-left">
+                                                <select id="ddlUsersDaysCount">
+                                                    <option value="0">To Day</option>
+                                                    <option value="2">Yesterday</option>
+                                                    <option value="7">Last Week</option>
+                                                    <option value="15">Last 15 Days</option>
+                                                    <option value="20">Last 20 Days</option>
+                                                    <option value="30">Last 30 Days</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="float: right;">
+                                                <button id="btnSearchUsers" class="btn btn-info" type="button" style="margin-left: 33px;" tabindex="16">
+                                                    SEARCH
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="clear"></div>
+                            <div id="divUsersList" class="tableGrid dataTables_wrapper form-inline" style="margin-top: 32px">
+                                <table id="tblActiveUsersList" class="table table-striped table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>Display Name</th>
+                                            <th>User Name</th>
+                                            <th>Role</th>
+                                            <th>Login</th>
+                                            <th>Logout</th>
+                                            <th>Duration (HH : MM) </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="bodyActiveUsers">
+                                    </tbody>
+                                </table>
+                                <div id="divSearchNoUserData" class="row" style="display: none;">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="9">
+                                                    <div id="noUserData">
+                                                        No data found.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row" id="Divpagination" style="display: none">
+                                    <div class="col-xs-6"><span id="listName"></span><span id="listCount" class="badge"></span></div>
+                                    <div id="numericcontainer" class="dataTables_paginate paging_bootstrap">
+                                        <div>
+                                            <ul id="pagination-digg" class="pagination">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="script">
+                                <script id="scriptActiveUsers" type="text/html">
+
+                                    <tr>
+                                        <td>{{= DisplayName}}
+                                        </td>
+                                        <td>{{= UserName}}
+                                        </td>
+                                        <td>{{= Roles}}
+                                        </td>
+                                        <td>{{= Login}}
+                                        </td>
+                                        <td>{{= Logout}}
+                                        </td>
+                                        <td>{{= Duration}}
+                                        </td>
+                                    </tr>
+                                </script>
+                            </div>
+                        </div>
+
+                        <div id="dvErrorLog" style="display: none;">
+                            <div class="clear"></div>
+                            <div id="divErrorLogList" class="tableGrid dataTables_wrapper form-inline" style="margin-top: 32px">
+                                <table id="tblErrorLogList" class="table table-striped table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>User Name</th>
+                                            <th>Page Name</th>
+                                            <th>Error Time</th>
+                                            <th>IP Address</th>
+                                            <th>Message</th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="bodyErrorLogs">
+                                    </tbody>
+                                </table>
+                                <div id="divSearchNoLogsData" class="row" style="display: none;">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="9">
+                                                    <div id="noLogData">
+                                                        No data found.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row" id="DivpaginationForLogs" style="display: none">
+                                    <div class="col-xs-6"><span id="listNameForLogs"></span><span id="listCountForLogs" class="badge"></span></div>
+                                    <div id="numericcontainerForLogs" class="dataTables_paginate paging_bootstrap">
+                                        <div>
+                                            <ul id="pagination-diggForLogs" class="pagination">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="scriptForLogs">
+                                <script id="scriptErrorLogs" type="text/html">
+                                    <tr>
+                                        <td>{{= UserName}}
+                                        </td>
+                                        <td>{{= PageName}}
+                                        </td>
+                                        <td>{{= ErrorTime}}
+                                        </td>
+                                        <td>{{= IPAddress}}
+                                        </td>
+                                        <td>{{= ErrorMessage}}
+                                        </td>
+                                    </tr>
+                                </script>
+                            </div>
+                        </div>
+
+                        <div id="dvCABErrorInfo" style="display: none;">
+                            <div id="divCABErrorList" class="tableGrid dataTables_wrapper form-inline" style="margin-top: 32px">
+                                <table id="tblCABErrorList" class="table table-striped table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Client</th>
+                                            <th>SCCode</th>
+                                            <th>ONDate</th>
+                                            <th>Create Date</th>
+                                            <th>Procedure</th>
+                                            <th>Line</th>
+                                            <th>Message</th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="bodyCABErrors">
+                                    </tbody>
+                                </table>
+                                <div id="divSearchNoCABErrorLogsData" class="row" style="display: none;">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="9">
+                                                    <div id="noCABErrorData">
+                                                        No data found.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row" id="DivpaginationForCABErrors" style="display: none">
+                                    <div class="col-xs-6"><span id="listNameForCAbErrors"></span><span id="listCountForCABError" class="badge"></span></div>
+                                    <div id="numericcontainerForCAbError" class="dataTables_paginate paging_bootstrap">
+                                        <div>
+                                            <ul id="pagination-diggForCABError" class="pagination">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="scriptForCABErrors">
+                                <script id="scriptCABErrors" type="text/html">
+                                    <tr>
+                                        <td>{{= ID}}
+                                        </td>
+                                        <td>{{= Client}}
+                                        </td>
+                                        <td>{{= SCCode}}
+                                        </td>
+                                        <td>{{= ONDate}}
+                                        </td>
+                                        <td>{{= CREATEDATE}}
+                                        </td>
+                                        <td>{{= ERROR_PROCEDURE}}
+                                        </td>
+                                        <td>{{= ERROR_LINE}}
+                                        </td>
+                                        <td>{{= ERROR_MESSAGE}}
+                                        </td>
+                                    </tr>
+                                </script>
+                            </div>
+                        </div>
+
+                        <div id="dvDownloadLogFiles" style="display: none;">
+                            <div class="col-xs-6 margin-50t">
+                                <input type="submit" value="Download Logs" id="btnDownloadLog" title="Download Log Files" class="btn btn-purple" name="command" />
+                            </div>
+                        </div>
+
+                        <div id="dvDownloadTableData" style="display: none;">
+                            <div class="col-xs-1 margin-50t">
+                                Table Name
+                            </div>
+                            <div class="col-xs-3 margin-50t">
+                                <select id="ddlTables" name="ddlTableName">
+                                    <option value="-1">Select</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-2 margin-50t">
+                                <input type="submit" value="Download" id="btnDownloadTableData" class="btn btn-purple" name="command" />
+                            </div>
+                            <div id="scriptForTableData">
+                                <script id="scriptTabledata" type="text/html">
+                                    <option value="{{= Text}}">{{= Text}}</option>
+                                </script>
+                            </div>
+                        </div>
+
+                        <div id="dvCss1IntegrationErrorInfo" style="display: none;">
+                            <div id="divCss1IntegrationErrorList" class="tableGrid dataTables_wrapper form-inline" style="margin-top: 32px">
+                                <table id="tblCss1IntegrationErrorList" class="table table-striped table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>Error Number</th>
+                                            <th>Error Message</th>
+                                            <th>Error State</th>
+                                            <th>Error Procedure</th>
+                                            <th>Error Line</th>
+                                            <th>Type</th>
+                                            <th>Error Time</th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="bodyCss1IntegrationErrors">
+                                    </tbody>
+                                </table>
+                                <div id="divSearchNoCss1IntegrationErrorsData" class="row" style="display: none;">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="9">
+                                                    <div id="noCss1IntegrationErrors">
+                                                        No data found.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row" id="DivpaginationForCss1IntegrationErrors" style="display: none">
+                                    <div class="col-xs-6"><span id="listNameForCss1IntegrationErrors"></span><span id="listCountForCss1IntegrationErrors" class="badge"></span></div>
+                                    <div id="numericcontainerForCss1IntegrationErrors" class="dataTables_paginate paging_bootstrap">
+                                        <div>
+                                            <ul id="pagination-diggForCss1IntegrationErrors" class="pagination">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="scriptForCss1IntegrationErrors">
+                                <script id="scriptCss1IntegrationErrors" type="text/html">
+                                    <tr>
+                                        <td>{{= ErrorNumber}}
+                                        </td>
+                                        <td>{{= ErrorMessage}}
+                                        </td>
+                                        <td>{{= ErrorState}}
+                                        </td>
+                                        <td>{{= ErrorProcedure}}
+                                        </td>
+                                        <td>{{= ErrorLine}}
+                                        </td>
+                                        <td>{{= Type}}
+                                        </td>
+                                        <td>{{= CreatedOn}}
+                                        </td>
+                                    </tr>
+                                </script>
+                            </div>
+                        </div>
+
+                         <div id="dvScheduleHistory" style="display: none;">
+                            <div id="divScheduleHistoryList" class="tableGrid dataTables_wrapper form-inline" style="margin-top: 32px">
+                                <table id="tblScheduleHistoryList" class="table table-striped table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Schedule Name</th>
+                                            <th>Parameters</th>
+                                            <th>Schedule Description</th>
+                                            <th>Runby System</th>
+                                            <th>LatRun On</th>
+                                           
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="bodyScheduleHistory">
+                                    </tbody>
+                                </table>
+                                <div id="divSearchNoScheduleHistoryData" class="row" style="display: none;">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="9">
+                                                    <div id="noScheduleHistoryData">
+                                                        No data found.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row" id="DivpaginationForScheduleHistory" style="display: none">
+                                    <div class="col-xs-6"><span id="listNameForScheduleHistory"></span><span id="listCountForScheduleHistory" class="badge"></span></div>
+                                    <div id="numericcontainerForScheduleHistory" class="dataTables_paginate paging_bootstrap">
+                                        <div>
+                                            <ul id="pagination-diggForScheduleHistory" class="pagination">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="scriptForScheduleHistory">
+                                <script id="scriptScheduleHistory" type="text/html">
+                                    <tr>
+                                        <td>{{= Id}}
+                                        </td>
+                                        <td>{{= ScheduleName}}
+                                        </td>
+                                        <td>{{= Parameter}}
+                                        </td>
+                                        <td>{{= ScheduleDescription}}
+                                        </td>
+                                        <td>{{= RunbySystem}}
+                                        </td>
+                                        <td>{{= LatRunOn}}
+                                        </td>
+                                       
+                                    </tr>
+                                </script>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="~/Scripts/jquery-1.10.2.js"></script>
+        <script src="~/Scripts/jquery.tmpl.min.js"></script>
+        <script src="~/Scripts/ActiveUsers.js"></script>
+
+
+    </body>
+}

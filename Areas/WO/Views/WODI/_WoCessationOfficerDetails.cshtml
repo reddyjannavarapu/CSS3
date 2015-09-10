@@ -1,0 +1,224 @@
+﻿@*<script src="~/Scripts/Validations.js"></script>*@
+<div class="row" style="margin-top: 10px;">
+    <div class="pull-right">
+        @Html.Partial("~/Areas/WO/Views/Css1Info/_Css1Info.cshtml", new ViewDataDictionary { { "PopupHeader", "CSS1 Cessation Of Officer Info" } })
+    </div>
+</div>
+<form class="form-horizontal form-actions" role="form">
+    <div class="row">
+
+        <div class="form-group">
+            <div class="col-md-6">
+                <label class="col-sm-3 control-label no-padding-right" for="txtClientName">Cessation Officer<span class="redstar">*</span> </label>
+                <div class="col-sm-5" id="divClientOne" tabindex="1">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "CessationOfficerDetails" }, { "selectedId", "" }, { "SearchType", "Officers" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 0 }, { "AutoSearch", 1 }, { "NatureAppoint", "1,2,3,5,6,7,8,9,10,11,13,14,15,16,17" }, { "DisplayName", "Please Select Cessation Officer" } })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding-left" style="display:none">
+                <label class="col-sm-4 control-label" for="ddlDIType">Date of Resignation </label>
+                <div class="col-sm-6">
+                    <input type="text" id="txtDateofResignation" class="col-sm-8 special" tabindex="4"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row" style="margin-right: 0px;">
+        <div class="form-group">
+            <div class="col-md-6">
+                <label class="col-sm-3 control-label no-padding-right" for="Email">Email</label>
+                <div class="col-sm-6">
+                    <input class="col-xs-8 special" id="txtDirectorEmail_CessationOfficerDetails" type="text" maxlength="100" placeholder="Email" tabindex="1">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="col-sm-4 control-label no-padding-right" for="divPosition">Position<span class="redstar">*</span></label>
+                <div class="col-sm-6">
+                    <select id="ddlPosition" class="col-sm-8" tabindex="5">
+                        <option value="">Select</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-right: 0px;">
+        <div class="form-group">
+            <div class="col-md-6">
+                @*<label class="col-sm-3 control-label no-padding-right" for="lblFromDate">From Date</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="txtFromDate" class="col-xs-10 col-sm-12" />
+                    </div> *@
+                <label class="col-sm-3 control-label no-padding-right" for="ContactNo">Contact No</label>
+                <div class="col-sm-6">
+                    <input class="col-xs-8" id="txtDirectorContactNo_CessationOfficerDetails" type="text" maxlength="100" placeholder="Contact No" tabindex="2">
+                </div>
+            </div>
+
+            <div id="divMainDirector" class="col-md-6" style="display: none;">
+                <label class="col-sm-4 control-label no-padding-right no-padding-left" for="divMainDirector">Main/Alternate Director</label>
+                <div class="col-sm-6">
+                    <select id="ddlMainDirector" class="col-sm-8">
+                        <option value="">Select</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="row" style="margin-right: 0px;">
+        <div class="form-group">
+            <div class="col-md-6">
+                <label class="col-sm-3 control-label no-padding-right" for="Fax">Fax</label>
+                <div class="col-sm-6">
+                    <input class="col-xs-8" id="txtDirectorFax_CessationOfficerDetails" type="text" maxlength="100" placeholder="Fax" tabindex="3">
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <div class="col-md-offset-11">
+                    <button id="btnSaveCessatioOfficers" class="btnSaveCessatioOfficers btn btn-info btnWOClose" type="button" tabindex="6">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="row">
+
+    <div class=" col-xs-12">
+        <div class="widget-box widgetGrid">
+            <div class="widget-header widgetGridHeader" style="cursor: pointer;">
+                <label id="lbl_CessationOfficerDetails" class="margin-10t">Cessation Officer Details </label>
+                <a style="float: right; padding: 10px;">
+                    <i class="ace-icon fa fa-chevron-up"></i>
+                </a>
+            </div>
+            <div class=" widget-body ">
+
+                <table class="table table-striped table-bordered table-hover col-xs-12">
+
+                    <thead>
+                        <tr>
+                            <th>Cessation Officer</th>
+                            @*<th>Date Of Resignation</th>*@
+                            <th>Position</th>
+                            @*<th>Depending Director</th>*@
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Fax</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblCessationDetails"></tbody>
+                </table>
+                <div id="divNoData" style="display: none" class="row widget-main">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <div id="noData">
+                                        No data found.
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/hml" id="ddlTemplate">
+    <option id="{{= Id}}" value="{{= Text}}"> {{= Text}} </option>
+</script>
+
+<script type="text/hml" id="ddlDirctorTemplate">
+    <option id="{{= ID}}" source="{{= SourceCode}}"> {{= Name}} </option>
+</script>
+
+<div id="dvScripts">
+    <script id="scriptCessionDetails" type="text/html">
+        <tr>
+            <td>{{= Name}}</td>
+            @*<td>{{= DateofResignation}}</td>*@
+
+            {{if IsExistsChildPerson == 1 }}
+            <td>
+                <div class="action-buttons">
+                    {{= Position}}
+                    <a id="{{= ID}}" class="AddTransfer red" href="javascript:void(0)">
+                        <i class="glyphicon glyphicon-plus-sign bigger-120"></i>
+                    </a>
+                </div>
+                {{else}}
+            <td>{{= Position}}</td>
+            {{/if}}
+            <td>{{= Email}}</td>
+            <td>{{= ContactNo}}</td>
+            <td>{{= Fax}}</td>
+            <td>
+                <div class="action-buttons">
+                    <a id="{{= ID}}" class="aDelete red btnWOClose" href="javascript:void(0)">
+                        <i class=" ace-icon fa fa-trash-o bigger-130"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </script>
+</div>
+
+<div id="divAddTransferDetails" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 800px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="dataFoundA" class="blue bigger">Depending Directors Details</h4>
+            </div>
+            <div class="modal-body" style="overflow-y: auto; max-height: 500px">
+                <table class="table table-striped table-bordered table-hover col-xs-12" style="background-color: white !important; margin-top: 12px;">
+
+                    <thead>
+                        <tr>
+                            <th>Officer</th>
+                            <th>Position</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Fax</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblAppointmentPositionOfficers"></tbody>
+                </table>
+                <div id="divNoData1" style="display: none" class="row widget-main">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <div id="noData1">
+                                        No data found.
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="scriptAppointmentPositionDetails" type="text/html">
+    <tr>
+        <td>{{= Name}}</td>
+        <td>{{= Position}}</td>
+        <td>{{= Email}}</td>
+        <td>{{= ContactNo}}</td>
+        <td>{{= Fax}}</td>
+    </tr>
+</script>
+
+<script src="~/Areas/WO/Content/Scripts/_WoCessationOfficerDetails.js"></script>

@@ -1,0 +1,289 @@
+﻿@*<script src="~/Content/css/assets/js/chosen.jquery.min.js"></script>
+<link href="~/Content/css/assets/css/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/Scripts/Validations.js"></script>*@
+<style>
+    .ui-datepicker {
+        width: 19em;
+    }
+</style>
+
+<div class="pull-right col-xs-12 margin-10b no-padding-right">
+
+    <div class="col-xs-1 pull-right no-padding-right">
+        @Html.Partial("~/Areas/WO/Views/Css1Info/_Css1Info.cshtml", new ViewDataDictionary { { "PopupHeader", "CSS1 Allotment Info" } })
+    </div>
+
+    <div class="col-xs-1 pull-right no-padding-right">
+        @Html.Partial("~/Areas/WO/Views/Css1Review/_Css1Review.cshtml", new ViewDataDictionary { { "ReviewPopupHeader", "CSS1 Allotment Review" } })
+    </div>
+
+</div>
+
+<div class="col-xs-10 col-xs-offset-2">
+
+    <div class="row">
+
+        <div style="padding-top: 15px; padding-bottom: 28px;" class="col-xs-5 WoBC WoBR">
+
+            <div class="col-sm-offset-2">
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Return of Allotment of Shares@* <span class="redstar">*</span>*@
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <select class="col-xs-8 no-padding-left" id="dllReturnOfAllotmentOfShares" tabindex="1">
+                        <option value="-1">Select</option>
+                        <option value="1">Cash</option>
+                        <option value="2">Non-Cash</option>
+                    </select>
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Class of Share@*<span class="redstar">*</span>*@
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <select class="col-xs-8 no-padding-left" id="ddlShareClassForAllotment" tabindex="3">
+                        <option value="">Select</option>
+                    </select>
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Total No. of new Shares to be allotted
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtTotalNoOfNewSharesToBeAllotted" onkeypress="return EnterOnlyNumbers(event)" maxlength="30" placeholder="Total No.Of Shares new to be Alloted" tabindex="4" class="col-xs-8 DisableCutCopyPaste" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Currency @*<span class="redstar">*</span>*@
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <select class="col-xs-8 no-padding-left" id="ddlCurrencyForAlloment" tabindex="2">
+                        <option value="">Select</option>
+                    </select>
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Consideration of each share
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtConsiderationOfEachShare" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" placeholder="Consideration of each share" tabindex="5" class="col-xs-8 DisableCutCopyPaste special" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Amount to be treated as paid on each share
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtAmountToBeTreatedAsPaidOnEachShare" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" tabindex="6" placeholder="Amount to be treated as paid on each share" class="col-xs-8 DisableCutCopyPaste special" />
+                </div>
+
+            </div>
+
+        </div>
+
+        <div style="padding-top: 14px; padding-bottom: 156px; margin-left: 10px;" class="col-xs-5 WoBC WoBR">
+
+            <div class="col-sm-offset-2">
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Total Consideration
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtTotalConsideration" placeholder="Total Consideration" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" tabindex="7" class="col-xs-8 DisableCutCopyPaste special" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Resultant Total no. of issued shares
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtResultantTotalNoOfIssuedShares" onkeypress="return EnterOnlyNumbers(event)" maxlength="30" tabindex="8" placeholder="Resultant Total no. of issued shares" class="col-xs-8 DisableCutCopyPaste" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Resultant Issued Capital
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtResultantIssuedCapital" placeholder="Resultant Issued Capital" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" tabindex="9" class="col-xs-8 DisableCutCopyPaste special" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Resultant Paid Up Capital
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtResultantPaidUpCapital" placeholder="Resultant Paid up Capital" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" tabindex="10" class="col-xs-8 DisableCutCopyPaste special" />
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div style="padding-top: 30px; padding-bottom: 73px; margin-top: 10px;" class="col-xs-5 WoBC WoBR">
+
+            <div class="col-sm-offset-2">
+
+                <div class="text-left col-xs-12 margin-10t" style="display: none;">
+                    Shareholding Structure
+                </div>
+                <div class="col-xs-12 margin-2t" style="display: none;">
+                    <select class="col-xs-8 no-padding-left" id="ddlShareholdingStructure" tabindex="17">
+                        <option value="-1">Select</option>
+                    </select>
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    <div class="col-xs-6 no-padding-left">
+                        RO as Place of Meeting
+                    </div>
+                    <div class="col-xs-2 align-right no-padding-right">
+                        <label>
+                            <input type="checkbox" id="chkROPlaceOfMeeting" class="col-xs-9 ace" />
+                            <span class="lbl" tabindex="18"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Address Line1
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Meeting Address Line1" id="txtMeetingAddressLine1" class="form-control col-xs-8 special" maxlength="100" tabindex="19" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Address Line2
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Meeting Address Line2" id="txtMeetingAddressLine2" class="form-control col-xs-8 special" maxlength="100" tabindex="20" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Address Line3
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtMeetingAddressLine3" placeholder="Meeting Address Line3" class="form-control col-xs-8 special" maxlength="100" tabindex="21" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Address Country
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <select class="col-xs-8 no-padding-left" id="ddlMeetingAddressCountry" tabindex="22">
+                        <option value="-1">Select</option>
+                    </select>
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Address Postal Code
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Meeting Address Postal Code" id="txtMeetingAddressPostalCode" maxlength="10" class="form-control col-xs-8 DisableCutCopyPaste" tabindex="23" />
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div style="padding-top: 15px; padding-bottom: 28px; margin-top: 10px; margin-left: 10px;" class="col-xs-5 WoBC WoBR">
+
+            <div class="col-sm-offset-2">
+
+                <div class="col-xs-12 margin-10t">
+                    <h4 class="text-left">Signing Director</h4>
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Notice
+                </div>
+                <div class="col-xs-12 margin-2t" tabindex="11">
+                    @*<input type="text" placeholder="Meeting Notice" class="col-xs-8" />*@
+
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "ddlMeetingNotice" }, { "selectedId", "" }, { "SearchType", "Officers" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 1 }, { "AutoSearch", 1 }, { "NatureAppoint", "7,9" }, { "DisplayName", "Select Meeting Notice" } })
+
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Minutes
+                </div>
+                <div class="col-xs-12 margin-2t" tabindex="12">
+                    @*<input type="text" placeholder="Meeting Minutes" class="col-xs-8" />*@
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "ddlMeetingMinutes" }, { "selectedId", "" }, { "SearchType", "MeetingMinutes" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 1 }, { "AutoSearch", 1 }, { "DisplayName", "Select Meeting Minutes" } })
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Other - Meeting Minutes</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtOtherMeetingMinutes" placeholder="Others Meeting Minutes" tabindex="13" maxlength="100" class="form-control col-xs-9 special" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Designation
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtDesignationOfThePersonSigningTheAllotment" maxlength="100" tabindex="14" value="Chairman" placeholder="Designation" class="col-xs-9 special" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Notice of Resolution
+                </div>
+                <div class="col-xs-12 margin-2t" tabindex="15">
+                    @*<input type="text" placeholder="Notice of Resolution" class="col-xs-8" />*@
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "ddlNoticeOfResolution" }, { "selectedId", "" }, { "SearchType", "Officers" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 1 }, { "AutoSearch", 1 }, { "NatureAppoint", "9" }, { "DisplayName", "Select Notice of Resolution" } })
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    F24 / F25
+                </div>
+                <div class="col-xs-12 margin-2t" tabindex="16">
+                    @*<input type="text" placeholder=" F24 / F25" class="col-xs-8" />*@
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "ddlF24F25" }, { "selectedId", "" }, { "SearchType", "Officers" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 1 }, { "AutoSearch", 1 }, { "NatureAppoint", "9" }, { "DisplayName", "Select  F24 / F25" } })
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="pull-right col-xs-4 margin-10t">
+            <button type="button" id="btnSubmitAlloment" tabindex="24" class="btn btn-info btnWOClose">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                SAVE           
+            </button>
+            <button id="btnCancelAlloment" tabindex="25" class="btn btnWOClose" type="button">
+                <i class="ace-icon fa fa-undo bigger-110"></i>
+                RESET       
+            </button>
+        </div>
+
+    </div>
+
+
+</div>
+
+<div class="col-xs-12 row margin-10t">
+    @*@Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "Allotmentdetails" }, { "I", 1 }, { "C", 1 }, { "GridName", "Allotee Details" }, { "GridCode", "ALLT" }, { "SearchType", "1,2,3" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DisplayName", "Select Director " } })*@
+    @Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "Allotmentdetails" }, { "I", 1 }, { "C", 1 }, { "GridName", "Allottee Details" }, { "GridCode", "ALLT" }, { "SearchType", "" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DisplayName", "Allottee" }, { "gridDefaultLoad", 0 }, { "gridAutoSearch", 1 } })
+</div>
+
+<script id="DropDownCurrencyTemplateForAllotment" type="text/html">
+    <option value="{{= CurrencyID}}">{{= CurrencyName}}</option>
+</script>
+
+<script id="DropDownShareClassTemplateForAllotment" type="text/html">
+    <option value="{{= ShareClassID}}">{{= ClassName}}</option>
+</script>
+<script id="ShareHoldingStructureTemplateinWOAllotmentDetails" type="text/html">
+    <option value="{{= ID}}">{{= Name}}</option>
+</script>
+<script id="scriptCountry" type="text/html">
+    <option value="{{= CountryID}}">{{= CountryName}}</option>
+</script>
+<script src="~/Areas/WO/Content/Scripts/_WOAllotmentDetails.js"></script>

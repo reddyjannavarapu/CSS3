@@ -1,0 +1,343 @@
+﻿@{
+    ViewBag.Title = "Fee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    string ClassName = string.Empty;
+    if (ViewBag.Role.Contains("SuperAdmin"))
+    {
+        ClassName = "ShowInfo";
+    }
+    else
+    {
+        ClassName = "HideInfo";
+    }
+}
+<style>
+    .HideInfo {
+        display: none !important;
+    }
+
+    .ShowInfo {
+        display: inline !important;
+    }
+</style>
+
+<form class="form-horizontal form-actions" role="form">
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="txtName">Fee Type <span class="redstar">*</span></label>
+
+        <div class="col-sm-9">
+            <select id="ddlFeeType">
+                <option value="-1">Select</option>
+                <option value="ND">Nominee Director</option>
+                <option value="NS">Nominee Secretary</option>
+                <option value="OT">Others</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="txtName">Enter Name <span class="redstar">*</span></label>
+
+        <div class="col-sm-9">
+            <input id="txtName" type="text" placeholder="Fee Name" class="col-xs-10 col-sm-5 special" maxlength="50" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="txtCode">Enter Code <span class="redstar">*</span></label>
+
+        <div class="col-sm-9">
+            <input id="txtCode" type="text" placeholder="Fee Code" class="col-xs-10 col-sm-5 special" maxlength="20" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="txtCode">Item Number<span class="redstar">*</span></label>
+
+        <div class="col-sm-9">
+            <input id="txtItemNumber" type="text" placeholder="Item Number" class="col-xs-10 col-sm-5 special" maxlength="20" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="txtCode">ACCPAC Code <span class="redstar">*</span></label>
+
+        <div class="col-sm-9">
+            <input id="txtACCPACCode" type="text" placeholder="ACCPAC Code" class="col-xs-10 col-sm-5 special" maxlength="20" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="txtareaDescription">Enter Description  <span class="redstar">*</span></label>
+
+        <div class="col-sm-9">
+            <div class="col-sm-4 no-padding-left">
+                <textarea id="txtareaDescription" placeholder="Description" class="form-control limited special DescriptionMultiLine" style="margin: 0px -0.015625px 0px 0px; height: 80px; max-height: 80px; width: 280px; max-width: 280px; padding-left: 4px; resize: none;"></textarea>
+            </div>
+            <div class="col-sm-1 no-padding" style="margin-top: 3%;">
+                <img style="cursor: pointer;" id="btnAddDynamicDescription" src="/Content/images/AddIcon.png">
+            </div>
+            <div id="dvAddDynamicDescription" class="col-xs-12 no-padding-left"></div>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-top" for="chkNeedSecurityDepositStatus">Need Security Deposit</label>
+        <div class="col-sm-9">
+            <label>
+                <input id="chkNeedSecurityDepositStatus" type="checkbox" class="ace" name="form-field-checkbox">
+                <span class="lbl"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-top" for="chkStatus">Active</label>
+        <div class="col-sm-9">
+            <label>
+                <input id="chkStatus" type="checkbox" class="ace" name="form-field-checkbox">
+                <span class="lbl"></span>
+            </label>
+
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <div class="col-md-offset-3 col-md-9">
+            <button id="btnAdd" class="btn btn-info" type="button">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                SUBMIT
+            </button>
+
+            &nbsp; &nbsp; &nbsp;
+            <button id="btnCancel" class="btn" type="button">
+                <i class="ace-icon fa fa-undo bigger-110"></i>
+                RESET
+            </button>
+        </div>
+    </div>
+</form>
+
+<div class="gap-10"></div>
+<div class="clear"></div>
+
+<div class="tableGrid dataTables_wrapper form-inline">
+    <div id="divSearch" class="row widget-main margin-10l">
+
+        <div class="pull-left">
+            Fee 
+                <input type="text" id="txtSearch" maxlength="20" class="special" />
+
+        </div>
+        <div class="pull-left margin-10l">
+            Status 
+                <select id="ddlStatus">
+                    <option value="-1">ALL</option>
+                    <option value="1">Active</option>
+                    <option value="0">In-Active</option>
+                </select>
+        </div>
+        <div class="pull-left margin-30l">
+            Sort By 
+                <select id="ddlOrderBy">
+                    <option value="CodeASC">Code ASC</option>
+                    <option value="CodeDESC">Code DESC</option>
+                    <option value="NameASC">Name ASC</option>
+                    <option value="NameDESC">Name DESC</option>
+                </select>
+        </div>
+
+        <div class="pull-left margin-30l">
+            Page Size 
+                <select id="ddlPageSize">
+                    <option value="5">5</option>
+                    <option value="10" selected="selected">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+        </div>
+
+        <div class="pull-left margin-30l">
+            <button id="btnSearch" class="btn btn-info" type="button">
+                <i class="ace-icon fa fa-search bigger-110"></i>
+                SEARCH
+            </button>
+        </div>
+
+    </div>
+
+    <span style="display: none" id="spnNoData">No data found.
+    </span>
+
+    <div>
+        <table class="table table-striped table-bordered table-hover" id="divFeeList">
+            <thead>
+                <tr>
+                    <th>Code
+                    </th>
+                    <th>Name
+                    </th>
+                    <th>Fee Type</th>
+                    <th>Item Number</th>
+                    <th>ACCPAC Code</th>
+                    <th>Description</th>
+                    <th>Security Deposit</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="trFeeData">
+            </tbody>
+        </table>
+        <div id="divFeeData" class="row" style="display: none;">
+            <table class="table table-striped table-bordered table-hover">
+                <tbody>
+                    <tr>
+                        <td colspan="5">
+                            <div id="noFeeData">
+                                No data found.
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row" id="divPagination">
+            <div class="col-xs-6 margin-10t"><span id="listName"></span>&nbsp;<span id="listCount" class="badge"></span></div>
+            <div id="numericcontainer" class="dataTables_paginate paging_bootstrap">
+                <div>
+                    <ul id="pagination-digg" class="pagination">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script id="FeeTemplate" type="text/html">
+        <tr>
+            <td>{{= Code}}
+            </td>
+            <td>{{= Name}}
+            </td>
+            <td>{{= FeeType}}
+            </td>
+            <td>{{= ItemNumber}}
+            </td>
+            <td>{{= ACCPACCode}}
+            </td>
+            <td class="tdDescription">{{= DescriptionWithBreak}}
+            </td>
+            <td>{{if NeedSecurityDeposit}}
+                    <span class="label label-sm label-success">Active</span>
+                {{else}} 
+                    <span class="label label-sm label-warning">InActive</span>
+                {{/if}}
+            </td>
+            <td>{{if Status}}
+                    <span class="label label-sm label-success">Active</span>
+                {{else}} 
+                    <span class="label label-sm label-warning">InActive</span>
+                {{/if}}
+            </td>
+            <td>
+                <div class="action-buttons">
+                    <a feeid="{{= ID}}" code="{{= Code}}" feename="{{= Name}}" itemnumber="{{= ItemNumber}}" accpaccode="{{= ACCPACCode}}" description="{{= Description}}" descriptionwithbreak="{{= DescriptionWithBreak}}" needsecuritydeposit="{{= NeedSecurityDeposit}}" status="{{= Status}}" feetype="{{= FeeType}}" class="blue aView " href="javascript:void(0)">
+                        <i class=" ace-icon fa fa-search-plus bigger-130"></i>
+                    </a>
+
+                    <a feeid="{{= ID}}" code="{{= Code}}" feename="{{= Name}}" itemnumber="{{= ItemNumber}}" accpaccode="{{= ACCPACCode}}" description="{{= Description}}" needsecuritydeposit="{{= NeedSecurityDeposit}}" status="{{= Status}}" feetype="{{= FeeType}}" class="aEdit green" href="javascript:void(0)">
+                        <i class="  ace-icon fa fa-pencil bigger-130"></i>
+                    </a>
+                    {{if IsUsed == 0}}
+                    <a feeid="{{= ID}}" class="aDelete red @ClassName" href="javascript:void(0)">
+                        <i class=" ace-icon fa fa-trash-o bigger-130"></i>
+                    </a>
+                    {{/if}}
+                </div>
+            </td>
+        </tr>
+    </script>
+    <div class="clear"></div>
+
+</div>
+
+<div id="modal-form" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Fee Information</h4>
+            </div>
+
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td style="width: 100px;">Name
+                        </td>
+                        <td>:</td>
+                        <td>
+                            <label id="labelName" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Code
+                        </td>
+                        <td>:</td>
+                        <td>
+                            <label id="labelCode" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ItemNumber
+                        </td>
+                        <td>:</td>
+                        <td>
+                            <label id="labelItemNumber" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ACCPACCode
+                        </td>
+                        <td>:</td>
+                        <td>
+                            <label id="labelACCPACCode" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Decription
+                        </td>
+                        <td>:</td>
+                        <td>
+                            <label id="labelDescription" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Need Security Deposit
+                        </td>
+                        <td>:</td>
+                        <td>
+                            <label id="labelNeedSDeposit" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Status
+                        </td>
+                        <td>:</td>
+                        <td>
+                            <label id="labelStatus" style="margin: 6px;"></label>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/Areas/Masters/Content/Scripts/Fee.js"></script>

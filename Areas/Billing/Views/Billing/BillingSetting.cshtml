@@ -1,0 +1,360 @@
+﻿@{
+    ViewBag.Title = "Billing Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string ClassName = string.Empty;
+    if (ViewBag.Role.Contains("SuperAdmin"))
+    {
+        ClassName = "ShowInfo";
+    }
+    else
+    {
+        ClassName = "HideInfo";
+    }
+}
+
+@*<link href="~/Content/css/assets/css/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/Scripts/Validations.js"></script>*@
+<script src="~/Areas/Billing/Content/Scripts/BillingSetting.js"></script>
+
+<style>
+    .ui-datepicker {
+        width: 19em;
+    }
+
+    .SearchClient {
+        height: 55px;
+        padding: 13px 12px 0;
+        background-color: #f5f5f5;
+        width: 404px;
+        float: left;
+    }
+
+    .Billdetails {
+        background-color: #f5f5f5;
+        display: none;
+        float: left;
+        /*margin-left: 400px;
+        min-height: 185px;
+        width: 810px;*/
+        -webkit-border-top-left-radius: 30px;
+        -webkit-border-top-right-radius: 30px;
+        -moz-border-radius-topleft: 30px;
+        -moz-border-radius-topright: 30px;
+        /*border-top-left-radius: 30px;*/
+        border-top-right-radius: 30px;
+    }
+
+    .BillingFrequency {
+        background-color: #EBF1DE;
+    }
+
+    .Settings {
+        background-color: #f5f5f5;
+        float: left;
+        width: 1322px;
+        height: 400px;
+    }
+
+    .Fee {
+        cursor: pointer;
+    }
+
+    .FeeList {
+        float: left;
+        margin: 29px 0 29px 26px;
+        width: 20%;
+        overflow-y: auto;
+        max-height: 320px;
+        overflow-x: hidden;
+    }
+
+    .Fee.active a#aFee {
+        background-color: #f5f5f5 !important;
+        border-top-color: #4C8FBD !important;
+        border-bottom-color: #4C8FBD !important;
+        border-right-color: #f5f5f5 !important;
+        border-left: 4px solid #79b0ce !important;
+    }
+
+    .Fee a#aFee {
+        border-right: 2px solid #79b0ce;
+    }
+
+    .HideInfo {
+        display: none !important;
+    }
+
+    .ShowInfo {
+        display: inline !important;
+    }
+</style>
+
+
+<div style="margin-left: 4px">
+    <div>
+
+        <div class="SearchClient">
+            <input type="hidden" id="hdnNeedSecurityDeposit" />
+            <div style="float: left; margin: 6px 0 0;">
+                Client / Customer<span class="redstar">*</span>
+            </div>
+            <div style="float: left; width: 255px;" id="divClientOne">
+                @Html.Partial("~/Areas/WO/Views/PartialContent/_ClientChosen.cshtml", new ViewDataDictionary { { "ddlId", "ddlClients" }, { "clientType", "" }, { "selectedId", -1 }, { "DisplayName", "Choose a Client" }, { "DefaultLoad", 0 }, { "WOID", 0 }, { "ClientSource", "1" } })
+            </div>
+        </div>
+
+        <div>
+            <button type="button" id="btnDeleteAllFeeSettings" class="btn btn-danger" style="margin-left: 1%; margin-top: 1%; display: none;">
+                <i class=" ace-icon fa fa-trash-o bigger-130"></i>
+                Delete all settings
+            </button>
+        </div>
+    </div>
+
+
+    <div id="divClientSettings" class="Billdetails">
+        <div style="text-align: center; padding-top: 10px;"><span id="spanClientName"></span></div>
+        <div style="margin: 20px 0 0 20px;">
+            <div style="background-color: #EBF1DE; float: left; margin-right: 25px">
+                <div style="float: left; width: 685px; margin: 12px;">
+
+                    <div style="float: left; margin: 3px 0 0 33px;">Bill To<span class="redstar">*</span></div>
+                    <div style="float: left; margin: 0 0 0 10px;">
+                        <select id="ddlBillTo">
+                            <option value="-1">Select</option>
+                            <option value="0">Direct</option>
+                            <option value="1">Third Party</option>
+                        </select>
+                    </div>
+                    <div style="float: right; margin: 3px 45px 0 5px;">
+                        <input id="chkClubFee" class="ace" type="checkbox" name="form-field-checkbox">
+                        <span class="lbl"></span>
+                    </div>
+                    <div style="float: right; margin: 3px 0 0 0;">Club the Fee Items</div>
+                </div>
+                <div style="float: left; width: 760px;">
+
+                    <div id="divBillingParty" style="float: left; width: 495px; margin-left: 3px; display: none">
+                        <div style="float: left; margin: 5px 0 0 5px;">Billing Party<span class="redstar">*</span></div>
+                        <div style="float: left; margin-left: 10px">
+                            @* <input type="text" id="txtBillingParty" style="width: 100px; display: none;" />*@
+                            <select id="ddlBillingParty">
+                                <option value="-1">Select</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="divAccCode" style="float: right; margin: 0 26px 0 0; display: none">
+                        <div style="float: left; margin: 5px 0 0 5px;">Use Account Code<span class="redstar">*</span></div>
+                        <div style="float: left; margin-left: 10px">
+                            <input type="text" id="txtAccountCode" style="width: 100px;" />
+                        </div>
+                    </div>
+
+                </div>
+                <div style="float: right; width: 390px; margin-bottom: 15px;">
+                    <div style="float: left;">
+
+                        <button id="imgSettingSave" class="btn btn-info" type="button">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            SUBMIT
+                        </button>
+                        <button id="imgSettingClear" class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            RESET
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divCMAndCS" style="display: none">
+        <div class="Settings">
+            <div class="tabbable tabs-left FeeList" style="margin: 59px 0 0 27px;">
+                <input type="hidden" id="hdnFee" />
+                <input type="hidden" id="hdnCFMID" />
+                <ul id="trFee" style="width: 250px;" class="nav nav-tabs">
+                </ul>
+            </div>
+            <div class="BillingFrequency" style="background-color: #EBF1DE; float: left; margin: 59px 0 0 43px; min-height: 145px; width: 322px;">
+                <div style="float: left; width: 300px; margin: 17px 0 0 0">
+                    <div style="float: left; margin-top: 3px; text-align: right; width: 120px">Billing Frequency <span class="redstar">*</span></div>
+                    <div style="float: right; width: 165px">
+                        <select id="ddlBillingFrequency" style="width: 146px;">
+                            <option value="-1">Select Frequency </option>
+                        </select>
+
+                    </div>
+                </div>
+                <div id="trBillingMonth" style="float: left; width: 300px; margin: 17px 0 0 0; display: none">
+                    <div style="float: left; margin-top: 3px; text-align: right; width: 120px">Month<span class="redstar">*</span></div>
+                    <div style="float: right; width: 165px">
+                        <select id="ddlMonth" style="width: 146px;">
+                            <option value="-1">Select Month </option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div id="divSecurityDeposit" style="float: left; width: 300px; margin: 17px 0 0 0;">
+                    <div style="float: left; margin-top: 3px; text-align: right; width: 120px">Security deposit<span class="redstar">*</span></div>
+                    <div style="float: right; width: 165px">
+                        <input type="text" id="txtSecurityDeposit" onkeypress="return AllowDecimalNumbersOnly(this,event,17,4)" class="special" style="width: 147px;" />
+
+                    </div>
+                </div>
+                <div id="divSecurityDepositInvoiceNo" style="float: left; width: 300px; margin: 17px 0 0 0;">
+                    <div style="float: left; margin-top: 3px; text-align: right; width: 120px">Invoice No<span class="redstar">*</span></div>
+                    <div style="float: right; width: 165px">
+                        <input type="text" id="txtSecurityDepositInvoiceNo" @*onkeypress="return EnterOnlyNumbers(event)"*@ style="width: 147px;" maxlength="50" class="special" />
+
+                    </div>
+                </div>
+
+                <div id="divFeeDueToNominee" style="float: left; width: 300px; margin: 17px 0 0 0;">
+                    <div style="float: left; margin-top: 3px; text-align: right; width: 130px">Fee Due to Nominee<span class="redstar">*</span></div>
+                    <div style="float: right; width: 165px">
+                        <input type="text" id="txtFeeDueToNominee" onkeypress="return AllowDecimalNumbersOnly(this,event,17,4)" class="special" style="width: 147px;" maxlength="50" />
+                    </div>
+                </div>
+
+                <div style="float: left; width: 300px; margin: 14px 0 0 0">
+                    <div style="float: left; text-align: right; width: 120px">Bill In Arrears</div>
+                    <div style="float: right; width: 165px">
+                        <input id="chkBillInArrears" class="ace" type="checkbox" name="form-field-checkbox">
+                        <span class="lbl"></span>
+                    </div>
+                </div>
+
+                <div style="float: left; margin: 14px 0 15px 50px; width: 245px;">
+                    <div>
+                        <button id="imgMappingSave" class="btn btn-info" type="button">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            SUBMIT
+                        </button>
+                        <button id="imgMappingClear" class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            RESET
+                        </button>
+                        <button id="imgDeleteFeeSettings" class="btn btn-xs btn-danger bigger-150" title="Delete Fee Settings">
+                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="float: left; width: 43%; margin: 5px 0 35px 53px; overflow-y: auto; max-height: 320px; overflow-x: hidden;">
+
+                <div style="float: right;" class="margin-10t margin-10b">
+                    <button id="btnViewGap" class="btn btn-purple">
+                        <i class="ace-icon fa fa-eye bigger-120"></i>
+                        VIEW GAP
+                    </button>
+                </div>
+
+                <table style="background-color: #FFFFFF" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>SGD</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script id="scriptBillingFrequency" type="text/html">
+        <option bfid="{{= ID}}" value="{{= Code}}">{{= Name}}</option>
+
+    </script>
+    <script id="scriptBillingParty" type="text/html">
+        <option value="{{= ID}}" code="{{= CompanyName}}">{{= CompanyName}}</option>
+
+    </script>
+    <script id="scriptMonth" type="text/html">
+        <option mid="{{= ID}}" value="{{= Code}}">{{= Name}}</option>
+
+    </script>
+    <script id="scriptFee" type="text/html">
+        <li class="Fee">
+            <a id="aFee" feeid="{{= ID}}" code="{{= Code}}" needsecuritydeposit="{{= NeedSecurityDeposit}}" feetype="{{= FeeType}}">{{if IsExists ==1 }} <i class="glyphicon glyphicon-ok"></i>{{/if}} &nbsp;&nbsp {{= Name}}</a>
+
+        </li>
+    </script>
+    <script id="scriptScheduleDetails" type="text/html">
+        <tr>
+            <td>
+                <input type="text" class="txtFromDate" value="{{= FromDate}}" fdate="{{= FromDate}}" readonly="true" style="width: 110px;" />
+            </td>
+            <td>
+                <input type="text" class="txtToDate" value="{{= ToDate}}" tdate="{{= ToDate}}" readonly="true" style="width: 110px;" />
+            </td>
+            <td>
+                <input type="text" onkeypress="return AllowDecimalNumbersOnly(this,event,17,2)" class="txtSGD special DisableCutCopyPaste" value="{{= Amount}}" style="width: 100%;" />
+            </td>
+
+            <td>
+                <button class="imgSaveScheduleInGrid btn btn-xs btn-success" sid="{{= ID}}">
+                    <i class="ace-icon fa fa-check bigger-120"></i>
+                </button>
+                @* {{if TDateStatus }}*@
+                <button class="imgCancelScheduleInGrid btn btn-xs btn-danger" sid="{{= ID}}">
+                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                </button>
+                @*  {{/if}}*@
+
+            </td>
+
+        </tr>
+    </script>
+</div>
+<script id="scriptGapScheduleDetails" type="text/html">
+    <tr>
+        <td>
+            <span id="spanSNO">{{= SNO}}</span>
+        </td>
+        <td>
+            <span id="spanFromDate">{{= FromDate}}</span>
+        </td>
+        <td>
+            <span id="spanToDate">{{= ToDate}}</span>
+
+        </td>
+        <td><span id="spanDuration">{{= Duration}}</span></td>
+    </tr>
+</script>
+
+<div id="modal-form" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 700px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="dataFound" class="blue bigger">Gap Analysis</h4>
+                <h4 id="noData" style="display: none">Gap Analysis data not found...</h4>
+            </div>
+
+            <div class="modal-body" style="overflow-y: auto; max-height: 500px">
+
+                <table id="gapTable" style="background-color: #FFFFFF" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>S No</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Duration (No Of Days)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trGapBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

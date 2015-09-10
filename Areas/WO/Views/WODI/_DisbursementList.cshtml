@@ -1,0 +1,181 @@
+﻿<script src="~/Areas/WO/Content/Scripts/_PartialDisbursementList.js"></script>
+
+<div class="clear"></div>
+
+
+
+<div id="divSearchDisbursementItemsList">
+    <table id="tblSearchDisbursementItem" style="display: none" class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    <label class="no-margin lblSelectAllDI">
+                        <input type="checkbox" id="chkSelectAllDI" class="ace chkSelectAllDI" name="form-field-checkbox">
+                        <span class="lbl" tabindex="2"></span>
+                    </label>
+                </th>
+                <th style="width: 128px">WO #</th>
+                <th style="width: 138px">Client / Customer</th>
+                <th>Item Code
+                </th>
+                <th>Item #
+                </th>
+                <th>WO Type</th>
+                <th style="display: none;">Units 
+                </th>
+                <th style="display: none;">Unit Price 
+                </th>
+                <th>Amount</th>
+
+                <th style="width: 100px">Description</th>
+                <th style="width: 170px;">Created Date</th>
+
+                <th>Adhoc 
+                </th>
+                <th>In-House 
+                </th>
+                <th>Billed 
+                </th>
+                <th>Verified 
+                </th>
+                <th class="divHeadAction" style="width: 125px;">Action 
+                </th>
+            </tr>
+        </thead>
+        <tbody id="trDisbursementItemsData">
+        </tbody>
+    </table>
+    <div id="divSearchNoData" style="display: none" class="row widget-main">
+        <table class="table table-striped table-bordered table-hover">
+            <tbody>
+                <tr>
+                    <td colspan="17">
+                        <div id="noData">
+                            No data found.
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="divPaging" class="row" style="display: none; background-color: #eff3f8; border-bottom: 1px solid #e0e0e0; padding-bottom: 12px; padding-top: 12px; margin-right: 0px; margin-left: 0px;">
+        <div class="col-xs-6 margin-10t"><span id="listName"></span>&nbsp;<span id="listCount" class="badge"></span></div>
+        <div id="numericcontainerDL" class="dataTables_paginate paging_bootstrap">
+            <div>
+                <ul id="pagination-digg" class="pagination">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script id="ScriptDisbursementItems" type="text/html">
+    <tr>
+        <td>
+            <input type="checkbox" disbursementid="{{= ID}}" itemnumber="{{= ItemNumber}}" amount="{{= Amount}}" desc="{{= DescriptionToolTip}}" id="chkChangeAdhocOrArchived" class="chkChangeAdhocOrArchived ace" />
+            <span class="lbl"></span>
+        </td>
+        <td>{{= WorkOrderNumber}}</td>
+        <td>{{= ClientName}}</td>
+        <td>{{= Code}}</td>
+        <td title="{{= DiItemToolTip}}">{{= ItemNumber}}
+        </td>
+        <td>{{= Name}}</td>
+        <td>{{= Amount}}</td>
+        <td title="{{= DescriptionToolTip}}">{{= Description}}
+          <span class="spanDescriptionToolTip" style="display: none"></span>
+        </td>
+        <td>{{= CreatedDate}}</td>
+        <td class="text-center">{{if IsAdhoc }}
+            @*<span class="label label-sm label-success">Active</span>*@
+            <input type="checkbox" checked="checked" class="ace" disabled="disabled" />
+            <span class="lbl"></span>
+            {{else}}
+            @*<span class="label label-sm label-warning">InActive</span>*@
+            <input type="checkbox" class="ace" disabled="disabled" />
+            <span class="lbl"></span>
+            {{/if}}
+        </td>
+        <td class="text-center">{{if IsArchived }}
+            <input type="checkbox" checked="checked" class="ace" disabled="disabled" />
+            <span class="lbl"></span>
+            {{else}}
+            <input type="checkbox" class="ace" disabled="disabled" />
+            <span class="lbl"></span>
+            {{/if}}</td>
+        <td class="text-center">{{if IsBilled }}
+           <input type="checkbox" checked="checked" class="ace" disabled="disabled" />
+            <span class="lbl"></span>
+            {{else}}
+            <input type="checkbox" class="ace" disabled="disabled" />
+            <span class="lbl"></span>
+            {{/if}}</td>
+        <td class="text-center">{{if IsVerified }}
+            <input type="checkbox" checked="checked" class="ace" disabled="disabled" />
+            <span class="lbl"></span>
+            {{else}}
+            <input type="checkbox" class="ace" disabled="disabled" />
+            <span class="lbl"></span>
+            {{/if}}</td>
+        <td class="divDIActions">
+            <div class="action-buttons">
+                <a diid="{{= ID}}" woid="{{= WOID}}" venderrefid="{{= VenderRefID}}" class="blue aView " href="javascript:void(0)">
+                    <i class=" ace-icon fa fa-search-plus bigger-130"></i>
+                </a>
+
+                <a diid="{{= ID}}" woid="{{= WOID}}" venderrefid="{{= VenderRefID}}" refid="{{= RefID}}" notetype="{{= NoteType}}" notecount="{{= NoteCount}}" class="aEdit green" href="javascript:void(0)">
+                    <i class="  ace-icon fa fa-pencil bigger-130"></i>
+                </a>
+
+                @Html.Partial("~/Areas/WO/Views/Note/_Note.cshtml")
+
+                {{if ACCPACStatus != 0 }}
+                <div class="col-xs-1 pull-right tooltip-warning dvACCPACStatus" title="" data-placement="left" data-rel="tooltip" data-original-title="{{= ACCPACDescription}} <br/> {{= ACCPACExplanation}}">
+                    <i class="ace-icon fa fa-exclamation bigger-110 red"></i>
+                </div>
+
+                @*<div class="col-xs-1 pull-right">
+                    <i class="ace-icon fa fa-exclamation bigger-110 red"></i>
+                </div>*@
+                {{/if}}
+
+            </div>
+        </td>
+    </tr>
+</script>
+
+<div id="ViewInvoiceDI">
+</div>
+<div class="clear"></div>
+
+<div id="divAdhocAndArchiveButtons" align="right" style="display: none; padding-top: 15px;">
+    <button id="btnViewInvoicePreviewForDI" class="btnViewInvoicePreview btn btn-purple">
+        INVOICE PREVIEW</button>
+    <input type="button" value="SEND TO ACCPAC FOR ADHOC BILLING" class="btn btn-success" id="btnSendToACCPACForADHOCBilling">
+    <input type="button" value="REMOVE FROM ADHOC BILLING" class="btn btn-yellow" id="btnRemoveFromACCPACForADHOCBilling">
+
+    @if (Request.Url.LocalPath == "/WO/WODI/WorkOrder")
+    {
+        <input type="button" value="IN-HOUSE" class="btn btn-primary" id="btnListARCHIVE">
+        <input type="button" value="UNDO IN-HOUSE" class="btn btn-purple" id="btnListUnARCHIVE">
+        <button class="btn btn-danger" id="btnListDELETE">
+            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+            DELETE
+   
+        </button>
+    }
+    else if (ViewBag.ActionStatusOnDIItems)
+    {
+        <input type="button" value="IN-HOUSE" class="btn btn-primary" id="btnListARCHIVE">
+        <input type="button" value="UNDO IN-HOUSE" class="btn btn-purple" id="btnListUnARCHIVE">
+        <button class="btn btn-danger" id="btnListDELETE">
+            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+            DELETE
+   
+        </button>
+    }
+
+</div>
+

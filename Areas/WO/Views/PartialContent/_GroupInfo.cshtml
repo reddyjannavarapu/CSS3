@@ -1,0 +1,16 @@
+﻿<script src="~/Areas/WO/Content/Scripts/_GroupInfo.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        BindGroupDropDown('@ViewBag.ddlId');
+
+    });
+</script>
+<div>
+    <select id="ddlGroupCode_@ViewBag.ddlId"  clientType='@ViewBag.clientType' selectedId='@ViewBag.selectedId' data-placeholder='@ViewBag.DisplayName' >
+        <option value="-1"></option>
+    </select>
+    <script id="scriptGroup" type="text/html">
+        <option value="{{= GroupName}}">{{= GroupName}}</option>
+
+    </script>
+</div>

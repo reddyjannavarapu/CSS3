@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "About Us";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<article>   
+    <p>
+       We are providing best solutions for business 
+    </p>
+</article>
+
+<aside>
+    <h3>Highlights </h3>
+    <p>
+        Click here know more about 
+    </p>
+    <ul>
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+      
+    </ul>
+</aside>
+<script type="text/ecmascript">
+    $(document).ready(function () {
+        SetPageAttributes('liHome', 'Home', 'About Us');
+    });
+</script>

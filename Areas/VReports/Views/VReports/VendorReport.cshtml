@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "Vendor Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .vendortrype {
+        float: left;
+        margin: 4px 10px 0 10px;
+    }
+
+    .typeddl {
+        float: left;
+        margin: 0 10px 0 0px;
+    }
+
+    .clsGo {
+        float: left;
+        margin-left: 50px;
+    }
+
+    .ui-datepicker {
+        width: 19em;
+    }
+</style>
+
+<script src="~/Areas/VReports/Content/Scripts/Vendor.js"></script>
+<div class="clear"></div>
+
+<div class="tableGrid dataTables_wrapper form-inline">
+
+    <div class="row">
+        <span class="vendortrype">Vendor Report Type</span>
+        <span class="typeddl">
+            <select style="width: 100px" id="ddlType">
+                <option value="">All</option>
+                <option value="AC">ACRA</option>
+                <option value="CO">Courier</option>
+                <option value="IR">IRAS</option>
+            </select>
+
+        </span>
+
+
+        <span class="vendortrype">From Date
+        </span>
+        <span class="typeddl">
+            <input type="text" id="txtFromDate" class="col-xs-10 col-sm-12 special" maxlength="10" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" tabindex="5" />
+        </span>
+        <span class="vendortrype">To Date
+        </span><span class="typeddl">
+            <input id="txtToDate" type="text" class="col-xs-10 col-sm-12 special" tabindex="6" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10" />
+        </span>
+        <span>Page Size</span>
+        <select id="ddlPageSize" tabindex="8">
+            <option value="5">5</option>
+            <option value="10" selected="selected">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <span class="clsGo"></span>
+        <button type="button" class="btn btn-info" id="btnSearch" style="align-content: center; height: 100%">
+            <i class="ace-icon fa fa-search bigger-110"></i>
+            SEARCH
+
+        </button>
+    </div>
+
+    <div class="tableGrid">
+        <div id="divServiceList" style="display: none">
+            <table class="table table-striped table-bordered table-hover" id="tblPaging">
+                <thead>
+                    <tr style="background-color: pink">
+                        <th>Type
+                        </th>
+                        <th>Uploaded Time
+                        </th>
+                        <th>Uploaded By
+                        </th>
+                        <th>File Name
+                        </th>
+                        <th>Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="trData"></tbody>
+            </table>
+
+            <div id="divVendorReportData" class="row" style="display: none;">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td colspan="5">
+                                <div id="noVendorReportData">
+                                    No data found.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row" id="divPagination" style="display: none">
+                <div id="numericcontainer" class="dataTables_paginate paging_bootstrap">
+                    <ul id="pagination-digg" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+        <script id="vendorTemplate" type="text/html">
+            <tr>
+                <td>{{= Type}}
+                </td>
+                <td>{{= UploadedOn}}
+                </td>
+                <td>{{= Username}}
+                </td>
+                <td>{{= Name}}
+                </td>
+                <td>
+                    <a href="javascript:void(0)" vrid="{{= VRID}}" class="aDownload">Download</a>
+                    | <a href="javascript:void(0)" vrid="{{= VRID}}" class="aViewHistory">Manage</a>
+                </td>
+            </tr>
+        </script>
+
+        <script id="TypeDropdownTemplate" type="text/html">
+            <option value="{{= Code}}">{{= Name}}</option>
+        </script>
+        <div class="clear"></div>
+    </div>
+</div>
+

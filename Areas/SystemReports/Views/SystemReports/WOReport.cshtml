@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "WO Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/css/assets/css/jquery-ui.min.css" rel="stylesheet" />
+
+<style>
+    .ui-datepicker {
+        width: 19em;
+    }
+</style>
+
+<script src="~/Areas/SystemReports/Content/Scripts/WOReport.js"></script>
+@using (Html.BeginForm("WOReport", "SystemReports", FormMethod.Post))
+{
+    <div class="form-actions clearfix">
+
+        <div class="col-xs-12">
+
+            <div class="col-xs-4 form-group">
+                <label for="ddlGroupCode" class="col-sm-4 control-label no-padding-right align-right">SIC Group</label>
+                <div class="col-sm-6" tabindex="2">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_GroupInfo.cshtml", new ViewDataDictionary { { "ddlId", "InCWO" }, { "GroupType", "InCWO" }, { "selectedId", 0 }, { "DisplayName", "ALL" } })
+                </div>
+                <input type="hidden" id="hdnGroupCode" name="GroupCode" />
+            </div>
+
+            <div class="col-xs-4 form-group">
+                <label class="col-sm-3 control-label no-padding-right align-right" for="drpBillable">Billable</label>
+                <div class="col-sm-9">
+                    <select id="ddlBillable" name="Billable" tabindex="4" class="col-xs-9">
+                        <option value="">All</option>
+                        <option value="1">Billable</option>
+                        <option value="0">Non Billable</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xs-4 form-group">
+                <label class="col-sm-3 control-label no-padding-right align-right" for="lblFromDate">From Date</label>
+                <div class="col-sm-7">
+                    <input type="text" id="txtFromDate" name="FromDate" tabindex="7" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10" class="col-xs-12 special" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xs-12">
+
+            <div class="col-xs-4 form-group">
+                <label class="col-sm-4 control-label no-padding-right align-right" for="txtClientName">Client / Customer</label>
+                <div class="col-sm-6" id="divClientOne" tabindex="1">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_ClientChosen.cshtml", new ViewDataDictionary { { "ddlId", "ddlClient" }, { "clientType", "" }, { "selectedId", -1 }, { "DisplayName", "ALL" }, { "DefaultLoad", 0 }, { "WOID", 0 }, { "ClientSource", "1,4" } })
+                </div>
+                <input type="hidden" id="hdnCompayID" name="CompanyID" />
+                <input type="hidden" id="hdnSource" name="Source" />
+            </div>
+
+
+            <div class="col-xs-4 form-group">
+                <label class="col-sm-3 control-label no-padding-right align-right" for="drpNameOfAssignee">Assignee</label>
+                <div class="col-sm-9">
+                    <select id="ddlAssignee" name="Assignee" tabindex="5" class="col-xs-9">
+                        <option value="">All</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xs-4 form-group">
+                <label class="col-sm-3 control-label no-padding-right align-right" for="lblToDate">To Date</label>
+                <div class="col-sm-7">
+                    <input id="txtToDate" type="text" name="ToDate" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10" class="col-xs-12 special" tabindex="8" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xs-12">
+
+            <div class="col-xs-4 form-group">
+                <label class="col-sm-4 control-label no-padding-right align-right">WO Status</label>
+                <div class="col-sm-8 no-padding-right">
+                    <select id="ddlWOStatus" name="WOStatus" tabindex="3" class="col-xs-12">
+                        <option value="">All</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xs-4 form-group">
+                <label class="col-sm-3 control-label no-padding-right align-right" for="drpTypeData">Client No</label>
+                <div class="col-sm-7">
+                    <input id="txtClientNo" name="ClientNo" type="text" maxlength="100" class="col-xs-12 special" tabindex="6" />
+                </div>
+            </div>
+
+            <div class="col-xs-4 form-group">
+                <div class="col-xs-10 align-right">
+                    <button type="submit" value="DOWNLOAD REPORT" id="btnDownLoadVVR" class="btn btn-purple" name="command" tabindex="9">
+                        <i class="ace-icon fa fa-download bigger-110"></i>
+                        Download Report
+                    </button>
+                    <button id="btnClear" class="btn" type="button" tabindex="10">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                        RESET
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+}
+
+<script type="text/html" id="ScriptAssignee">
+    <option value="{{= UserName}}">{{= UserName}}</option>
+</script>
+
+<script type="text/html" id="scriptStatus">
+    <option value="{{= StatusName}}">{{= StatusName}}</option>
+</script>

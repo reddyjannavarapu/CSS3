@@ -1,0 +1,20 @@
+﻿@*<script src="~/Areas/WO/Content/Scripts/_Css1Info.js"></script>*@
+@System.Web.Optimization.Scripts.Render("~/bundles/_Css1InfoJQuery")
+
+<input type="button" id="btnCss1Info" class="btn btn-purple pull-right" value="CSS1 Info">
+
+<div id="dvCss1Info" class="modal row" tabindex="-1" style="margin-bottom: 10px;">
+    <div class="modal-dialog" style="left: 15%;">
+        <div class="modal-content" style="width: 165%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">@ViewBag.PopupHeader</h4>
+            </div>
+            <div class="modal-body" style="margin-bottom: 20px;">
+                <div class="ace-scroll">
+                    <div id="Output_1" class="scroll-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

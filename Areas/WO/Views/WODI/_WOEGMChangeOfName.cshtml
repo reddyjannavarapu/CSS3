@@ -1,0 +1,178 @@
+﻿@*<script src="~/Scripts/Validations.js"></script>*@
+
+<div class="col-xs-12" style="margin-top: 3px;">
+
+    <div class="pull-right">
+        @Html.Partial("~/Areas/WO/Views/Css1Info/_Css1Info.cshtml", new ViewDataDictionary { { "PopupHeader", "CSS1 EGM Change Of Name Info" } })
+    </div>
+
+</div>
+
+<div class="col-xs-12 margin-10t">
+
+    <div class="col-xs-4">
+
+        <div style="padding-top: 20px; padding-bottom: 30px;" class="col-xs-12 WoBC WoBR">
+
+            <div class="col-xs-offset-1">
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">New Name</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtNewName" placeholder="New Name" class="col-xs-8 special" maxlength="100" tabindex="1" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t" style="display: none;">
+                    Share Holding Structure
+                </div>
+                <div class="col-xs-12 margin-2t" style="display: none;">
+                    <select id="ddlShareHoldingStructure" tabindex="2" class="col-xs-8">
+                        <option value="-1">Select</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xs-4">
+
+        <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 23px;">
+
+            <div class="col-xs-offset-1">
+
+                <div class="text-left col-xs-12 margin-10t">
+
+                    <div class="col-xs-8 no-padding-left">
+                        RO as Place of Meeting
+                    </div>
+                    <div class="col-xs-2">
+                        <label>
+                            <input type="checkbox" id="chkROPlaceOfMeeting" tabindex="3" class="col-xs-9 ace" />
+                            <span class="lbl"></span>
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Address Line1
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Meeting Address Line1" id="txtMeetingAddressLine1" class="col-xs-9 special" maxlength="100" tabindex="4" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Address Line2
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Meeting Address Line2" id="txtMeetingAddressLine2" class="col-xs-9 special" maxlength="100" tabindex="5" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Address Line3
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtMeetingAddressLine3" placeholder="Meeting Address Line3" class="col-xs-9 special" maxlength="100" tabindex="6" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Address Country
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <select class="col-xs-9 no-padding-left" id="ddlMeetingAddressCountry" tabindex="7">
+                        <option value="-1">Select</option>
+                    </select>
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    Meeting Address Postal Code
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Meeting Address Postal Code" id="txtMeetingAddressPostalCode" maxlength="10" class="col-xs-9 DisableCutCopyPaste" tabindex="8" />
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xs-4">
+
+        <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 30px;">
+
+            <div class="col-xs-offset-1">
+
+                <div class="col-xs-8">
+                    <h4 class="text-left">Signing Director</h4>
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Meeting Notice</span>
+                </div>
+                <div class="col-xs-12 margin-2t" tabindex="9">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "MeetingNotice" }, { "selectedId", "" }, { "SearchType", "Officers" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 1 }, { "AutoSearch", 1 }, { "NatureAppoint", "9,7" }, { "DisplayName", "Select Meeting Notice" } })
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Meeting Minutes</span>
+                </div>
+                <div class="col-xs-12 margin-2t" tabindex="10">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "MeetingMinutes" }, { "selectedId", "" }, { "SearchType", "MeetingMinutes" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 1 }, { "AutoSearch", 1 }, { "NatureAppoint", "9,-1,17" }, { "DisplayName", "Select Meeting Minutes" } })
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Other - Meeting Minutes</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtOtherMeetingMinutes" placeholder="Others Meeting Minutes" maxlength="100" class="col-xs-9 special" tabindex="11" />
+                </div>
+
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Designation</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtDesignation" placeholder="Designation" maxlength="100" class="col-xs-9 special" tabindex="12" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    Notice of Resolution
+                </div>
+                <div class="col-xs-12 margin-2t" tabindex="13">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "NoticeofResolution" }, { "selectedId", "" }, { "SearchType", "Officers" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 1 }, { "AutoSearch", 1 }, { "NatureAppoint", "9" }, { "DisplayName", "Select Notice Of Resolution" } })
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="pull-right col-xs-12 align-right margin-10t">
+    <button type="button" class="btn btn-info btnWOClose" id="btnSaveEGM" tabindex="14">
+        <i class="ace-icon fa fa-check bigger-110"></i>
+        SAVE            
+    </button>
+    <button class="btn btnWOClose" type="button" id="btnClear" tabindex="15">
+        <i class="ace-icon fa fa-undo bigger-110"></i>
+        RESET           
+    </button>
+</div>
+
+<div id="divScripts">
+    <script id="ShareHoldingStructure" type="text/html">
+        <option value="{{= ID}}">{{= Name}}</option>
+    </script>
+    <script id="scriptCountry" type="text/html">
+        <option value="{{= CountryID}}">{{= CountryName}}</option>
+    </script>
+</div>
+<script src="~/Areas/WO/Content/Scripts/_WOEGMChangeOfName.js"></script>
+
+

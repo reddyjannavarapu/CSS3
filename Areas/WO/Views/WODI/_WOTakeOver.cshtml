@@ -1,0 +1,679 @@
+﻿@*<script src="~/Content/css/assets/js/chosen.jquery.min.js"></script>
+<link href="~/Content/css/assets/css/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/Scripts/Validations.js"></script>*@
+
+<style>
+    .ui-datepicker {
+        width: 19em;
+    }
+
+    .chosen-container {
+        width: auto !important;
+    }
+</style>
+
+<div class="pull-right col-xs-12 no-padding-right margin-10b">
+    <div class="col-xs-1 pull-right no-padding-right">
+        @Html.Partial("~/Areas/WO/Views/Css1Review/_Css1Review.cshtml", new ViewDataDictionary { { "ReviewPopupHeader", "CSS1 Takeover Review" } })
+    </div>
+</div>
+
+<div class="row margin-10t">
+
+    <div class="col-xs-4">
+
+        <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 120px;">
+
+            <div class="col-xs-offset-1">
+
+                <div class="col-xs-8 margin-10t">
+                    Name of Company
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Name of Company" id="txtCompanyName" class="col-xs-8 special" tabindex="1" maxlength="50" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    Registration No
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Registration No" id="txtRegistrationNo" tabindex="2" maxlength="100" class="col-xs-8 special" />
+                </div>
+
+                <div class="text-left col-xs-12 margin-10t">
+                    <div class="col-xs-7 no-padding-left">
+                        FMG as Registered Address ?
+                    </div>
+
+                    <div class="col-xs-2">
+                        <label>
+                            <input type="checkbox" id="chkFMHasRegisteredAddress" class="ace" />
+                            <span class="lbl" tabindex="13"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    RO Address Line1
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Address Line1" id="txtAddressLine1" class="col-xs-8 special" maxlength="100" tabindex="14" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    RO Address Line2
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Address Line2" id="txtAddressLine2" class="col-xs-8 special" maxlength="100" tabindex="15" />
+                </div>
+
+                <div class="col-xs-12 margin-10t">
+                    RO Address Line3
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtAddressLine3" placeholder="Address Line3" class="col-xs-8 special" maxlength="100" tabindex="16" />
+                </div>
+
+                <div class="text-left col-xs-8 margin-10t">
+                    RO Address Country
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <select class="col-xs-8 no-padding-left" id="ddlAddressCountry" tabindex="17">
+                        <option value="-1">Select</option>
+                    </select>
+                </div>
+                <div class="col-xs-8 margin-10t">
+                    RO Address Postal Code
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Address Postal Code" id="txtAddressPostalCode" maxlength="100" class="col-xs-8 DisableCutCopyPaste" tabindex="18" />
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-xs-4">
+
+        <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 20px;">
+
+            <div class="col-xs-offset-1">
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Class Of Share</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <select id="ddlClassOfShare" tabindex="5" class="col-xs-8">
+                        <option value="-1">Select</option>
+                    </select>
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Currency</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <select id="ddlCurrency" tabindex="4" class="col-xs-8">
+                        <option value="-1">Select</option>
+                    </select>
+                </div>
+
+                <div class="col-xs-11 margin-10t">
+                    <span class="text-left">Total No Of New Shares To Be Allotted</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtAllotedShares" onkeypress="return EnterOnlyNumbers(event)" placeholder="Total No Of New Shares To Be Allotted" class="form-control col-xs-8 DisableCutCopyPaste" maxlength="30" tabindex="6" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Consideration Of Each Share</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtConsiderationOfEachShare" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" placeholder="Consideration Of Each Share" class="form-control col-xs-8 DisableCutCopyPaste special" tabindex="7" />
+                </div>
+
+                <div class="col-xs-11 margin-10t">
+                    <span class="text-left">Amount To Be Treated As Paid On Each Share</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtPaidOnEachShare" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" placeholder="Amount To Be Treated As Paid On Each Share" class="form-control col-xs-8 DisableCutCopyPaste special" tabindex="8" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Total Consideration</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtTotalConsideration" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" placeholder="Total Consideration" class="form-control col-xs-8 DisableCutCopyPaste special" tabindex="9" />
+                </div>
+
+                <div class="col-xs-12 margin-10t">
+                    Resultant Total No Of Issued Shares
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Resultant Total No Of Issued Shares" onkeypress="return EnterOnlyNumbers(event)" id="txtTotalIssuedShares" maxlength="30" class="form-control col-xs-8 DisableCutCopyPaste special" tabindex="10" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    Resultant Issued Capital
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" placeholder="Resultant Issued Capital" id="txtResultantIssuedCapital" class="form-control col-xs-8 DisableCutCopyPaste special" tabindex="11" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    Resultant Paid Up Capital
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" placeholder="Resultant Issued Capital" id="txtResultantPaidUpCapital" class="form-control col-xs-8 DisableCutCopyPaste special" tabindex="12" />
+                </div>
+
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xs-4">
+
+        <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 40px;">
+
+            <div class="col-xs-offset-1">
+
+                <div class="col-xs-8 margin-10t">
+                    Auditor Name
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Auditor Name" id="txtAuditor" maxlength="100" class="form-control col-xs-8 DisableCutCopyPaste special" tabindex="24" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    Out-Going Auditor
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Out Going Auditor" id="txtOutGoingAuditor" maxlength="100" class="col-xs-8 DisableCutCopyPaste special" tabindex="25" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Date Of Next Acc To Be Laid</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtDateOfNextAccToBeLaid" placeholder="DDMMYYYY" class="col-xs-8 DisableCutCopyPaste special" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10" tabindex="3" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <h4 class="text-left">Signing Director</h4>
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Meeting Notice</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Meeting Notice" id="txtMeetingNotice" maxlength="100" class="col-xs-8 DisableCutCopyPaste special" tabindex="19" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Meeting Minutes</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Meeting Minutes" id="txtMeetingMinutes" maxlength="100" class="col-xs-8 DisableCutCopyPaste special" tabindex="20" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    <span class="text-left">Designation</span>
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtDesignation" placeholder="Designation" value="Chairman" maxlength="100" class="col-xs-8 special" tabindex="21" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    Notice of Resolution
+                </div>
+
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="Notice of Resolution" id="txtNoticeResolution" maxlength="100" class="col-xs-8 DisableCutCopyPaste special" tabindex="22" />
+                </div>
+
+                <div class="col-xs-8 margin-10t">
+                    F24 / F25
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" placeholder="F24 By F25" id="txtF24ByF25" maxlength="100" class="col-xs-8 DisableCutCopyPaste special" tabindex="23" />
+                </div>
+
+
+
+                <div class="text-left col-xs-12 margin-10t" style="display: none;">
+                    Share Holding Structure
+                </div>
+                <div class="col-xs-12 margin-2t" style="display: none;">
+                    <select id="ddlShareHoldingStructure" tabindex="26" class="col-xs-8">
+                        <option value="-1">Select</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row align-right margin-10t">
+    <div class="col-xs-12">
+        <button type="button" class="btn btn-info btnWOClose" id="btnSaveTakeOver" tabindex="27">
+            <i class="ace-icon fa fa-check bigger-110"></i>
+            SAVE            
+        </button>
+        <button class="btn btnWOClose" type="button" id="btnClear" tabindex="28">
+            <i class="ace-icon fa fa-undo bigger-110"></i>
+            RESET           
+        </button>
+    </div>
+</div>
+
+
+@*----------------------:Director Details---------------------------------*@
+
+
+<div class="row margin-10t">
+    @Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "TakeoverDirectorsDetails" }, { "I", 1 }, { "C", 0 }, { "GridName", "Directors Details" }, { "GridCode", "TAKEDD" }, { "SearchType", "3,5" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DisplayName", "Director" }, { "gridDefaultLoad", 0 }, { "gridAutoSearch", 1 } })
+</div>
+
+@*<div id="divPupup_DirectorDetails" class="modalAddDetails modal row col-xs-12" style="display: none">
+    <div class="modal-dialog" style="left: 20%;">
+        <div class="modal-content" style="width: 150%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Director Details </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="background-color: #c6d9f1; padding-top: 14px; padding-bottom: 20px; margin-left: 50px;" class="col-xs-6">
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Director Name<span class="redstar">*</span>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="col-xs-8 no-padding">
+                                <input type="text" placeholder=" Director Name" class="col-xs-8" id="txtDirector_Name" maxlength="100" />
+                            </div>
+                            <div class="col-xs-4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 align-right">
+                        <button class="btn btn-info " type="button" id="btnSave_DirectorDetails">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            Save       
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div style="background-color: #c6d9f1; padding-top: 14px; padding-bottom: 20px; margin-top: 50px;" class="col-xs-11">
+
+    <span class="col-xs-8" style="padding-top: 8px;">
+        <label id="lbl_DirectorsDetails">Director Details </label>
+
+        <img src="~/Content/images/AddIcon.png" id="btnDirectorsDetails" class="btnAddDetails" style="cursor: pointer;" />
+    </span>
+    <div class="col-xs-12" style="padding-top: 10px;">
+        <div id="Output_DirectorDetails">
+        </div>
+    </div>
+</div>*@
+
+@*-------------------------End Director Details-------------------------------*@
+
+@*----------------------:Shareholder Details---------------------------------*@
+
+<div class="row margin-10t">
+    @Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "TakeoverShareholderSDetails" }, { "I", 1 }, { "C", 1 }, { "GridName", "Shareholder Details" }, { "GridCode", "TAKESD" }, { "SearchType", "1,2,3,4,5" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DisplayName", "Shareholder" }, { "gridDefaultLoad", 0 }, { "gridAutoSearch", 1 } })
+</div>
+
+@*<div id="divPupup_ShareholderDetails" class="modalAddDetails modal row col-xs-12" style="display: none">
+    <div class="modal-dialog" style="left: 20%;">
+        <div class="modal-content" style="width: 150%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Shareholder Details </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="background-color: #c6d9f1; padding-top: 14px; padding-bottom: 20px; margin-left: 50px;" class="col-xs-6">
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Shareholder Name<span class="redstar">*</span>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="col-xs-8 no-padding">
+                                <input type="text" placeholder="Shareholder Name" class="col-xs-8" id="txtShareholder_Name" maxlength="100" />
+                            </div>
+                            <div class="col-xs-4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 align-right">
+                        <button class="btn btn-info " type="button" id="btnSave_ShareholderDetails">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            SAVE       
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div style="background-color: #c6d9f1; padding-top: 14px; padding-bottom: 20px; margin-top: 50px;" class="col-xs-11">
+
+    <span class="col-xs-8" style="padding-top: 8px;">
+        <label id="lbl_ShareholderDetails">Shareholder Details </label>
+
+        <img src="~/Content/images/AddIcon.png" id="btnShareholderDetails" class="btnAddDetails" style="cursor: pointer;" />
+    </span>
+    <div class="col-xs-12" style="padding-top: 10px;">
+        <div id="Output_ShareholderDetails">
+        </div>
+    </div>
+</div>*@
+
+@*-------------------------End Shareholder Details-------------------------------*@
+
+
+<div class="row margin-10t">
+    @*@Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "NomineeDirectorsDetails" }, { "I", 1 }, { "C", 0 }, { "GridName", "Nominee Directors Details" }, { "GridCode", "NDD" }, { "SearchType", "3" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DisplayName", "Nominee Director" } })*@
+    @Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "NomineeDirectorsDetails" }, { "I", 1 }, { "C", 0 }, { "GridName", "Nominee Directors Details" }, { "GridCode", "NDD" }, { "SearchType", "3,5" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DisplayName", "Nominee Director" }, { "gridDefaultLoad", 0 }, { "gridAutoSearch", 1 } })
+</div>
+
+<div class="row margin-10t">
+    @*@Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "SecretaryDetailsIN" }, { "I", 1 }, { "C", 0 }, { "GridName", "Secretary DetailsIN" }, { "GridCode", "SecretaryDetailsIN" }, { "SearchType", "3" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DisplayName", "In-coming Secretary Name" } })*@
+    @Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "SecretaryDetailsIN" }, { "I", 1 }, { "C", 0 }, { "GridName", "In-coming Secretary Details" }, { "GridCode", "SecretaryDetailsIN" }, { "SearchType", "3,5" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DisplayName", "In-coming Secretary Name" }, { "gridDefaultLoad", 0 }, { "gridAutoSearch", 1 } })
+</div>
+
+<div class="row margin-10t">
+    @Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "SecretaryDetailsOUT" }, { "I", 1 }, { "C", 0 }, { "GridName", "Out-going Secretary Details" }, { "GridCode", "SecretaryDetailsOUT" }, { "SearchType", "3,5" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DisplayName", "Out-going Secretary Name" }, { "gridDefaultLoad", 0 }, { "gridAutoSearch", 1 } })
+</div>
+
+<div class="row margin-10t">
+    @Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "TAKENDSA" }, { "I", 0 }, { "C", 0 }, { "GridName", "Signing Director - Nominee Director Service Agreement" }, { "GridCode", "TAKENDSA" }, { "SearchType", "3,5" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DisplayName", "Nominee Director Service Agreement" }, { "gridDefaultLoad", 0 }, { "gridAutoSearch", 1 } })
+</div>
+
+<div class="row margin-10t">
+    @Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "TAKENSSA" }, { "I", 0 }, { "C", 0 }, { "GridName", "Signing Director - Nominee Secretary Service Agreement" }, { "GridCode", "TAKENSSA" }, { "SearchType", "3,5" }, { "SearchRole", "DYN" }, { "WOID", @ViewBag.WOID }, { "DisplayName", "Nominee Secretary Service Agreement" }, { "gridDefaultLoad", 0 }, { "gridAutoSearch", 1 } })
+</div>
+@*----------------------:Principal Content Details---------------------------------*@
+
+<div id="divPupup_PrincipalDetails" class="modalAddDetails modal row col-xs-12" style="display: none">
+    <div class="modal-dialog" style="left: 20%;">
+        <div class="modal-content" style="width: 150%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Principal Details </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="padding-top: 14px; padding-bottom: 20px; margin-left: 50px;" class="col-xs-6 WoBC WoBR">
+                        <div class="text-left col-xs-12" style="padding-top: 10px; display: none;">
+                            Nominee Director <span class="redstar">* </span>
+                        </div>
+                        <div class="col-xs-12" style="display: none;">
+                            <select class="col-xs-8 no-padding-left" id="ddlNomineeDirectorDetailsInPD" tabindex="6">
+                                <option value="-1">Nominee Director</option>
+                            </select>
+                        </div>
+
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Principal Name<span class="redstar">*</span>
+                        </div>
+                        <div class="col-xs-12">
+
+                            <div class="col-xs-8 no-padding">
+                                @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "PrincipalDetails" }, { "selectedId", "" }, { "SearchType", "1,2,3,4,5" }, { "SearchRole", "DYN" }, { "WOID", "" }, { "DefaultLoad", 0 }, { "AutoSearch", 1 }, { "DisplayName", "Principal Name" } })
+                            </div>
+
+                            <div class="col-xs-4">
+                                <img src="~/Content/images/i_icon.png" style="cursor: pointer; width: 30px;" class="btnIndividual" id="btnIndividual_PrincipalDetails" />
+                                <img src="~/Content/images/c_icon.png" style="cursor: pointer; width: 32px;" class="btnCompany" id="btnCompany_PrincipalDetails" />
+                            </div>
+                        </div>
+
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Email
+                        </div>
+                        <div class="col-xs-12">
+                            <input type="text" placeholder="Email" class="col-xs-8 special" id="txtDirectorEmail_PrincipalDetails" maxlength="100" />
+                        </div>
+
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Contact No
+                        </div>
+                        <div class="col-xs-12">
+                            <input type="text" placeholder="Contact No" class="col-xs-8" id="txtDirectorContactNo_PrincipalDetails" maxlength="100" />
+                        </div>
+
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Fax
+                        </div>
+                        <div class="col-xs-12">
+                            <input type="text" placeholder="Fax" class="col-xs-8" id="txtDirectorFax_PrincipalDetails" maxlength="100" />
+                        </div>
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Contact Person
+                        </div>
+                        <div class="col-xs-12">
+                            <input type="text" placeholder="Contact Person" class="col-xs-8" id="txtContactPerson_PrincipalDetails" maxlength="100" />
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 align-right">
+                        @*<input type="hidden" value="0" id="hdnItemCounts_AuthorizedPersonFSDetails" />*@
+                        <button class="btn btn-info btnWOClose" type="button" id="btnSave_PrincipalDetails">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            SAVE
+       
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="divIndividualOrCompany_PrincipalDetails" class="divIndividualOrCompany">
+</div>
+
+
+<div class="row margin-10t">
+    <div class=" col-xs-12">
+        <div class="widget-box widgetGrid">
+            <div class="widget-header widgetGridHeader" style="cursor: pointer;">
+                <label id="lbl_PrincipalDetails" class="margin-10t">Principal Details</label>
+                <img src="~/Content/images/AddIcon.png" id="btnPrincipalDetails" class="btnAddDetails btnWOClose" style="cursor: pointer;" />
+                <a style="float: right; padding: 10px;">
+                    <i class="ace-icon fa fa-chevron-up"></i>
+                </a>
+            </div>
+            <div class=" widget-body">
+                <div id="Output_PrincipalDetails">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ddlNomineeDirectorDetailsInPDTemplate" type="text/html">
+    <option personid="{{= PersonID}}" personsource="{{= PersonSource}}">{{= Name}}</option>
+</script>
+
+@*-------------------------End Principal Content Details-------------------------------*@
+
+@*   <div style="background-color: #c6d9f1; padding-top: 14px; padding-bottom: 20px; margin-top: 10px;" class="col-xs-11">
+            @Html.Partial("~/Areas/WO/Views/PartialContent/_DynamicGrid.cshtml", new ViewDataDictionary { { "ddlId", "AuthorizedPersonPrincipalDetails" }, { "I", 1 }, { "C", 1 }, { "GridName", "Authorized Person Principal Details" }, { "GridCode", "APD" } })
+
+        </div>*@
+
+
+@*----------------------AuthorizedPersonPrincipalDetails---------------------------------*@
+
+<div id="divPupup_AuthorizedPersonPrincipalDetails" class="modalAddDetails modal row col-xs-12" style="display: none">
+    <div class="modal-dialog" style="left: 20%;">
+        <div class="modal-content" style="width: 150%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Authorized Person Principal Details </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div style="padding-top: 14px; padding-bottom: 20px; margin-left: 50px;" class="col-xs-6 WoBC WoBR">
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Principal Name <span class="redstar">* </span>
+                        </div>
+                        <div class="col-xs-12">
+                            <select class="col-xs-8 no-padding-left" id="ddlPrincipalDetails" tabindex="6">
+                                <option value="">Principal Name</option>
+                            </select>
+                        </div>
+
+
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Authorized Person For Principal<span class="redstar">*</span>
+                        </div>
+                        <div class="col-xs-12">
+
+                            <div class="col-xs-8 no-padding">
+                                @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "AuthorizedPersonPrincipalDetails" }, { "selectedId", "" }, { "SearchType", "3,4,5" }, { "SearchRole", "DYN" }, { "WOID", "" }, { "DefaultLoad", 0 }, { "AutoSearch", 1 }, { "DisplayName", "Authorized Person For Principal" } })
+                            </div>
+
+                            <div class="col-xs-4">
+                                <img src="~/Content/images/i_icon.png" style="cursor: pointer; width: 30px;" class="btnIndividual" id="btnIndividual_AuthorizedPersonPrincipalDetails" />
+                                <img src="~/Content/images/c_icon.png" style="cursor: pointer; width: 32px;" class="btnCompany" id="btnCompany_AuthorizedPersonPrincipalDetails" />
+                            </div>
+                        </div>
+
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Email
+                        </div>
+                        <div class="col-xs-12">
+                            <input type="text" placeholder="Email" class="col-xs-8 special" id="txtDirectorEmail_AuthorizedPersonPrincipalDetails" maxlength="100" />
+                        </div>
+
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Contact No
+                        </div>
+                        <div class="col-xs-12">
+                            <input type="text" placeholder="Contact No" class="col-xs-8" id="txtDirectorContactNo_AuthorizedPersonPrincipalDetails" maxlength="100" />
+                        </div>
+
+                        <div class="text-left col-xs-12" style="padding-top: 10px;">
+                            Fax
+                        </div>
+                        <div class="col-xs-12">
+                            <input type="text" placeholder="Fax" class="col-xs-8" id="txtDirectorFax_AuthorizedPersonPrincipalDetails" maxlength="100" />
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 align-right">
+                        @*<input type="hidden" value="0" id="hdnItemCounts_AuthorizedPersonFSDetails" />*@
+                        <button class="btn btn-info btnWOClose" type="button" id="btnSave_AuthorizedPersonPrincipalDetails">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            SAVE
+       
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="divIndividualOrCompany_AuthorizedPersonPrincipalDetails" class="divIndividualOrCompany">
+</div>
+
+<div class="row margin-10t">
+    <div class=" col-xs-12">
+        <div class="widget-box widgetGrid">
+            <div class="widget-header widgetGridHeader" style="cursor: pointer;">
+                <label id="lbl_AuthorizedPersonPrincipalDetails" class="margin-10t">Authorized Person Principal Details</label>
+                <img src="~/Content/images/AddIcon.png" id="btnAuthorizedPersonPrincipalDetails" class="btnAddDetails btnWOClose" style="cursor: pointer;" />
+                <a style="float: right; padding: 10px;">
+                    <i class="ace-icon fa fa-chevron-up"></i>
+                </a>
+            </div>
+            <div class=" widget-body ">
+                <div id="Output_AuthorizedPersonPrincipalDetails">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ddlAuthorizedPersonPrincipalDetailsTemplate" type="text/html">
+    <option value="{{= FirstSubscriberID}}">{{= FirstSubscriberName}}</option>
+</script>
+@*-------------------------End AuthorizedPersonFirstSubscribersDetails-------------------------------*@
+
+<div id="divCss1InfoForExistingClientEngaging" class="modal row" tabindex="-1">
+    <div class="modal-dialog" style="left: 15%;">
+        <div class="modal-content" style="width: 165%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">CSS1 Existing Client Engaging Info</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog-multiple-confirm" class="hide">
+    <div class="alert alert-danger bigger-110">
+        These item will be permanently deleted in all the reference areas and cannot be recovered.
+    </div>
+
+    <div class="space-6"></div>
+
+    <p class="bigger-110 bolder center grey">
+        <i class="ace-icon fa fa-hand-o-right blue bigger-120"></i>
+        Are you sure?
+    </p>
+</div>
+
+<div id="divScripts">
+    <script id="ShareHoldingStructure" type="text/html">
+        <option value="{{= ID}}">{{= Name}}</option>
+    </script>
+    <script id="scriptCurrency" type="text/html">
+        <option value="{{= CurrencyID}}">{{= CurrencyName}}</option>
+    </script>
+    <script id="scriptShareClass" type="text/html">
+        <option value="{{= ShareClassID}}">{{= ClassName}}</option>
+    </script>
+    <script id="scriptCountry" type="text/html">
+        <option value="{{= CountryID}}">{{= CountryName}}</option>
+    </script>
+</div>
+<script src="~/Areas/WO/Content/Scripts/_WOTakeOver.js"></script>

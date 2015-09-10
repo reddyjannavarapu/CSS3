@@ -1,0 +1,189 @@
+﻿<link href="~/Content/css/assets/css/jquery-ui.min.css" rel="stylesheet" />
+<style>
+    .ui-datepicker {
+        width: 19em !important;
+    }
+</style>
+<input type="hidden" id="hdnCreateIndividual" value="0" />
+<script src="~/Areas/WO/Content/Scripts/_CreateIndividual.js"></script>
+
+<div id="modal-form_Individual" class="modalIndividual modal row" tabindex="-1">
+    <div class="modal-dialog" style="left: 20%;">
+        <div class="modal-content" style="width: 150%">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">New Individual</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <div class="col-xs-4">
+
+                        <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 15px;">
+                            <div class="text-left col-xs-12">
+                                Name<span class="redstar">*</span>
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Name" class="col-xs-9 special" id="txtName" maxlength="100" tabindex="1" />
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                Nationality
+                            </div>
+                            <div class="col-xs-12">
+                                <select class="col-xs-9 no-padding-left ddlCountryInCreateIndividual" id="ddlCountryForNationality" tabindex="2">
+                                    <option value="-1">Select</option>
+                                </select>
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                <span class="col-xs-8 no-padding-left">Singapore PR?</span>
+                                <label class="col-xs-2">
+                                    <input type="checkbox" name="form-field-checkbox" class="ace" id="chkSingaporePR" tabindex="3">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                Date Of Birth
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Date Of Birth" class="col-xs-9 special" id="txtDateofBirth" tabindex="4" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10" />
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                NRIC\FIN No
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="NRIC\FIN No" class="col-xs-9" id="txtNricFinNo" maxlength="50" tabindex="5" />
+                            </div>
+
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                Passport
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Passport" class="col-xs-9" id="txtPassport" maxlength="50" tabindex="6" />
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                Passport/Fin Expiry Date
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Passport/Fin Expiry Date" class="col-xs-9 special" id="txtNRICExpiryDate" tabindex="7" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-4">
+
+                        <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 51px;">
+                            <div class="text-left col-xs-12">
+                                Address Line1
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Address Line1" class="col-xs-9 special" id="txtIndividualAddressLine1" maxlength="50" tabindex="8" />
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                Address Line2
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Address Line2" class="col-xs-9 special" id="txtIndividualAddressLine2" maxlength="50" tabindex="9" />
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                Address Line3
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Address Line3" class="col-xs-9 special" id="txtIndividualAddressLine3" maxlength="50" tabindex="10" />
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                Country
+                            </div>
+                            <div class="col-xs-12">
+                                <select class="col-xs-9 no-padding-left ddlCountryInCreateIndividual" id="ddlIndividualCountry" tabindex="11">
+                                    <option value="-1">Select</option>
+                                </select>
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                Postal Code
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Postal Code" class="col-xs-9" id="txtIndividualPostalCode" maxlength="20" tabindex="12" />
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                Occupation
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Occupation" class="col-xs-9 special" id="txtOccupation" maxlength="50" tabindex="13" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-4">
+
+                        <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 175px;">
+                            <div class="text-left col-xs-12">
+                                Email
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Email" class="col-xs-12 special" id="txtEmail" maxlength="100" tabindex="14" />
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                Contact No
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Contact No" class="col-xs-12" id="txtContactNo" maxlength="20" tabindex="15" />
+                            </div>
+
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                Fax
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="Fax" class="col-xs-12" id="txtFax" maxlength="20" tabindex="16" />
+                            </div>
+                            <div class="text-left col-xs-12" style="padding-top: 10px;">
+                                ACCPAC Code
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="text" placeholder="ACCPAC Code" class="col-xs-12" id="txtACCPACCode" maxlength="20" tabindex="17" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 margin-20t align-right">
+                        <button class="btn btn-info" type="button" id="btnSaveIndividual" tabindex="18">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            SAVE
+       
+                        </button>
+                        <button type="button" class="btn" id="btnIndividualCancel" tabindex="19">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            RESET
+           
+                        </button>
+                    </div>
+
+                </div>
+
+                <script id="NationalityDropDownForIndividualTemplate" type="text/html">
+                    <option value="{{= CountryID}}">{{= Nationality}}</option>
+                </script>
+
+                <script id="CountryDropDownForIndividualTemplate" type="text/html">
+                    <option value="{{= CountryID}}">{{= CountryName}}</option>
+                </script>
+
+            </div>
+        </div>
+    </div>
+</div>

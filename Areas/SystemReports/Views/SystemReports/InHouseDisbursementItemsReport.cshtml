@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "InHouse DI Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Areas/SystemReports/Content/Scripts/In-HouseDIReports.js"></script>
+<style>
+    .ui-datepicker {
+        width: 19em;
+    }
+</style>
+
+@using (Html.BeginForm("InHouseDIReport", "SystemReports", FormMethod.Post))
+{
+    
+    <div class="col-xs-6 form-group" style="display: none">
+        <label class="col-sm-3 control-label no-padding-top no-padding-right" for="chkVerified">In-House</label>
+        <div class="col-sm-9">
+            <label>
+                <input id="chkInHouse" type="checkbox" checked="checked" name="InHouse" value="true" class="ace">
+                <span class="lbl"></span>
+            </label>
+        </div>
+    </div>
+    
+    <div class="form-actions clearfix">
+
+        <div class="col-xs-8 no-padding-right">
+
+            <div class="col-xs-6 form-group">
+                <label for="ddlGroupCode" class="col-sm-4 control-label no-padding-right align-right">SIC Group</label>
+
+                <div class="col-sm-6" tabindex="2">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_GroupInfo.cshtml", new ViewDataDictionary { { "ddlId", "InCWO" }, { "GroupType", "InCWO" }, { "selectedId", 0 }, { "DisplayName", "ALL" } })
+                </div>
+                <input type="hidden" id="hdnGroupCode" name="GroupCode" />
+            </div>
+
+            <div class="col-xs-6 form-group">
+                <label class="col-sm-4 control-label no-padding-right align-right" for="lblFromDate">From Date</label>
+                <div class="col-sm-7">
+                    <input type="text" id="txtFromDate" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10" name="FromDate" class="col-xs-11 special" tabindex="3" />
+                </div>
+            </div>
+
+            <div class="col-xs-6 form-group">
+                <label class="col-sm-4 control-label no-padding-right align-right" for="txtClientName">Client / Customer</label>
+                <div class="col-sm-6" id="divClientOne" tabindex="1">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_ClientChosen.cshtml", new ViewDataDictionary { { "ddlId", "ddlClient" }, { "clientType", "" }, { "selectedId", -1 }, { "DisplayName", "ALL" }, { "DefaultLoad", 0 }, { "WOID", 0 }, { "ClientSource", "1,4" } })
+                </div>
+                <input type="hidden" id="hdnCompayID" name="CompanyID" />
+                <input type="hidden" id="hdnSource" name="Source" />
+            </div>
+
+            <div class="col-xs-6 form-group">
+                <label class="col-sm-4 control-label no-padding-right align-right" for="lblToDate">To Date</label>
+                <div class="col-sm-7">
+                    <input id="txtToDate" type="text" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10" name="ToDate" class="col-xs-11 special" tabindex="4" />
+                </div>
+
+            </div>
+
+            <div class="col-xs-6 form-group">
+                <label class="col-sm-4 control-label no-padding-right align-right" for="drpTypeData">Item Number</label>
+                <div class="col-sm-6" tabindex="1">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DIItemChosen.cshtml", new ViewDataDictionary { { "Id", "ddlDIItem" }, { "DisplayName", "ALL" }, { "DefaultLoad", 0 } })
+                </div>
+                <input type="hidden" id="ItemNo" name="ItemNo" />
+            </div>
+
+        </div>
+
+        <div class="col-xs-4 no-padding-left">
+            <div class="col-xs-12 form-group">
+                <label class="col-sm-4 control-label no-padding-right align-right">DI Description</label>
+                <div class="col-sm-8">
+                    <textarea id="txtDIDescription" style="height: 69px; resize: none;" name="Description" class="form-control col-xs-12 limited special" maxlength="250" tabindex="5"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 no-padding-left" style="margin-top: 10px;">
+            <div class="col-xs-6 align-right">
+                @*<input type="submit" value="DOWNLOAD REPORT" id="btnDownLoadDI" class="btn btn-purple" tabindex="6" name="command" />*@
+                <button type="submit" value="DOWNLOAD REPORT" id="btnDownLoadDI" class="btn btn-purple" tabindex="6" name="command">
+                    <i class="ace-icon fa fa-download bigger-110"></i>
+                    Download Report
+                </button>
+            </div>
+
+            <div class="col-xs-6">
+                <button id="btnClear" class="btn" type="button" tabindex="7">
+                    <i class="ace-icon fa fa-undo bigger-110"></i>
+                    RESET
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+    
+    
+}
+<script id="TypeDropDownTemplate" type="text/html">
+    <option value="{{= ID}}">{{= ItemNumber}}</option>
+</script>

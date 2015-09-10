@@ -1,0 +1,494 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+</div>
+<script src="~/Scripts/Index.js"></script>
+
+
+<div id="divViewGapByBatch" class="clearfix">
+    <div class="col-xs-4 pull-right">
+        <div class="pull-right">
+            Batch Type 
+            <select id="ddlBatchTypeS" class="margin-10r margin-10l"></select>
+       
+            <button type="button" class="Add btn btn-purple pull-right" id="btnViewGapByBatch">
+                <i class="ace-icon fa fa-eye bigger-120"></i>
+                VIEW GAP
+
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="divSuperAdmin" class="col-xs-offset-1 col-xs-10" style="display: none">
+    <div class="widget-boxAdmin left">
+        <div class="widget-header" style="cursor: pointer;">
+            <h5 class="widget-title">Work Orders</h5>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main" style="background-color: #f5f5f5">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td colspan="5">
+                                <div style="color: red">
+                                    <a href="../WO/WODI/SearchWorkOrder" style="margin-left: 40px; font-size: 20px">View All WO
+                                     <div style="text-align: center; min-height: 100px">
+                                     </div>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="widget-boxAdmin">
+        <div class="widget-header" style="cursor: pointer;">
+            <h5 class="widget-title">DI</h5>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main" style="background-color: #f5f5f5">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td colspan="5">
+                                <div style="color: red">
+                                    <a href="../WO/WODI/SearchDisbursementItems" style="margin-left: 40px; font-size: 20px">View All DI
+                                     <div style="text-align: center; min-height: 100px">
+                                     </div>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-xs-offset--9 col-xs-12">
+    @*Un Assigned List*@
+    <div id="widget1" class="widget-box">
+        <div class="widget-header" id="dvheader1" onclick="collapsedShow('widget1')" style="cursor: pointer;">
+            <h5 class="widget-title">Unassigned <span id="UnAssignedCount" class="badge"></span></h5>
+            <a class="pull-right padding-10">
+                <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+            <a href="../WO/WODI/SearchWorkOrder?AssignedTo=-2" class="pull-right padding-10">View All
+            </a>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main" style="background-color: #f5f5f5">
+
+                <table id="tblUnAssignedWO" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Type	
+                            </th>
+                            <th>Client / Customer</th>
+                            <th>Created Date</th>
+                            <th>Created By</th>
+                            <th>WO #</th>
+                            <th>Group</th>
+                            <th>Actions 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblUnAssignedWOBody">
+                    </tbody>
+                </table>
+
+                <div id="divUnAssignedWO" style="display: none;">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td colspan="5">
+                                    <div>No data found.</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <script type="text/html" id="scripttblUnAssignedWO">
+                <tr class="{{= ColorFlag}}">
+
+                    <td>{{= WorkOrderTypeText}}
+                    </td>
+                    <td>{{= Name}}
+                    </td>
+                    <td>{{= CreatedDate}}
+                    </td>
+                    <td>{{= CreatedBy}}
+                    </td>
+                    <td>
+                        <a id="{{= WorkOrderID}}" class="aEdit" href="javascript:void(0)">{{= WOCode}}
+                        </a>
+                    </td>
+                    <td>{{= GroupCode}}
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            @Html.Partial("~/Areas/WO/Views/Note/_Note.cshtml")
+                        </div>
+                    </td>
+
+                </tr>
+            </script>
+
+        </div>
+    </div>
+
+    @*Assigned List*@
+    <div id="widget" class="widget-box margin-10t">
+        <div class="widget-header" id="dvheader" onclick="collapsedShow('widget')" style="cursor: pointer;">
+            <h5 class="widget-title" id="diLabel">Assigned <span id="AssignedCount" class="badge"></span></h5>
+            <a class="pull-right padding-10">
+                <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+            <a href="../WO/WODI/SearchWorkOrder?AssignedTo=-3" class="pull-right padding-10">View All
+            </a>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main" style="background-color: #f5f5f5">
+
+                <table id="tblAssignedWO" style="background-color: white !important;" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Type	
+                            </th>
+                            <th>Client / Customer</th>
+                            <th>Assigned To	
+                            </th>
+                            <th>Assigned Date</th>
+                            <th>WO #</th>
+                            <th>Group</th>
+                            <th>Actions 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblAssignedWOBody">
+                    </tbody>
+                </table>
+
+                <div id="divAssignedWO" style="display: none;">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td colspan="5">
+                                    <div>No data found.</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <script type="text/html" id="scripttblAssignedWO">
+                <tr class="{{= ColorFlag}}">
+                    <td>{{= WorkOrderTypeText}}
+                    </td>
+                    <td>{{= Name}}
+                    </td>
+                    <td>{{= AssignedTo}}
+                    </td>
+                    <td>{{= AssignedDate}}
+                    </td>
+                    <td>
+                        <a id="{{= WorkOrderID}}" class="aEdit" href="javascript:void(0)">{{= WOCode}}
+                        </a>
+                    </td>
+                    <td>{{= GroupCode}}
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            @Html.Partial("~/Areas/WO/Views/Note/_Note.cshtml")
+                        </div>
+                    </td>
+
+                </tr>
+            </script>
+
+        </div>
+    </div>
+
+    @*Draft*@
+    <div id="widget4" class="widget-box margin-10t">
+        <div class="widget-header" id="dvheader4" onclick="collapsedShow('widget4')" style="cursor: pointer;">
+            <h5 class="widget-title">Draft <span id="DraftCount" class="badge"></span></h5>           
+            <a class="pull-right padding-10">
+                <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+             <a href="../WO/WODI/SearchWorkOrder?Status=WIP" class="pull-right padding-10">View All
+            </a>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main" style="background-color: #f5f5f5">
+
+                <table id="tblDraftWO" style="background-color: white !important;" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Type	
+                            </th>
+                            <th>Client / Customer</th>
+                            <th>Created By</th>
+                            <th>Updated Date</th>
+                            <th>WO #</th>
+                            <th>Group</th>
+                            <th>Actions 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblDraftWOBody">
+                    </tbody>
+                </table>
+
+                <div id="divDraftWO" style="display: none;">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td colspan="5">
+                                    <div>No data found.</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <script type="text/html" id="scripttblDraftWO">
+                <tr>
+                    <td>{{= WorkOrderTypeText}}
+                    </td>
+                    <td>{{= Name}}
+                    </td>
+                    <td>{{= CreatedBy}}
+                    </td>
+                    <td>{{= UpdatedDate}}
+                    </td>
+                    <td>
+                        <a id="{{= WorkOrderID}}" class="aEdit" href="javascript:void(0)">{{= WOCode}}
+                        </a>
+                    </td>
+                    <td>{{= GroupCode}}
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            @Html.Partial("~/Areas/WO/Views/Note/_Note.cshtml")
+                        </div>
+                    </td>
+
+                </tr>
+            </script>
+
+        </div>
+    </div>
+
+    @*Document generated*@
+    <div id="widget2" class="widget-box margin-10t">
+        <div class="widget-header" id="dvheader2" onclick="collapsedShow('widget2')" style="cursor: pointer;">
+            <h5 class="widget-title">Document Generated <span id="DocumentCount" class="badge"></span></h5>
+             <a class="pull-right padding-10">
+                <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+            <a href="../WO/WODI/SearchWorkOrder?Status=DOC" class="pull-right padding-10">View All
+            </a>           
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main" style="background-color: #f5f5f5">
+
+                <table id="tblDocGeneratedWO" style="background-color: white !important;" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Type	
+                            </th>
+                            <th>Client / Customer</th>
+                            <th>Created By</th>
+                            <th>Doc Generated Date</th>
+                            <th>WO #</th>
+                            <th>Group</th>
+                            <th>Actions 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblDocGeneratedWOBody">
+                    </tbody>
+                </table>
+
+                <div id="divDocGeneratedWO" style="display: none;">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td colspan="5">
+                                    <div>No data found.</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <script type="text/html" id="scripttblDocGeneratedWO">
+                <tr>
+                    <td>{{= WorkOrderTypeText}}
+                    </td>
+                    <td>{{= Name}}
+                    </td>
+                    <td>{{= CreatedBy}}
+                    </td>
+                    <td>{{= DocGeneratedDate}}
+                    </td>
+                    <td>
+                        <a id="{{= WorkOrderID}}" class="aEdit" href="javascript:void(0)">{{= WOCode}}
+                        </a>
+                    </td>
+                    <td>{{= GroupCode}}
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            @Html.Partial("~/Areas/WO/Views/Note/_Note.cshtml")
+                        </div>
+                    </td>
+
+                </tr>
+            </script>
+
+        </div>
+    </div>
+
+    @*Completed*@
+    <div id="widget3" class="widget-box margin-10t">
+        <div class="widget-header" id="dvheader3" onclick="collapsedShow('widget3')" style="cursor: pointer;">
+            <h5 class="widget-title">Completed <span id="CompletedCount" class="badge"></span></h5>            
+            <a class="pull-right padding-10">
+                <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+            <a href="../WO/WODI/SearchWorkOrder?Status=COM" class="pull-right padding-10">View All
+            </a>           
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main" style="background-color: #f5f5f5">
+
+                <table id="tblCompletedWO" style="background-color: white !important;" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Type	
+                            </th>
+                            <th>Client / Customer</th>
+                            <th>Created By</th>
+                            <th>Completed Date</th>
+                            <th>WO #</th>
+                            <th>Group</th>
+                            <th>Actions 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblCompletedWOBody">
+                    </tbody>
+                </table>
+
+                <div id="divCompletedWO" style="display: none;">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td colspan="5">
+                                    <div>No data found.</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="modal-form1" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width: 700px">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 id="dataFound" class="blue bigger">Gap Analysis</h4>
+                        <h4 id="noData" style="display: none">Gap Analysis data not found...</h4>
+                    </div>
+
+                    <div class="modal-body" style="overflow-y: auto; max-height: 500px">
+
+                        <table id="gapTable" style="background-color: #FFFFFF" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>S No</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Duration (No Of Days)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="trGapBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <script type="text/html" id="scripttblCompletedWO">
+            <tr>
+                <td>{{= WorkOrderTypeText}}
+                </td>
+                <td>{{= Name}}
+                </td>
+                <td>{{= CreatedBy}}
+                </td>
+                <td>{{= CompletedDate}}
+                </td>
+                <td>
+                    <a id="{{= WorkOrderID}}" class="aEdit" href="javascript:void(0)">{{= WOCode}}
+                    </a>
+                </td>
+                <td>{{= GroupCode}}
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        @Html.Partial("~/Areas/WO/Views/Note/_Note.cshtml")
+                    </div>
+                </td>
+
+            </tr>
+        </script>
+        <script type="text/html" id="scriptBatchType">
+            <option value="{{= BatchCode}}">{{= Name}}</option>
+        </script>
+        <script id="scriptGapCabBatchDetails" type="text/html">
+            <tr>
+                <td>
+                    <span id="spanSNO">{{= SNO}}</span>
+                </td>
+                <td>
+                    <span id="spanFromDate">{{= FromDate}}</span>
+                </td>
+                <td>
+                    <span id="spanToDate">{{= ToDate}}</span>
+
+                </td>
+                <td><span id="spanDuration">{{= Duration}}</span></td>
+            </tr>
+        </script>
+
+    </div>
+</div>
+

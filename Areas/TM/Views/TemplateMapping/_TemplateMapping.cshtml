@@ -1,0 +1,81 @@
+﻿<script src="~/Areas/TM/Content/Scripts/_TemplateMapping.js"></script>
+<div id="divMainTemp">
+    <div class="well">
+        <h3>Select Documents
+        </h3>
+        <table id="divTemplates" class="divTemplates" style="width: 550px">
+        </table>
+    </div>
+    <div style="float: right">
+        <div style="display: none">
+            <div style="margin-top: 7px" class="pull-left">Document Type : </div>
+            <div style="margin-left: 10px" class="pull-left">
+                <select class="form-control" id="ddlDocType">
+                    <option value="DOC">DOC</option>
+                    <option value="PDF">PDF</option>
+                    <option value="DOC/PDF">DOC/PDF</option>
+                </select>
+            </div>
+        </div>
+        <div style="margin-left: 20px;" class="pull-left">
+            <button id='btnLoadDefault' class="btn" type="button">
+                <i class="ace-icon fa fa-undo bigger-110"></i>
+                LOAD DEFAULT
+            </button>
+        </div>
+        <div style="margin-left: 20px;" class="pull-left">
+            <button id='btnTemplateUpdate' class="btn btn-info btnTemplateUpdate" type="button">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                GENERATE
+            </button>
+        </div>
+    </div>  
+
+    
+</div>
+
+
+
+<script id="scriptMainTemplate" type="text/html">
+
+    <tr id="trHeader" class="trHeader">
+        <td>
+            <span class="btnOpenClose glyphicon glyphicon-minus" style="cursor: pointer"></span>
+            <label>
+                <input type="checkbox" woid="{{= WOID}}" setname="{{= SetName}}" setid="{{= SetID}}" class="ace chkTemplate" />
+                <span class="lbl"></span>
+            </label>
+
+            <label style="font-size: 13px;">{{= SetName}}</label>
+        </td>
+    </tr>
+    <tr style="display: none;">
+        <td>
+            <table style="margin: 5px 0px 10px 30px" class="sections">
+                {{tmpl(SectionList) "#scriptSectionTemplate"}}
+            </table>
+        </td>
+    </tr>
+
+
+</script>
+
+<script id="scriptSectionTemplate" type="text/html">
+
+    <tr class="ChkStatus">
+        <td>
+            <label>
+                {{if TFileStatus }} 
+                 <input type="checkbox" style="padding-top: 5px;" checked="checked" woid="{{= WOID}}" filename="{{= FileName}}" fileid="{{= FileID}}" setid="{{= SetID}}" filefullname="{{= FileFullName}}" filepath="{{= FilePath}}" class="ace chkSection" />
+                <span style="padding-top: 5px;" class="lbl"></span>
+                {{else}} 
+                 <input type="checkbox" style="padding-top: 5px;" woid="{{= WOID}}" filename="{{= FileName}}" fileid="{{= FileID}}" setid="{{= SetID}}" filefullname="{{= FileFullName}}" filepath="{{= FilePath}}" class="ace chkSection" />
+                <span style="padding-top: 5px;" class="lbl"></span>
+                {{/if}}                
+                <span style="padding-top: 5px;" class="lbl"></span>
+            </label>
+
+            <label style="font-size: 11px; padding-top: 5px;">{{= FileName}}</label>
+        </td>
+    </tr>
+</script>

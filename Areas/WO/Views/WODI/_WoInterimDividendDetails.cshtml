@@ -1,0 +1,226 @@
+﻿@*<script src="~/Scripts/Validations.js"></script>*@
+
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("~/Areas/WO/Views/Css1Info/_Css1Info.cshtml", new ViewDataDictionary { { "PopupHeader", "CSS1 Interim Dividend Info" } })
+    </div>
+</div>
+
+<div class="margin-10t row">
+
+    <div class="col-xs-4 col-xs-offset-2">
+
+        <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 25px;">
+
+            <div class="col-xs-offset-1">
+
+                <div class="col-xs-12 margin-10t">
+                    Financial Period
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" id="txtFinancialPeriod" placeholder="Financial Period" class="col-xs-8 DisableCutCopyPaste special" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10" tabindex="1">
+                </div>
+
+                <div class="col-xs-12 margin-10t">
+                    Date of declaration
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" tabindex="3" placeholder="Date of declaration" id="txtDateOfDeclaration" class="col-xs-8 DisableCutCopyPaste special" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10">
+                </div>
+
+                <div class="col-xs-12 margin-10t">
+                    Date of payment
+                </div>
+                <div class="col-xs-12 margin-2t">
+                    <input type="text" tabindex="4" placeholder="Date of payment" id="txtDateOfPayment" class="col-xs-8 DisableCutCopyPaste special" onblur="javascript:validateDateDDMMYYYY(this)" onkeypress="return checkDateValidation(event)" maxlength="10">
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-xs-4">
+
+        <div class="col-xs-12 WoBC WoBR" style="padding-top: 20px; padding-bottom: 107px;">
+
+            <div class="col-xs-offset-1">
+
+                <div class="col-xs-12 margin-10t">
+                    <h4 class="text-left">Signing Director</h4>
+                </div>
+
+                <div class="col-xs-12 margin-10t">
+                    <span>Dividend Voucher</span>
+                </div>
+                <div class="col-xs-12 margin-2t" tabindex="5">
+                    @Html.Partial("~/Areas/WO/Views/PartialContent/_DirectorsChosen.cshtml", new ViewDataDictionary { { "Id", "DividendVoucher" }, { "selectedId", "" }, { "SearchType", "Officers" }, { "SearchRole", "GEN" }, { "WOID", @ViewBag.WOID }, { "DefaultLoad", 1 }, { "AutoSearch", 1 }, { "NatureAppoint", "9" }, { "DisplayName", "Select Dividend Voucher" } })
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="col-xs-10 align-right margin-10t no-padding-right">
+    <button type="button" class="btn btn-info btnWOClose" id="btnSaveInterimDividend" tabindex="6"><i class="ace-icon fa fa-check bigger-110"></i>SAVE</button>
+    <button id="btnClearInterimDividend" class="btn btnWOClose" type="button" tabindex="7">
+        <i class="ace-icon fa fa-undo bigger-110"></i>
+        RESET
+    </button>
+</div>
+
+<div style="background-color: #f5f5f5; padding-top: 16px; padding-bottom: 15px;" class="col-xs-12 margin-10t">
+    <div class="col-xs-12">
+        <div class="col-xs-4 no-padding-left">
+            <span class="text-left no-padding-left">Dividend</span>
+            <label>
+                <input id="chkDivident" type="checkbox" class="ace" name="form-field-checkbox">
+                <span class="lbl" tabindex="8"></span>
+            </label>
+        </div>
+
+    </div>
+
+    <div id="divDividedShare">@*style="display:none;">*@
+        <div class="col-xs-12">
+            <div class="col-xs-2 no-padding-left">
+                <span class="col-xs-12 no-padding-left">Class of Share</span>
+                <select class="col-xs-11 no-padding-left margin-10t" id="ddlShareClassForInterimDividend" tabindex="2">
+                </select>
+
+            </div>
+
+            <div class="col-xs-3 no-padding-left">
+                <span class="col-xs-11 no-padding-left">Dividend per share</span>
+                <select class="col-xs-3 no-padding-left margin-10t" tabindex="10" id="ddlCurrencyForInterimDividend">
+                    <option value="">Select</option>
+                </select>
+                <input type="text" class="form-control col-xs-8 margin-10t margin-5l DisableCutCopyPaste special" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" placeholder="Dividend Per Share" tabindex="9" id="txtDividendPerShare">
+            </div>
+
+            <div class="col-xs-2">
+                <span class="col-xs-12 no-padding-left">Total No Of Shares</span>
+                <input type="text" tabindex="11" onkeypress="return EnterOnlyNumbers(event)" class="form-control col-xs-12  margin-10t DisableCutCopyPaste" placeholder="Total Number Of Shares" pattern="^[0-9]$" maxlength="30" id="txtTotalNumberOfShares">
+            </div>
+
+            <div class="col-xs-2  no-padding-right">
+                <span class="col-xs-12 no-padding-left">Total Amount Of Dividend</span>
+                <input type="text" class="form-control col-xs-12 margin-10t DisableCutCopyPaste special" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" tabindex="12" placeholder="Total Net Amount" pattern="^[0-9]{6}*\.[0-9]{2}$" id="txtTotalAmount">
+            </div>
+
+            <div class="col-xs-2 no-padding-right">
+                <button type="button" class="btn btn-info btnWOClose" id="btnSaveShareHoldersDetails" style="margin-top: 31px;" tabindex="13">
+                    <i class="ace-icon fa fa-check bigger-110"></i>
+                    SAVE           
+                </button>
+            </div>
+            @*   <a id="showSaveShareHoldersDetails" href="javascript:void(0)" style="margin-left: 40px;">View
+            </a>*@
+            <div class="col-xs-1  no-padding-right pull-right align-right">
+                <button id="showSaveShareHoldersDetails" type="button" class="btn btn-xs btn-inverse">View</button>
+            </div>
+        </div>
+        <div id="divShareholdersList" style="margin-top: 12px; display: none">
+            @* <table class="table-striped table-bordered table-hover col-xs-12" id="tblShareHoldersDevident" style="background-color: white !important; margin-top: 12px;">*@
+
+            <table class="table table-striped table-bordered table-hover col-xs-12" id="tblShareHoldersDevidend" style="background-color: white !important; margin-top: 12px;">
+
+                <thead>
+                    <tr>
+                        <th style="width: 30px">
+                            <div class="margin-5l">
+                                <label class="no-margin">
+                                    <input name="form-field-checkbox" class="ace chkSelectAllIDSH" id="chkSelectAllIDSH" type="checkbox">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+                        </th>
+                        <th>Shareholder
+                        </th>
+                        <th>Shares Held
+                        </th>
+                        <th>Net Cash Dividend
+                        </th>
+                        <th>Delete
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody id="trShareholdersData"></tbody>
+            </table>
+            <div id="divShareholdersNoData" style="display: none" class="row widget-main">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td colspan="5">
+                                <div id="noShareholdersData" style="color: red">
+                                    <div style="text-align: center;">
+                                        <img alt="" src="~/Content/images/nodatafound.jpeg" style="text-align: right; width: 200px; height: 150px;" />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+</div>
+
+<div id="divScripts">
+    <script id="DropDownShareClassTemplateFroIncorp" type="text/html">
+        <option value="{{= ShareClassID}}">{{= ClassName}}</option>
+    </script>
+    <script id="DropDownCurrencyTemplateFroIncorp" type="text/html">
+        <option value="{{= CurrencyID}}">{{= CurrencyName}}</option>
+    </script>
+    <script id="ShareholdersTemplate" type="text/html">
+        <tr>
+            <td>
+                <div style="margin-left: 7px">
+                    <input type="checkbox" id="chkShareholders" class="ace chkShareholders" personid="{{= ShareHolderID}}" personsource="{{= PersonSource}}" woid="{{= WOID}}" />
+
+                    <span class="lbl"></span>
+                </div>
+            </td>
+            <td>{{= ShareHolderName}}
+            </td>
+            <td>{{if SharesHeld != 0 }} 
+
+                <input type="text" id="txtShareHeld" onkeypress="return EnterOnlyNumbers(event)" disabled="disabled" class="txtShareHeld" pattern="^[0-9]{6}*\.[0-9]{2}$" value="{{= SharesHeld}}" maxlength="9" />
+                {{else}} 
+                 
+                <input type="text" id="txtShareHeld" onkeypress="return EnterOnlyNumbers(event)" disabled="disabled" class="txtShareHeld" pattern="^[0-9]{6}*\.[0-9]{2}$" value="1" maxlength="9" />
+
+                {{/if}}
+            </td>
+            <td>{{if NetCashDividend != 0 }} 
+                <input type="text" id="txtNetCashDividend" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" value="{{= NetCashDividend}}" pattern="^[0-9]{6}*\.[0-9]{2}$" class="txtNetCashDividend special" />
+                {{else}}
+                <input type="text" id="txtNetCashDividend" onkeypress="return AllowDecimalNumbersOnly(this,event,34,4)" maxlength="39" value="{{= $GlobalDataInterimDividend.ClassOfShareInList * SharesHeld}}" class="txtNetCashDividend special" />
+                {{/if}}
+            </td>
+
+            <td style="text-align: center">{{if ID != 0 }} 
+                        <a class="red DeleteShareHolders btnWOClose" href="javascript:void(0)" woshareholdersdividentid="{{= ID}}" personid="{{= ShareHolderID}}" personsource="{{= PersonSource}}" woid="{{= WOID}}">
+                            <i class="ace-icon fa fa-trash-o bigger-130"></i></a>
+                {{/if}}
+            </td>
+
+        </tr>
+    </script>
+</div>
+
+<script src="~/Areas/WO/Content/Scripts/_WoInterimDividendDetails.js"></script>
+<style>
+    .ui-datepicker {
+        width: 19em;
+    }
+</style>
